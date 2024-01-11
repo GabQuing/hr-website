@@ -6,104 +6,74 @@
 <div class="grid">
     <div class="container container_today">
         <div class="container_title">
-            <p class="header_title_h2">Today</p>
+            <p class="header_title_h2">Today's Attendance</p>
         </div>
         <div class="today_attendance">
-            <div class="today_attendance flex">
-                <div class="today_attendance_span">
-                    <span class="material-symbols-outlined" style="font-size: 50px; vertical-align: middle;">nest_clock_farsight_analog</span>
-                </div>
+            <div class="today_attendance flex-column">
                 <div class="today_attendance_p">
-                    <p>Time in: </p>
-                    <p>Time out: </p>
+                    <span> Time In : 2023-09-11 (17:36:00)</span>
+                </div>
+                <div class="today_attendance_message">
+                    <span> You can only <strong>Clock In</strong> once per day and then <strong>Clock Out</strong>.</span>
+                </div>
+                <div class="today_attendance_btns">
+                    <a href="#" class="clock_in_btn">
+                        <div class="today_clock_in">
+                            <span class="material-symbols-outlined" style="font-size: 25px;">schedule</span>
+                            <span>Clock In</span>
+                        </div>
+                    </a>
+                    <a href="#" class="clock_out_btn" >
+                        <div class="today_clock_out" >
+                            <span class="material-symbols-outlined" style="font-size: 25px;">schedule</span>
+                            <p>Clock Out</p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
-        <p style="text-align: center;">Date: 02/18/20</p>
     </div>
     <div class="container container_my_attendance">
         <div class="container_title">
-            <p class="header_title_h2">My Attendance</p>
+            <p class="header_title_h2">My Break</p>
+        </div>
+        <div class="my_break">
+            <div class="my_break flex-column">
+                <div class="my_break_p">
+                    <span> Break Start : 2023-09-11 (17:36:00)</span>
+                </div>
+                <div class="my_break_message">
+                    <span> You can only <strong>Break Start</strong> once per day and then <strong>Break End</strong>.</span>
+                </div>
+                <div class="my_break_btns">
+                    <a href="#" class="clock_in_btn">
+                        <div class="break_start_btn">
+                            <span class="material-symbols-outlined"style="font-size: 25px;">local_cafe</span>
+                            <span>Break Start</span>
+                        </div>
+                    </a>
+                    <a href="#" class="clock_out_btn" >
+                        <div class="break_end_btn" >
+                            <span class="material-symbols-outlined"style="font-size: 25px;">local_cafe</span>
+                            <p>Break End</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container container_my_attendance">
+        <div class="container_title">
+            <p class="header_title_h2">My Task</p>
         </div>
         <div class="container_attendance">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Log-Type</th>
-                        <th>Datetime Access</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                    $reversedUser = $user->reverse()->take(2); // Reverse the collection and take the last 5 items
-                    @endphp
-                    @foreach ($reversedUser as $userData )
-                        <tr>
-                            <td style="text-align: center;">{{ $userData->log_type }}</td>
-                            <td style="text-align: center;">{{$userData->date.' ('.$userData->time.')';}}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="container container_my_stuff">
-        <div class="container_title">
-            <p class="header_title_h2">My Stuff</p>
-        </div>                   
-    </div>
-    <div class="container container_my_stuff">
-        <div class="container_title">
-            <p class="header_title_h2">Events and Holidays</p>
+
         </div>
     </div>
     <div class="container container_my_store_location">
         <canvas id="myChart" style="height: 100%; width: 100%"></canvas>
-        <script>
-            const ctx = document.getElementById('myChart');
-            Chart.defaults.font.size = 16;
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                    datasets: [{
-                        label: 'My attendance',
-                        data: [12, 19, 3, 5, 2, 3, 14],
-                        backgroundColor: [
-                            'rgb(74, 189, 172)'
-                        ],
-                        borderColor: [
-                            'rgba(29, 26, 5,1)',
-                        ],
-                        borderWidth: 0,
-                        tension: 0.5,
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            grid: {
-                                display: true,
-                            },
-                        },
-                        y: {
-                            grid: {
-                                display: true,
-                            },
-                        },
-                    },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            labels: {
-                                color: "rgb(0, 0, 0)",
-                            },
-                        },
-                    },
-                },
-            });
-        </script>
+
     </div>
 </div>
 

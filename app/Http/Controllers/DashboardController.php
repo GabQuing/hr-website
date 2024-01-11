@@ -190,11 +190,8 @@ class DashboardController extends Controller
             
             // dd($macAddress);
 
-        $data=[];
-        $data['user'] = DB::table('login_attendances')
-            ->where('employee_name', auth()->user()->employee_name)
-            ->get();
 
-        return view ('dashboard', $data);
+
+        return view ('dashboard');
     }
 }

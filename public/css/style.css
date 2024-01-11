@@ -8,7 +8,8 @@
     --accent-color: #4ABDAC;
     --background-color: #F7F7F7;
     --header-color: #808080;
-    --card-header-color: #006064;
+    --card-header-color: #06222F;
+    /* --card-header-color: #006064; */
     --card-header-color1: #2f4f4f;
     --delete-btn-color: rgb(246, 51, 51);
     --view-btn-color: #26cad3;
@@ -353,8 +354,6 @@ background: var(--header-color);
     z-index: 1;
 }
 
-
-
 .sidenav {
     display: flex;
     flex-direction: column;
@@ -366,8 +365,32 @@ background: var(--header-color);
     top: 0;
     left: 0;
     overflow-y: auto;
-    box-shadow: rgba(0, 0, 0, 0.682) 2.4px 2.4px 3.2px;
+    scrollbar-width: thin; 
+    scrollbar-color: transparent transparent; 
+    -ms-overflow-style: none; 
 }
+
+.sidenav::-webkit-scrollbar {
+    width: 5px; 
+}
+
+.sidenav::-webkit-scrollbar-thumb {
+    background-color: transparent; 
+}
+
+/* .sidenav {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 230px;
+    padding: 10px 30px;
+    background: var(--gradient-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    box-shadow: rgba(0, 0, 0, 0.682) 2.4px 2.4px 3.2px;
+} */
 /* .sidenav div{
     margin-bottom: 20%;
 } */
@@ -376,7 +399,7 @@ background: var(--header-color);
     align-items: center;
     width: 100%;
     cursor: default;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-bottom: 15%;
 }
 
@@ -384,6 +407,8 @@ background: var(--header-color);
     height: 50px;
     width: 50px;
     cursor: pointer;
+    width: 100%;
+
 }
 .sidenav_links{
     margin-bottom: 20%;
@@ -402,7 +427,7 @@ background: var(--header-color);
 .sidenav .sidenav_links ul li span {
     font-size: 25px;
     margin-right: 10px;
-    color: #20B2AA;
+    color: #e0ebeb;
     /* font-weight: bold; */
 }
 
@@ -416,7 +441,7 @@ background: var(--header-color);
 
 .active:hover {
     cursor: pointer;
-    background-color: #4abdac;
+    background-color: #006064;
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
         rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
@@ -572,23 +597,82 @@ background: var(--header-color);
     color: white;
     height: 40px;
 }
-
+.my_break,
 .today_attendance {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 20px;
+    margin: 10px;
+}
+.my_break_p span{
+    font-size: 17.6px;
+}
+.today_attendance_p span{
+    font-size: 20px;
+}
+.flex-column{
+    flex-direction: column;
+    gap:20px;
+}
+.my_break_btns,
+.today_attendance_btns{
+    display: flex;
+    gap:10px;
 }
 .container_attendance {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-left: 35px;
+    
+}
+.my_break_message,
+.today_attendance_message{
+    font-style: italic;
+}
+.clock_out_btn,
+.clock_in_btn{
+    text-decoration: none;
+    color: white;
+    /* padding: 10px; */
+}
+.break_start_btn,
+.break_end_btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #06222F;
+    padding: 4px 10px;
+    border: 2px solid #06222F;
+    border-radius: 10px;
+    gap: 5px;
+}
+.today_clock_out,
+.today_clock_in{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #06222F;
+    padding: 4px 16px;
+    border: 2px solid #06222F;
+    border-radius: 10px;
+    gap: 5px;
+    
+}
+.break_start_btn:hover,
+.break_end_btn:hover,
+.today_clock_out:hover,
+.today_clock_in:hover{
+background: #006064;
+border: 2px solid #006064;
+box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
+rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
+rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset,
+rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px,
+rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px,
+rgba(0, 0, 0, 0.09) 0px 32px 16px;
 }
 
-.today_attendance_span {
-    margin-right: 15px;
-}
 
 /* Store Location */
 .container_my_store_location {

@@ -17,7 +17,7 @@
     <!-- Jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     {{-- Favicon --}}
-    <link rel="icon" type="image/x-icon" href="{{ asset('/img/digits_logo.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('/img/icon.png') }}">
     {{-- Select2 --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -69,7 +69,7 @@
                 <span class="material-symbols-outlined toggle" style="color: white">menu</span>
                 <a href="{{ route('dashboard') }}">
                     <div class="sidenav_logo">
-                        <img src="{{ asset('/img/icon.png') }}" alt="" loading="lazy">
+                        <img src="{{ asset('/img/logo_white.png') }}" alt="" loading="lazy">
                     </div>
                 </a>
                 <div class="sidenav_user_info">
