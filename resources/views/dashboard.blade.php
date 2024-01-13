@@ -80,7 +80,7 @@
 <script>
     $(document).ready(function(){
         $( ".container" ).first().show( "slow", function showNext() {
-            $( this ).next( ".container" ).show( "fast", showNext );
+            $( this ).next( ".container" ).show( "slow", showNext );
         });
     })
 </script>
