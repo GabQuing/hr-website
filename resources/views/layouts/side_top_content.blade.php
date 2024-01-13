@@ -43,17 +43,23 @@
         </div>
         <!-- Top Navbar -->
         <div class="main_content">
-            <div class="top_navbar">
-            @if ( Request::segment(1) == 'dashboard')
-                <p class="header_title_h1" id="typing_text"></p>
-                <p class="header_title_child">@yield('module_name')</p>
-            @else
-                <p class="header_title_h1">Lurtsema Communications Human Resource Portal</p>
-                <p class="header_title_child">@yield('module_name')</p>
-            @endif
+            <div style="padding: 0 20px;">
+                <div class="top_navbar">
+                    @if ( Request::segment(1) == 'dashboard')
+                        <p class="header_title_h1" id="typing_text"></p>
+                        <p class="header_title_child">@yield('module_name')</p>
+                    @else
+                        <p class="header_title_h1">Lurtsema Communications Human Resource Portal</p>
+                        <p class="header_title_child">@yield('module_name')</p>
+                    @endif
+                    </div>
+                    <div class="currentDateTime">Loading Time...</div>
+                    @yield('content')
             </div>
-            <div class="currentDateTime">Loading Time...</div>
-            @yield('content')
+            <div style="flex: 1; margin-bottom: 25px;"></div>
+            <div class="footer">
+                &copy; 2024 BPG Bois. All rights reserved.
+            </div>
         </div>
 
         <!-- End of Top Navbar -->

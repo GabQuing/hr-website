@@ -53,7 +53,7 @@
 }
 
 html {
-    /* height: 100%; */
+    height: 100%;
     width: 100%;
     background-color: var(--background-color);
 }
@@ -217,6 +217,15 @@ h6 {
 } 100%, 0% {
     transform: scale(1.0); 
 }
+}
+
+.footer{
+    /* min-height: 75px; */
+    background-color: var(--background-color);
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    display: flex;
+    align-items: center;
+    padding: 20px 20px;
 }
 
 /* End of Scrollbar */
@@ -575,9 +584,11 @@ h6 {
 
 .main_content {
     margin-left: 290px;
-    padding: 0 20px 0 20px;
+    /* padding: 0 20px 0 20px; */
     height: 100%;
     /* position: relative; */
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -624,8 +635,8 @@ h6 {
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr)); /* Adjust min and max values */
-    /* grid-template-rows: 220px; */
+    grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr)); 
+    grid-template-rows: 220px;
     grid-gap: 30px;
 }
 
@@ -693,7 +704,7 @@ h6 {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px 16px;
+    padding: 6px 16px;
     gap: 5px;
 }
 .today_clock_out,
@@ -701,7 +712,7 @@ h6 {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px 16px;
+    padding: 6px 16px;
     gap: 5px;
     
 }
@@ -723,7 +734,7 @@ h6 {
 /* Store Location */
 .container_my_store_location {
     grid-column: 1/-1;
-    height: 300px;
+    height: 250px;
     padding: 40px;
     /* width: 100%; */
 }
@@ -739,7 +750,9 @@ h6 {
         visibility: visible;
     }
     .grid {
-        grid-template-columns: 1fr;
+        /* grid-template-columns: 1fr;  */
+        grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); 
+        grid-template-rows: auto;
     }
 
     #sched_pre_edit_btn{
@@ -776,7 +789,7 @@ h6 {
 
 .attendance_summary_report,
 .schedule_profile_report {
-    height: 100%;
+    /* height: 100%; */
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
     overflow: hidden;
     border-radius: 5px;
@@ -1294,7 +1307,7 @@ table.dataTable tfoot th {
 /* My Official Business and My Overtimes Same Content*/
 
 .my_official_business_content{
-    height: 100%;
+    /* height: 100%; */
     overflow: auto;
     margin: 0 5vw 10vw 5vw;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
@@ -1420,7 +1433,7 @@ table.dataTable tfoot th {
 /* My Leaves */
 
 .my_leaves_content{
-    height: 100%;
+    /* height: 100%; */
     overflow: auto;
     margin: 0 5vw 10vw 5vw;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
