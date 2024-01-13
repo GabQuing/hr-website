@@ -9,9 +9,6 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <!-- Google Icon -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <!-- ChartJs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Jquery -->
@@ -34,11 +31,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
     
 
-    
-    
-
-    
-    
 </head>
 @yield('css')
 
@@ -51,18 +43,19 @@
         </div>
         <!-- Top Navbar -->
         <div class="main_content">
+            <div class="top_navbar">
             @if ( Request::segment(1) == 'dashboard')
-                <div class="top_navbar">
-                    <p class="header_title_h1" id="typing_text"></p>
-                    <p class="header_title_child">@yield('module_name')</p>
-                </div>
-                @else
-                <div class="top_navbar">
-                    <p class="header_title_h1">Lurtsema Communications Human Resource Portal</p>
-                    <p class="header_title_child">@yield('module_name')</p>
-                </div>
+                <p class="header_title_h1" id="typing_text"></p>
+                <p class="header_title_child">@yield('module_name')</p>
+            @else
+                <p class="header_title_h1">Lurtsema Communications Human Resource Portal</p>
+                <p class="header_title_child">@yield('module_name')</p>
             @endif
+            </div>
+            <div class="currentDateTime">Loading Time...</div>
             @yield('content')
+        </div>
+
         <!-- End of Top Navbar -->
         <div class="sidenav_parent">
             <div class="sidenav">
@@ -91,7 +84,7 @@
                     </div>
                     <div class="user_info">
                         <p style="font-size: 16px; margin-bottom: 5px; color: #ffffff;">{{ auth()->user()->name }}</p>
-                        <p style="font-size: 12px;  color: #ffffff;">{{ auth()->user()->email }}</p>
+                        <p style="font-size: 12px;  color: #d0dbdb;">{{ auth()->user()->email }}</p>
                     </div>
                 </div>
                 <div class="sidenav_links">
@@ -101,7 +94,8 @@
                             @else
                             <li class="active">
                         @endif
-                                <span class="material-symbols-outlined sidenav_icon">home</span>
+                                <img src="{{ asset('img/icon-img/home.png') }}" alt="">
+                                {{-- <span class="material-symbols-outlined sidenav_icon">home</span> --}}
                                 <a href="{{ route('dashboard') }}">Dashboard</a>
                             </li>
                         @role('employee')
@@ -110,23 +104,25 @@
                                 @else
                                 <li class="active">
                             @endif                        
-                                    <span class="material-symbols-outlined">calendar_month</span>
+                                    {{-- <span class="material-symbols-outlined">calendar_month</span> --}}
+                                <img src="{{ asset('img/icon-img/calendar.png') }}" alt="">
                                     <a href="{{ route('attendance') }}">Attendance</a>
                                 </li>
-                            @if ( Request::segment(1)  == 'my_activity_logs')
+                            {{-- @if ( Request::segment(1)  == 'my_activity_logs')
                                 <li class="active" id="current_link">
                                 @else
                                 <li class="active">
                             @endif                        
                                     <span class="material-symbols-outlined">list_alt</span>
                                     <a href="{{ route('activitylogs') }}">Activity Logs</a>
-                                </li>
+                                </li> --}}
                             @if ( Request::segment(1)  == 'my_official_business')
                                 <li class="active" id="current_link">
                                 @else
                                 <li class="active">
                             @endif                        
-                                    <span class="material-symbols-outlined">edit_calendar</span>
+                                    {{-- <span class="material-symbols-outlined">edit_calendar</span> --}}
+                                    <img src="{{ asset('img/icon-img/edit_calendar.png') }}" alt="">
                                     <a href="{{ route('officialbusiness') }}">My Official Business</a>
                                 </li>
                             @if ( Request::segment(1)  == 'my_overtimes')
@@ -134,7 +130,8 @@
                                 @else
                                 <li class="active">
                             @endif
-                                    <span class="material-symbols-outlined">edit_square</span>
+                                    {{-- <span class="material-symbols-outlined">edit_square</span> --}}
+                                    <img src="{{ asset('img/icon-img/note_edit.png') }}" alt="">
                                     <a href="{{ route('overtimes') }}">My Overtimes</a>
                                 </li>
                             @if ( Request::segment(1)  == 'my_undertimes')
@@ -142,7 +139,8 @@
                                 @else
                                 <li class="active">
                             @endif
-                                    <span class="material-symbols-outlined">edit_attributes</span>
+                                    {{-- <span class="material-symbols-outlined">edit_attributes</span> --}}
+                                    <img src="{{ asset('img/icon-img/square_edit.png') }}" alt="">
                                     <a href="{{ route('undertimes') }}">My Undertimes</a>
                                 </li>
                             @if ( Request::segment(1)  == 'my_leaves')
@@ -150,7 +148,8 @@
                                 @else
                                 <li class="active">
                             @endif
-                                    <span class="material-symbols-outlined">edit_location_alt</span>
+                                    {{-- <span class="material-symbols-outlined">edit_location_alt</span> --}}
+                                    <img src="{{ asset('img/icon-img/location_edit.png') }}" alt="">
                                     <a href="{{ route('leaves') }}">My Leaves</a>
                                 </li>
                             @if ( Request::segment(1)  == 'payroll')
@@ -158,7 +157,8 @@
                                 @else
                                 <li class="active">
                             @endif
-                                    <span class="material-symbols-outlined">payments</span>
+                                    {{-- <span class="material-symbols-outlined">payments</span> --}}
+                                    <img src="{{ asset('img/icon-img/cash.png') }}" alt="">
                                     <a href="{{ route('payroll') }}">Payroll</a>
                                 </li>
                         @endrole
@@ -168,7 +168,8 @@
                                 @else
                                 <li class="active">
                             @endif
-                            <span class="material-symbols-outlined">rule</span>
+                            {{-- <span class="material-symbols-outlined">rule</span> --}}
+                            <img src="{{ asset('img/icon-img/list.png') }}" alt="">
                             <a href="{{ route('user_accounts') }}">User Accounts</a>
                                 </li>  
                             @if ( Request::segment(1)  == 'approve_accounts')
@@ -176,8 +177,8 @@
                                 @else
                                 <li class="active">
                             @endif
-                            
-                                    <span class="material-symbols-outlined">person_add</span>
+                                    {{-- <span class="material-symbols-outlined">person_add</span> --}}
+                                    <img src="{{ asset('img/icon-img/user_setting.png') }}" alt="">
                                     <a href="{{ route('approve_accounts') }}">Approve Registration</a>
                                 </li>  
                             @if ( Request::segment(1)  == 'employee_informations')
@@ -185,7 +186,8 @@
                                 @else
                                 <li class="active">
                             @endif
-                                    <span class="material-symbols-outlined">support_agent</span>
+                                    {{-- <span class="material-symbols-outlined">support_agent</span> --}}
+                                    <img src="{{ asset('img/icon-img/employee_list.png') }}" alt="">
                                     <a href="{{ route('employee_informations') }}">Employee Information</a>
                                 </li>
                             @if ( Request::segment(1)  == 'log_user_access')
@@ -193,7 +195,8 @@
                                 @else
                                 <li class="active">
                             @endif
-                                    <span class="material-symbols-outlined">list_alt</span>
+                                    {{-- <span class="material-symbols-outlined">list_alt</span> --}}
+                                    <img src="{{ asset('img/icon-img/document.png') }}" alt="">
                                     <a href="{{ route('log_user_access') }}">Employee Activity Logs</a>
                                 </li> 
                             @if ( Request::segment(1)  == 'schedule_profile')
@@ -201,7 +204,8 @@
                                 @else
                                 <li class="active">
                             @endif
-                                    <span class="material-symbols-outlined">pending_actions</span>                                    
+                                    {{-- <span class="material-symbols-outlined">pending_actions</span>     --}}
+                                    <img src="{{ asset('img/icon-img/note_schedule.png') }}" alt="">
                                     <a href="{{ route('schedule_profile') }}">Schedule Profiles</a>
                                 </li> 
                             <!-- @if ( Request::segment(1)  == 'storeAddress')
@@ -216,7 +220,7 @@
                     </ul>
                 </div>
                 <div class="user_info_logout">
-                    <a class="user_info_link" href="{{ route('profile') }}">My Profile</a>
+                    <a class="user_info_link" href="{{ route('profile') }}">Profile</a>
                     <p style="font-size: 14px; margin-top: 20px;"><a href="{{ route('logout') }}" id="logout" style="color: #ffffff; text-decoration: none;">Logout</a></p>
                 </div>
             </div>
@@ -346,7 +350,29 @@
                 })
             }
 
-        })
+            // Time
+            function getCurrentDateTime() {
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+
+                return `${hours}:${minutes}:${seconds} ${year}-${month}-${day}`;
+            }
+
+            function updateDateTime() {
+                const elements = document.querySelectorAll('.currentDateTime');
+                elements.forEach(function(element) {
+                    element.textContent = getCurrentDateTime();
+                });
+            }
+
+            setInterval(updateDateTime, 1000);
+
+                })
 
     </script>
 

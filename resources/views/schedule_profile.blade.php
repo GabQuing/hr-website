@@ -9,9 +9,7 @@
             position: relative;
             top: 8px;
         }
-        .top_navbar{
-            margin-bottom: 30px
-        }
+
         .pic_input select{
             height: 31px;
             width: 100%;

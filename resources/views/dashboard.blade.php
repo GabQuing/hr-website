@@ -11,10 +11,10 @@
         <div class="today_attendance">
             <div class="today_attendance flex-column">
                 <div class="today_attendance_p">
-                    <span> Time In : 2023-09-11 (17:36:00)</span>
+                    <h4 class="f-weight-5"> Time In : 2023-09-11 (17:36:00)</h4>
                 </div>
                 <div class="today_attendance_message">
-                    <span> You can only <strong>Clock In</strong> once per day and then <strong>Clock Out</strong>.</span>
+                    <h5 class="f-weight-4"><strong>Clock in</strong> once per day and then <strong>clock out</strong>.</h5>
                 </div>
                 <div class="today_attendance_btns">
                     <a href="#" class="clock_in_btn">
@@ -40,10 +40,10 @@
         <div class="my_break">
             <div class="my_break flex-column">
                 <div class="my_break_p">
-                    <span> Break Start : 2023-09-11 (17:36:00)</span>
+                    <h4 class="f-weight-5"> Break Start : 2023-09-11 (17:36:00)</h4>
                 </div>
                 <div class="my_break_message">
-                    <span> You can only <strong>Break Start</strong> once per day and then <strong>Break End</strong>.</span>
+                    <h5 class="f-weight-4"><strong>Break start</strong> once per day and then <strong>break end</strong>.</h5>
                 </div>
                 <div class="my_break_btns">
                     <a href="#" class="clock_in_btn">
@@ -72,18 +72,17 @@
         </div>
     </div>
     <div class="container container_my_store_location">
-        <canvas id="myChart" style="height: 100%; width: 100%"></canvas>
-
+        <canvas id="myLineChart" ></canvas>
     </div>
 </div>
 
-    @section('script_content')
-    <script>
-        $(document).ready(function(){
-            $( ".container" ).first().show( "slow", function showNext() {
-                $( this ).next( ".container" ).show( "fast", showNext );
-            });
-        })
-    </script>
-    @endsection
+@section('script_content')
+<script>
+    $(document).ready(function(){
+        $( ".container" ).first().show( "slow", function showNext() {
+            $( this ).next( ".container" ).show( "fast", showNext );
+        });
+    })
+</script>
+@endsection
 @endsection
