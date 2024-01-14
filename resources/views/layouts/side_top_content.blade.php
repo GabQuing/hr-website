@@ -58,7 +58,7 @@
             </div>
             <div style="flex: 1; margin-bottom: 25px;"></div>
             <div class="footer">
-                &copy; 2024 BPG Bois. All rights reserved.
+                <h6>&copy; 2024 BPG Bois. All rights reserved.</h6>
             </div>
         </div>
 
