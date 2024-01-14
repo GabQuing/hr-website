@@ -739,6 +739,16 @@ h6 {
     /* width: 100%; */
 }
 
+.action-button-log {
+    border: none;
+    cursor: pointer;
+}
+
+.action-button-log:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 @media only screen and (max-width: 650px) {
     .sidenav_parent {
         display: none;
