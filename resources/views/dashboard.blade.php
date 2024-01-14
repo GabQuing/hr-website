@@ -17,18 +17,18 @@
                     <h5 class="f-weight-4"><strong>Clock in</strong> once per day and then <strong>clock out</strong>.</h5>
                 </div>
                 <div class="today_attendance_btns">
-                    <a href="#" class="clock_in_btn">
+                    <button type="button" data-action="CLOCK IN" data-column="clock_in" id="clock-in" class="action-button-log clock_in_btn" {{ $today_log?->clock_in || $today_log?->clock_out ? 'disabled' : '' }}>
                         <div class="today_clock_in">
                             <span class="material-symbols-outlined" style="font-size: 25px;">schedule</span>
                             <span>Clock In</span>
                         </div>
-                    </a>
-                    <a href="#" class="clock_out_btn" >
+                    </button>
+                    <button type="button" data-action="CLOCK OUT" data-column="clock_out" id="clock-out" class="action-button-log clock_out_btn" {{ $today_log?->clock_out || !$today_log?->clock_in ? 'disabled' : '' }}>
                         <div class="today_clock_out" >
                             <span class="material-symbols-outlined" style="font-size: 25px;">schedule</span>
                             <p>Clock Out</p>
                         </div>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -46,18 +46,18 @@
                     <h5 class="f-weight-4"><strong>Break start</strong> once per day and then <strong>break end</strong>.</h5>
                 </div>
                 <div class="my_break_btns">
-                    <a href="#" class="clock_in_btn">
+                    <button type="button" data-action="BREAK START" data-column="break_start" id="break-start" class="action-button-log clock_in_btn" {{ !$today_log?->clock_in || $today_log?->break_start || $today_log?->clock_out ? 'disabled' : '' }}>
                         <div class="break_start_btn">
                             <span class="material-symbols-outlined"style="font-size: 25px;">local_cafe</span>
                             <span>Break Start</span>
                         </div>
-                    </a>
-                    <a href="#" class="clock_out_btn" >
+                    </button>
+                    <button type="button" data-action="BREAK END" data-column="break_end" id="break-end" class="action-button-log clock_out_btn" {{ !$today_log?->break_start || $today_log?->break_end || $today_log?->clock_out ? 'disabled' : '' }}>
                         <div class="break_end_btn" >
                             <span class="material-symbols-outlined"style="font-size: 25px;">local_cafe</span>
                             <p>Break End</p>
                         </div>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -79,10 +79,67 @@
 @section('script_content')
 <script>
     $(document).ready(function(){
+        function showLogDetails(logDetails) {
+            console.log(logDetails);
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "bottom-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "success",
+                title: `Your log (${logDetails.log_type}) has been added to your today's log.`,
+            });
+        }
+
+        function refreshButtons(logToday) {
+            console.log(logToday);
+            const clockIn = $('#clock-in');
+            const clockOut = $('#clock-out');
+            const breakStart = $('#break-start');
+            const breakEnd = $('#break-end');
+
+            clockIn.attr('disabled', logToday.clock_in || logToday.clock_out);
+            clockOut.attr('disabled', logToday.clock_out || !logToday.clock_in);
+            breakStart.attr('disabled', !logToday.clock_in || logToday.break_start || logToday.clock_out);
+            breakEnd.attr('disabled', !logToday.break_start || logToday.break_end || logToday.clock_out);
+        }
+
         $( ".container" ).first().show( "slow", function showNext() {
             $( this ).next( ".container" ).show( "slow", showNext );
         });
-    })
+
+        $('.action-button-log').on('click', function() {
+            if ($(this).attr('disabled')) return;
+            $(this).attr('disabled', true);
+            const userId = "{{ auth()->user()->id }}";
+            const action = $(this).attr('data-action');
+            $.ajax({
+                url: "{{ route('dashboard.log-action') }}",
+                method: 'POST',
+                type: 'json',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    user_id: userId,
+                    action,
+                },
+                success: function(data) {
+                    showLogDetails(data.log_details);
+                    refreshButtons(data.log_today);
+                },
+                error: function(error) {
+                    const errorMessage = error.responseJSON.message;
+                    alert(errorMessage);
+                }
+            })
+        });
+    });
 </script>
 @endsection
 @endsection
