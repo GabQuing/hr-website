@@ -49,32 +49,25 @@
     <table id="myTable" class="display" style="width:100%">
         <thead>
             <tr>
-                <th>Datetime Access</th>
+                <th>Date Access</th>
                 <th>User</th>
-                <th>IP Address</th>
                 <th>Log-Type</th>
-                <!-- <th>Store Location</th>
-                <th>View</th>             -->
             </tr>
         </thead>
         <tbody>
-            @foreach ($user as $userData )
+            @foreach ($user_logs as $user_log )
                 <tr>
-                    <td>{{$userData->date.' ('.$userData->time.')'}}</td>
-                    <td>{{ $userData->employee_name }}</td>
-                    <td>{{ $userData->ip_address }}</td>
-                    <td>{{ $userData->log_type }}</td>
-                    <!-- <td>{{ $userData->store_address }}</td>
-                    {{-- <td>{{ $userData->log_type.': '.$userData->store_address }}</td> --}} -->
-                    <!-- <td style="text-align: center;">
-                        <img class="log-image" uuid="{{ $userData->uuid }}" src="" alt="user photo" style="height: 100px; width: 150px;">
-                    </td> -->
+                    <td>{{ date('M d Y h:i a', strtotime($user_log->log_at)) }}</td>
+                    {{-- <td>{{ date('h:i a', strtotime($user_log->log_time)) }}</td> --}}
+                    {{-- <td>{{$userData->date.' ('.$userData->time.')'}}</td> --}}
+                    <td>{{ $user_log->user_name }}</td>
+                    <td>{{ $user_log->log_type_description }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
     {{-- @if (!$has_generated) --}}
-        {{ $user->links()}}
+        {{ $user_logs->links()}}
     {{-- @endif --}}
 </div>
 

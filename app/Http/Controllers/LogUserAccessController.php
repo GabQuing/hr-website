@@ -1,15 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\loginAttendance;
-use DateTime;
-use DateInterval;
-use DateTimeZone;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Exports\EmployeeActivityLogsExport;
+use App\Models\UserLog;
 use DB;
-use Storage;
 
 class LogUserAccessController extends Controller
 {
@@ -19,9 +15,8 @@ class LogUserAccessController extends Controller
     public function index()
     {
         $data = [];
-        $data['user'] = DB::table('login_attendances')
-            ->OrderBy('date','desc')
-            ->OrderBy('time','desc')
+        $data['user_logs'] = (new UserLog())
+            ->getAllLogs()
             ->paginate(10);
 
         // $data['has_generated'] = false;
