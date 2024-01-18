@@ -3,6 +3,12 @@
 @section('module_name', 'Dashboard')
 
 @section('content')
+<style>
+.dashboard_table th{
+    text-align: center;
+    vertical-align: middle;
+}
+</style>
 <div class="grid">
     <div class="container container_today">
         <div class="container_title">
@@ -11,7 +17,7 @@
         <div class="today_attendance">
             <div class="today_attendance flex-column">
                 <div class="today_attendance_p">
-                    <h4 class="f-weight-5"> Time In : 2023-09-11 (17:36:00)</h4>
+                    <h4 class="f-weight-5 attendance_action"> {{ $data['today_log']->clock_in ?? 'Press Clock In To Start' }}</h4>
                 </div>
                 <div class="today_attendance_message">
                     <h5 class="f-weight-4"><strong>Clock in</strong> once per day and then <strong>clock out</strong>.</h5>
@@ -40,7 +46,7 @@
         <div class="my_break">
             <div class="my_break flex-column">
                 <div class="my_break_p">
-                    <h4 class="f-weight-5"> Break Start : 2023-09-11 (17:36:00)</h4>
+                    <h4 class="f-weight-5 break_action">{{ $data['today_log']->clock_in ?? 'Press Break Start' }}</h4>
                 </div>
                 <div class="my_break_message">
                     <h5 class="f-weight-4"><strong>Break start</strong> once per day and then <strong>break end</strong>.</h5>
@@ -72,7 +78,29 @@
         </div>
     </div>
     <div class="container container_my_store_location">
-        <canvas id="myLineChart" ></canvas>
+        <div class="dashboard_table">
+            <table id="myTable" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Date Access</th>
+                        <th>Time Access</th>
+                        <th>Log-Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php $count = count($user_logs); @endphp
+                    @foreach ($user_logs as $key => $user_log)
+                        @if($key >= $count - 4)
+                            <tr>
+                                <td style="text-align: center;">{{ date('M d Y', strtotime($user_log->log_date)) }}</td>
+                                <td style="text-align: center;">{{ date('h:i a', strtotime($user_log->log_time)) }}</td>
+                                <td style="text-align: center;">{{ $user_log->log_type_description }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -80,7 +108,6 @@
 <script>
     $(document).ready(function(){
         function showLogDetails(logDetails) {
-            console.log(logDetails);
             const Toast = Swal.mixin({
                 toast: true,
                 position: "bottom-end",
@@ -99,7 +126,7 @@
         }
 
         function refreshButtons(logToday) {
-            console.log(logToday);
+            // console.log(logToday);
             const clockIn = $('#clock-in');
             const clockOut = $('#clock-out');
             const breakStart = $('#break-start');
@@ -110,6 +137,19 @@
             breakStart.attr('disabled', !logToday.clock_in || logToday.break_start || logToday.clock_out);
             breakEnd.attr('disabled', !logToday.break_start || logToday.break_end || logToday.clock_out);
         }
+        
+        function displayAction(logToday) {
+            console.log(logToday);
+            let selector = '';
+            if (logToday.log_type === "CLOCK IN" || logToday.log_type === "CLOCK OUT") {
+                selector = '.attendance_action';
+            }
+            if (logToday.log_type === "BREAK START" || logToday.log_type === "BREAK END") {
+                selector = '.break_action';
+            }
+            $(selector).text(`${logToday.log_type || 'No Action Available'}: ${logToday.log_date || 'No Date Available'} (${logToday.log_time || 'No Time Available'})`);
+        }
+        
 
         $( ".container" ).first().show( "slow", function showNext() {
             $( this ).next( ".container" ).show( "slow", showNext );
@@ -132,6 +172,7 @@
                 success: function(data) {
                     showLogDetails(data.log_details);
                     refreshButtons(data.log_today);
+                    displayAction(data.log_details);
                 },
                 error: function(error) {
                     const errorMessage = error.responseJSON.message;
@@ -139,6 +180,8 @@
                 }
             })
         });
+
+                
     });
 </script>
 @endsection
