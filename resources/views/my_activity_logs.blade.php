@@ -52,15 +52,16 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($user as $userData )
+            @foreach ($user_logs as $user_log )
                 <tr>
-                    <td style="text-align: center;">{{$userData->date.' ('.$userData->time.')';}}</td>
-                    <td style="text-align: center;">{{ $userData->log_type }}</td>
+                    <td style="text-align: center;">{{ date('M d Y h:i a', strtotime($user_log->log_at)) }}</td>
+                    {{-- <td style="text-align: center;">{{ $user_log->log_at }}</td> --}}
+                    <td style="text-align: center;">{{ $user_log->log_type_description }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-    {{ $user->links()}}
+    {{ $user_logs->links()}}
 </div>
 
 @endsection

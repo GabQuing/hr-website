@@ -8,6 +8,7 @@ use DateTimeZone;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Exports\ActivityLogsExport;
+use App\Models\UserLog;
 use DB;
 use Storage;
 
@@ -18,10 +19,10 @@ class ActivityLogsController extends Controller
      */
     public function index()
     {
+        $user_id = auth()->user()->id;
         $data=[];
-        $data['user'] = DB::table('login_attendances')
-            ->where('employee_name', auth()->user()->employee_name)
-            ->OrderBy('date','desc')
+        $data['user_logs'] = (new UserLog())
+            ->getByUserId($user_id)
             ->paginate(10);
 
         // dd(auth()->user()->employee_name);
