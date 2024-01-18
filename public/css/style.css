@@ -1121,6 +1121,10 @@ h6 {
     overflow-x: auto;
     display: none;
 }
+.dashboard_table{
+    width: 100%;
+    overflow-x: auto;
+}
 
 .mg-bottom {
     margin-bottom: var(--mg-bottom-10);
@@ -2058,5 +2062,7 @@ background-color: #e5e7eb;
     border: 2px solid #2ad5de !important; /* Increase specificity and use !important */
     outline: none; /* Remove default focus outline (optional, as it might affect accessibility) */
 }
+
+
 
 /* End of My Leaves */

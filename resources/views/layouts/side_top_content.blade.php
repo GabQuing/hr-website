@@ -52,8 +52,8 @@
                         <p class="header_title_h1">Lurtsema Communications Human Resource Portal</p>
                         <p class="header_title_child">@yield('module_name')</p>
                     @endif
-                    </div>
-                    <div class="currentDateTime">Loading Time...</div>
+                </div>
+                <br>
                     @yield('content')
             </div>
             <div style="flex: 1; margin-bottom: 25px;"></div>
@@ -114,23 +114,22 @@
                                 <img src="{{ asset('img/icon-img/calendar.png') }}" alt="">
                                     <a href="{{ route('attendance') }}">Attendance</a>
                                 </li>
-                            {{-- @if ( Request::segment(1)  == 'my_activity_logs')
+                            @if ( Request::segment(1)  == 'my_activity_logs')
                                 <li class="active" id="current_link">
                                 @else
                                 <li class="active">
                             @endif                        
-                                    <span class="material-symbols-outlined">list_alt</span>
-                                    <a href="{{ route('activitylogs') }}">Activity Logs</a>
-                                </li> --}}
-                            @if ( Request::segment(1)  == 'my_official_business')
+                            <img src="{{ asset('img/icon-img/list.png') }}" alt="">
+                            <a href="{{ route('activitylogs') }}">Activity Logs</a>
+                                </li>
+                            {{-- @if ( Request::segment(1)  == 'my_official_business')
                                 <li class="active" id="current_link">
                                 @else
                                 <li class="active">
                             @endif                        
-                                    {{-- <span class="material-symbols-outlined">edit_calendar</span> --}}
                                     <img src="{{ asset('img/icon-img/edit_calendar.png') }}" alt="">
                                     <a href="{{ route('officialbusiness') }}">My Official Business</a>
-                                </li>
+                                </li> --}}
                             @if ( Request::segment(1)  == 'my_overtimes')
                                 <li class="active" id="current_link">
                                 @else
@@ -356,27 +355,7 @@
                 })
             }
 
-            // Time
-            function getCurrentDateTime() {
-                const now = new Date();
-                const year = now.getFullYear();
-                const month = String(now.getMonth() + 1).padStart(2, '0');
-                const day = String(now.getDate()).padStart(2, '0');
-                const hours = String(now.getHours()).padStart(2, '0');
-                const minutes = String(now.getMinutes()).padStart(2, '0');
-                const seconds = String(now.getSeconds()).padStart(2, '0');
 
-                return `${hours}:${minutes}:${seconds} ${year}-${month}-${day}`;
-            }
-
-            function updateDateTime() {
-                const elements = document.querySelectorAll('.currentDateTime');
-                elements.forEach(function(element) {
-                    element.textContent = getCurrentDateTime();
-                });
-            }
-
-            setInterval(updateDateTime, 1000);
 
                 })
 
