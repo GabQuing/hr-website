@@ -8,7 +8,7 @@
         <form method="POST" action="{{route('generateTable')}}">
         @csrf
 
-            <input type="text" name="employeeName" value="{{ auth()->user()->employee_name }}" style="display: none;">    
+            <input type="text" name="employeeId" value="{{ auth()->user()->id }}" style="display: none;">    
 
             <div class="container_title">
                 <p class="header_title_h2">My Attendance Summary Report</p>
@@ -45,17 +45,17 @@
                                 <td>{{ auth()->user()->name }}</td>
                                 <td> {{ $days_present ?? 0}}</td>
                                 <td>{{ $numberOfAbsences ?? 0}}</td>
-                                <td>{{ $lateMinutes ?? 0 }}</td>
-                                <td>{{ $underMinutes ?? 0 }}</td>
-                                <td>{{ $totalMinutesLates ?? 0}}</td>
-                                <td>{{ $hoursTotal ?? 0 }}</td>
+                                <td>{{ 0 }}</td>
+                                <td>{{ 0 }}</td>
+                                <td>{{ 0}}</td>
+                                <td>{{ 0 }}</td>
                             </tr>                        
                     </tbody>
                 </table>
                 <br>
                 <div class="datebtn">
-                    {{-- <a href="{{ route('export') }}?count_present={{ $days_present }}&total_hours={{ $hoursTotal }}&from_date={{ $fromDate }}&to_date={{ $toDate }}" id="export_excel">Export</a> --}}
-                    <a href="{{ route('export') }}?count_present={{ $days_present }}&number_absences={{ $numberOfAbsences}}&late_minutes={{ $lateMinutes}}&under_minutes={{ $underMinutes }}&total_minutes_late={{ $totalMinutesLates }}&total_hours={{ $hoursTotal }}&from_date={{ $fromDate }}&to_date={{ $toDate }}" id="export_excel">Export</a>
+                    <a href="{{ route('export') }}?count_present={{ $days_present }}&number_absences={{ $numberOfAbsences}}" id="export_excel">Export</a>
+                    {{-- <a href="{{ route('export') }}?count_present={{ $days_present }}&number_absences={{ $numberOfAbsences}}&late_minutes={{ $lateMinutes}}&under_minutes={{ $underMinutes }}&total_minutes_late={{ $totalMinutesLates }}&total_hours={{ $hoursTotal }}&from_date={{ $fromDate }}&to_date={{ $toDate }}" id="export_excel">Export</a> --}}
                 </div>
                 
             </div>
