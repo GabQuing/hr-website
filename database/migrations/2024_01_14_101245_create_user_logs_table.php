@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('log_at')->nullable();
             $table->date('log_date')->virtualAs('DATE(log_at)');
             $table->time('log_time')->virtualAs('TIME(log_at)');
-            $table->string('status')->length(20)->nullable()->default('ACIVE');
+            $table->string('status')->length(20)->nullable()->default('ACTIVE');
             $table->timestamps();
             $table->softDeletes();
 
