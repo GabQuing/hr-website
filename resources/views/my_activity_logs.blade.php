@@ -47,8 +47,8 @@
     <table id="myTable" class="display" style="width:100%">
         <thead>
             <tr>
-                <th>Datetime Access</th>
-                <th>Log-Type</th>
+                <th style="text-align: center;">Datetime Access</th>
+                <th style="text-align: center;">Log-Type</th>
             </tr>
         </thead>
         <tbody>

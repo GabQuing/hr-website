@@ -52,4 +52,13 @@ class AttendanceSummary extends Model
 
         return $absent_count;
     }
+
+    public function getUserAttendanceSummary($user_id){
+        return $this->leftJoin('users', 'users.id', 'attendance_summary.user_id')
+            ->select(
+                'attendance_summary.*',
+                'users.name as user_name',
+            )
+            ->where('users.id', $user_id);
+    }
 }

@@ -54,7 +54,7 @@
                 </table>
                 <br>
                 <div class="datebtn">
-                    <a href="{{ route('export') }}?count_present={{ $days_present }}&number_absences={{ $numberOfAbsences}}" id="export_excel">Export</a>
+                    <a href="{{ route('export') }}?count_present={{ $days_present }}&number_absences={{ $numberOfAbsences}}&from_date={{ $fromDate }}&to_date={{ $toDate }}" id="export_excel">Export</a>
                     {{-- <a href="{{ route('export') }}?count_present={{ $days_present }}&number_absences={{ $numberOfAbsences}}&late_minutes={{ $lateMinutes}}&under_minutes={{ $underMinutes }}&total_minutes_late={{ $totalMinutesLates }}&total_hours={{ $hoursTotal }}&from_date={{ $fromDate }}&to_date={{ $toDate }}" id="export_excel">Export</a> --}}
                 </div>
                 

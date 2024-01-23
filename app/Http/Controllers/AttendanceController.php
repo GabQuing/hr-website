@@ -8,7 +8,7 @@ use DateTime;
 use DateInterval;
 use DateTimeZone;
 use Maatwebsite\Excel\Facades\Excel;
-// use App\Exports\attendanceSummary;
+use App\Exports\attendanceSummaryExport;
 use App\Models\AttendanceSummary;
 use Carbon\Carbon;
 
@@ -33,6 +33,10 @@ class AttendanceController extends Controller
         $data['has_generated'] = true;
         $data['days_present'] = $DaysPresent;
         $data['numberOfAbsences'] = $DaysAbsent;
+        $data['fromDate'] = $fromDate;
+        $data['toDate'] = $toDate;
+        $data['from'] = $fromDate;
+        $data['to'] = $toDate;
         return view('my_attendance', $data);
 
         // $DaysIn = DB::table ('user_logs')
@@ -162,25 +166,25 @@ class AttendanceController extends Controller
     }
     
     public function export(Request $request)  {
+        $employeeName = auth()->user()->employee_name;
         $count_present = $request->input('count_present');
         $number_absences = $request->input('number_absences');
-        $late_minutes = $request->input('late_minutes');
-        $under_minutes = $request->input('under_minutes');
-        $total_minutes_late = $request->input('total_minutes_late');
-        $total_hours = $request->input('total_hours');
-        $employeeName = auth()->user()->employee_name;
+        // $late_minutes = $request->input('late_minutes');
+        // $under_minutes = $request->input('under_minutes');
+        // $total_minutes_late = $request->input('total_minutes_late');
+        // $total_hours = $request->input('total_hours');
         $data = [];
-        $data['count_present'] = $count_present;
-        $data['number_absences'] = $number_absences;
-        $data['late_minutes'] = $late_minutes;
-        $data['under_minutes'] = $under_minutes;
-        $data['total_minutes_late'] = $total_minutes_late;
-        $data['total_hours'] = $total_hours;
         $data['employee_name'] = $employeeName;
         $data['from_date'] = $request->input('from_date');
         $data['to_date'] = $request->input('to_date');
+        $data['count_present'] = $count_present;
+        $data['number_absences'] = $number_absences;
+        // $data['late_minutes'] = $late_minutes;
+        // $data['under_minutes'] = $under_minutes;
+        // $data['total_minutes_late'] = $total_minutes_late;
+        // $data['total_hours'] = $total_hours;
 
-        return Excel::download(new attendanceSummary($data), "$employeeName-attendance-summary.xlsx");
+        return Excel::download(new attendanceSummaryExport($data), "$employeeName-attendance-summary.xlsx");
     }
 
 }
