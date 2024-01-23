@@ -32,7 +32,7 @@ class UserLog extends Model
             ->where('users.id', $user_id)
             ->orderBy('id', 'desc');
     }
-
+    
     public function getDetails()
     {
         return $this->where('user_logs.id', $this->id)

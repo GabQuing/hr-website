@@ -4,9 +4,25 @@
 
 @section('content')
 <style>
+.dashboard_table{
+    /* border:5px solid #02718A; */
+    border-radius: 10px;
+}
 .dashboard_table th{
     text-align: center;
-    vertical-align: middle;
+    vertical-align: middle !important;
+    background: #02718A;
+    padding: 10px; 
+    color: white
+}
+.dashboard_table td{
+    text-align: center;
+    background-color: #e9eff5;
+    padding: 10px;
+}
+
+.dashboard_table td:hover{
+    background-color: #d4dbe2;
 }
 </style>
 <div class="grid">
@@ -17,7 +33,7 @@
         <div class="today_attendance">
             <div class="today_attendance flex-column">
                 <div class="today_attendance_p">
-                    <h4 class="f-weight-5 attendance_action"> {{ $data['today_log']->clock_in ?? 'Press Clock In To Start' }}</h4>
+                    <h4 class="f-weight-5 attendance_action">{{ ($today_log && $today_log->log_date ? 'CLOCK IN: ' . $today_log->log_date : 'Press Clock In To Start') . ' (' . ($today_log->clock_in ?? '00:00:00') . ')' }}</h4>
                 </div>
                 <div class="today_attendance_message">
                     <h5 class="f-weight-4"><strong>Clock in</strong> once per day and then <strong>clock out</strong>.</h5>
@@ -46,7 +62,7 @@
         <div class="my_break">
             <div class="my_break flex-column">
                 <div class="my_break_p">
-                    <h4 class="f-weight-5 break_action">{{ $data['today_log']->clock_in ?? 'Press Break Start' }}</h4>
+                    <h4 class="f-weight-5 break_action">{{ ($today_log && $today_log->log_date ? 'BREAK START: ' . $today_log->log_date : 'Press Break Start') . ' (' . ($today_log->break_start ?? '00:00:00') . ')' }}</h4>
                 </div>
                 <div class="my_break_message">
                     <h5 class="f-weight-4"><strong>Break start</strong> once per day and then <strong>break end</strong>.</h5>
@@ -92,9 +108,9 @@
                     @foreach ($user_logs as $key => $user_log)
                         @if($key >= $count - 4)
                             <tr>
-                                <td style="text-align: center;">{{ date('M d Y', strtotime($user_log->log_date)) }}</td>
-                                <td style="text-align: center;">{{ date('h:i a', strtotime($user_log->log_time)) }}</td>
-                                <td style="text-align: center;">{{ $user_log->log_type_description }}</td>
+                                <td>{{ date('M d Y', strtotime($user_log->log_date)) }}</td>
+                                <td>{{ date('h:i a', strtotime($user_log->log_time)) }}</td>
+                                <td>{{ $user_log->log_type_description }}</td>
                             </tr>
                         @endif
                     @endforeach
@@ -117,7 +133,11 @@
                 didOpen: (toast) => {
                     toast.onmouseenter = Swal.stopTimer;
                     toast.onmouseleave = Swal.resumeTimer;
-                }
+                },
+                customClass: {
+                    popup: 'custom-swal'
+                },
+                iconColor: '#02718A'
             });
             Toast.fire({
                 icon: "success",
