@@ -36,8 +36,9 @@ class attendanceSummaryExport implements FromCollection, WithHeadings
     {
         $collection = DB::table('attendance_summary')
             ->where('user_id' , auth()->user()->id)
+            ->join('users', 'attendance_summary.user_id', '=', 'users.id')
             ->selectRaw("
-                user_id,
+                users.name,
                 log_date,
                 clock_in,
                 break_start,
@@ -46,6 +47,7 @@ class attendanceSummaryExport implements FromCollection, WithHeadings
             ")
             ->whereBetween('log_date', [$this->data['from_date'], $this->data['to_date']])
             ->get();
+        
 
 
         // $collection = DB::table('login_attendances')
@@ -64,27 +66,27 @@ class attendanceSummaryExport implements FromCollection, WithHeadings
         //     ->groupBy('employee_name', 'date')
         //     ->get();
 
-        // $collection = $collection->map(function ($item) {
-        //     $item->days_present = $this->hasTimeInAndTimeOut($item) ? 1 : 0;
-        //     $item->numberOfAbsences = $this->NoTimeInAndTimeOut($item) ? 1 : 0;
-        //     $item->lateMinutes = $this->calculateLateMinutes($item);
-        //     $item->underMinutes = $this->calculateUnderMinutes($item);
-        //     $item->totalMinutesLates = $this->calculateTotalLates($item);
-        //     $item->total_hours = $this->calculateTotalHours($item);
-        //     return $item;
-        // });
+        $collection = $collection->map(function ($item) {
+            $item->days_present = $this->hasTimeInAndTimeOut($item) ? 1 : 0;
+            $item->numberOfAbsences = $this->NoTimeInAndTimeOut($item) ? 1 : 0;
+            // $item->lateMinutes = $this->calculateLateMinutes($item);
+            // $item->underMinutes = $this->calculateUnderMinutes($item);
+            // $item->totalMinutesLates = $this->calculateTotalLates($item);
+            // $item->total_hours = $this->calculateTotalHours($item);
+            return $item;
+        });
 
 
         return $collection;
     }
 
-    // private function hasTimeInAndTimeOut($item) {
-    //     return !empty($item->time_in) && !empty($item->time_out);
-    // }
+    private function hasTimeInAndTimeOut($item) {
+        return !empty($item->clock_in) && !empty($item->clock_out);
+    }
 
-    // private function NoTimeInAndTimeOut($item) {
-    //     return empty($item->time_in) || empty($item->time_out);
-    // }
+    private function NoTimeInAndTimeOut($item) {
+        return empty($item->clock_in) || empty($item->clock_out);
+    }
     
     // private function calculateLateMinutes($item) {
     //     $date = Carbon::parse($item->date);

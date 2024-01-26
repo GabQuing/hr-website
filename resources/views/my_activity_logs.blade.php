@@ -42,7 +42,6 @@
     <a href="{{ route('export_activity_log') }}?data_entry={{ $numEntry }}&from_date={{ $fromDate }}&to_date={{ $toDate }}" id="export_excel">Export File</a>
 @endif
 <br>
-<br>
 <div class="user_accounts_table">
     <table id="myTable" class="display" style="width:100%">
         <thead>

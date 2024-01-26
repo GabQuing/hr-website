@@ -32,24 +32,23 @@ class ActivityLogsController extends Controller
 
     public function generateFile(Request $request)
     {
-        $empName = $request->input('employeeName');
+        $employeeId = auth()->user()->id;
         $fromDate = $request->input('from_date');
         $toDate = $request->input('to_date');
-        $numEntry = DB::table('login_attendances')
-            ->where('employee_name',$empName)
-            ->whereBetween('date',[$fromDate,$toDate])
-            ->select('employee_name',
-                'date',
-                'time',
-                'log_type',
-                'store_address')
+        $numEntry = DB::table('user_logs')
+            ->where('user_id',$employeeId)
+            ->whereBetween('log_date',[$fromDate,$toDate])
+            ->select('id',
+                'log_date',
+                'log_time',
+                'log_type_id')
             ->get();
 
         $dataEntry=[];
         $data=[];
 
-        $data['user'] = DB::table('login_attendances')
-        ->where('employee_name', auth()->user()->employee_name)
+        $data['user'] = DB::table('user_logs')
+        ->where('user_id', $employeeId)
         ->get();
         $dataEntry['fromDate'] = $fromDate;
         $dataEntry['toDate'] = $toDate;

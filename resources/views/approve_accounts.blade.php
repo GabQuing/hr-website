@@ -166,7 +166,7 @@
                 <th>Last Name</th>
                 <th>Role</th>
                 <th>Created at</th>
-                <th>Biometric Status</th>
+                <th>Account</th>
                 <th>Status</th>
                 <th>Actions</th>            
             </tr>
@@ -203,7 +203,7 @@
                 <th>Name</th>
                 <th>Role</th>
                 <th>Created at</th>
-                <th>Biometric Status</th>
+                <th>Account </th>
                 <th>Status</th>     
                 <th>Actions</th>     
             </tr>
