@@ -100,17 +100,13 @@
                     <div>
                         <div class="register-content-header">
                             <h4 class="u-fw-b u-c-dark-gray">Password Updated</h4>
-                            <h5 class="u-fw-b u-c-gray">Congratulations! You have successfully created your account. Welcome to our team!</h5>
                             <br>
                             <img src="{{ asset('img/success.png') }}" alt="" style="margin: auto; object-fit: contain; width: 100%; max-width: 100px;">
                             <br>
-                            <h5 class="u-c-gray" style="width: 100%; max-width: 800px;">
-                                We are thrilled to have you on board. Your journey with us is just beginning, and we look forward to working together to achieve great things. Feel free to explore your account dashboard and discover the exciting features and opportunities that await you.
+                            <h5 class="u-c-gray" style="width: 100%; max-width: 580px; text-align: center;">
+                                Your account is now under review by our admin team. Please await approval. If you have any questions, feel free to reach out to our support team.
                             </h5>
                             <br>
-                            <h5 class="u-c-gray" style="width: 100%; max-width: 800px;">
-                                Should you have any questions or need assistance, our support team is here to help. Don't hesitate to reach out, and we'll ensure a smooth and enjoyable experience for you.
-                            </h5>
                         </div>
                     </div>
                 </div>
