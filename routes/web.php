@@ -26,6 +26,7 @@ use App\Http\Controllers\ManageAddressController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\MacAddressController;
 use App\Http\Controllers\ScheduleProfileController;
+use App\Http\Controllers\PolicyProcedureController;
 
 
 
@@ -190,12 +191,14 @@ Route::post('/schedule_profile_view', [ScheduleProfileController::class, 'viewSc
 Route::post('/schedule_profile_create', [ScheduleProfileController::class, 'createSchedule'])->name('createSchedule');
 Route::post('/schedule_profile_edit', [ScheduleProfileController::class, 'edit'])->name('editSchedule');
 
-//Manage Store Address
-Route::get('/storeAddress', [ManageAddressController::class, 'index'])->name('storeAddress');
-Route::post('/storeAddress', [ManageAddressController::class, 'addStoreAddress'])->name('newAddress');
-Route::get('/storeAddress/{id}/show', [ManageAddressController::class, 'show'])->name('showAddress');
-Route::post('/storeAddress/{id}/update', [ManageAddressController::class, 'update'])->name('updateAddress');
+// //Manage Store Address
+// Route::get('/storeAddress', [ManageAddressController::class, 'index'])->name('storeAddress');
+// Route::post('/storeAddress', [ManageAddressController::class, 'addStoreAddress'])->name('newAddress');
+// Route::get('/storeAddress/{id}/show', [ManageAddressController::class, 'show'])->name('showAddress');
+// Route::post('/storeAddress/{id}/update', [ManageAddressController::class, 'update'])->name('updateAddress');
 
+//Policy & Procedure
+Route::get('/policy_procedure', [PolicyProcedureController::Class, 'index'])->name('policy_procedure');
 
 
 // SideTopContent

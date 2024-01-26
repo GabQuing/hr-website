@@ -213,15 +213,16 @@
                                     <img src="{{ asset('img/icon-img/note_schedule.png') }}" alt="">
                                     <a href="{{ route('schedule_profile') }}">Schedule Profiles</a>
                                 </li> 
-                            <!-- @if ( Request::segment(1)  == 'storeAddress')
+                        @endrole
+                            @if ( Request::segment(1)  == 'policy_procedure')
                                 <li class="active" id="current_link">
-                                @else
+                            @else
                                 <li class="active">
                             @endif
-                                    <span class="material-symbols-outlined">store</span>
-                                    <a href="{{ route('storeAddress') }}">Manage Store Address</a>
-                                </li>   -->
-                        @endrole
+                                <img src="{{ asset('img/icon-img/policy.png') }}" alt="">
+                                {{-- <span class="material-symbols-outlined sidenav_icon">home</span> --}}
+                                <a href="{{ route('policy_procedure') }}">Policies & Procedures</a>
+                                </li>
                     </ul>
                 </div>
                 <div class="user_info_logout">
