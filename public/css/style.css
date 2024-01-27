@@ -1900,6 +1900,7 @@ background-color: #e5e7eb;
 .welcome_content_header{
     min-width: 30%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     background: linear-gradient(to right, #00070A, #001928);
     padding: 0px 50px;
@@ -1912,7 +1913,6 @@ background-color: #e5e7eb;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 100px;
 }
 
 .welcome_content_body_header{
