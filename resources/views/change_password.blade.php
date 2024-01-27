@@ -63,7 +63,7 @@
                                 </div>
                                 <div class="form-input">
                                     <h5 class="register-label u-fw-b" for="">Mobile Number <span class="c-danger">*</span></h5>
-                                    <input class="register-input" type="text" name="mobile_number"  placeholder="09*********" pattern="[0-9]{4}[0-9]{3}[0-9]{4}" required>
+                                    <input class="register-input" type="text" name="mobile_number"  required>
                                 </div>
                             </div>
                             <div class="d-flex">

@@ -49,7 +49,7 @@
 <body>
     <!-- Register Content -->
     <section class="register">
-        <form action="{{ route('login') }}" method="POST">
+        <form action="{{ route('login') }}" method="POST" autocomplete="off">
             @csrf
             <div class="register_content">
                 <!-- First Column -->

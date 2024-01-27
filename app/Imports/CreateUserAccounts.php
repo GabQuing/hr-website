@@ -110,7 +110,6 @@ class CreateUserAccounts implements
             '*.last_name' => 'required',    
             '*.mobile_number' => [
                 'required',
-                'regex:/^[0]{1}[9]{1}[0-9]{2}[0-9]{3}[0-9]{4}$/',
                 'unique:users'
             ],
             '*.temporary_password' => 'required|min:8'
