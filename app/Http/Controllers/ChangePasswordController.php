@@ -19,6 +19,8 @@ class ChangePasswordController extends Controller
     {
         $data= [];
         $data['user_info'] = User::where('id', $id)->first();
+        
+
 
         return view('/change_password', $data);
     }
@@ -38,6 +40,13 @@ class ChangePasswordController extends Controller
         $user->save();
 
         DB::table('users')->where('id',$id)->update(['biometric_register' => 1 , 'approval_status' => 'PENDING']);
+
+        // Logout User
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
 
         return redirect()->back()->with('success','Password Updated, You Will Be Logged-Out.');
     }

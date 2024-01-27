@@ -21,7 +21,7 @@
     <!-- Register Content -->
     <section class="register-section">
         <div class="register-box">
-            <form method="POST" action="{{ route('new_password', auth()->user()->id)}}">
+            <form method="POST" action="{{ !session('success') ? route('new_password', $user_info->id) : '' }}">
                 @csrf
                 <div class="register-header {{ session('success') ? 'rh-active1' : '' }}">
                     <div class="register-header-process u-fw-b {{ session('success') ? 'rh-not-active' : 'rh-active' }}">
@@ -30,7 +30,7 @@
                             <h5>Update Your Password</h5>
                         </div>
                     </div>
-                    <div class="register-header-process u-fw-b {{ session('success') ? 'rh-active1' : '' }}">
+                    <div class="register-header-process u-fw-b">
                         <div class="register-number">
                             <span>2</span>
                             <h5>Password Updated</h5>
@@ -38,13 +38,13 @@
                     </div>
                 </div>
                 <div class="register-content">
-                    <div class="register-content-header">
-                        <h3 class="u-fw-b u-c-light-gray">Step 1</h3>
-                        <h4 class="u-fw-b u-c-dark-gray">Change Your Password</h4>
-                        <h5 class="u-fw-b u-c-gray">After your successful registration, you may now change your password.</h5>
-                    </div>
-                    <br>
                     @if (!session('success'))
+                        <div class="register-content-header">
+                            <h3 class="u-fw-b u-c-light-gray">Step 1</h3>
+                            <h4 class="u-fw-b u-c-dark-gray">Change Your Password</h4>
+                            <h5 class="u-fw-b u-c-gray">After your successful registration, you may now change your password.</h5>
+                        </div>
+                        <br>
                         <div class="register-form">
                             <div class="d-flex">
                                 <div class="form-input">
@@ -100,11 +100,11 @@
                         </div>
                         @else
                             <div class="register-content-header">
-                                <h4 class="u-fw-b u-c-dark-gray">Password Updated</h4>
+                                <h4 class="u-fw-b u-c-dark-gray">Password Updated ✅</h4>
                                 <br>
-                                <img src="{{ asset('img/success.png') }}" alt="" style="margin: auto; object-fit: contain; width: 100%; max-width: 100px;">
+                                <img src="{{ asset('img/document.png') }}" alt="" style="margin: auto; object-fit: contain; width: 100%; max-width: 100px;">
                                 <br>
-                                <h5 class="u-c-gray" style="width: 100%; max-width: 580px; text-align: center;">
+                                <h5 class="u-c-gray u-fw-b" style="width: 100%; max-width: 580px; text-align: center;">
                                     Your account is now under review by our admin team. Please await approval. If you have any questions, feel free to reach out to our support team.
                                 </h5>
                                 <br>
@@ -114,102 +114,6 @@
             </form>
         </div>
     </section>
-    {{-- <img src="{{ asset('img/change-password-bg.jpg') }}" alt="" style="height: 100%; width: 100%; position: fixed; z-index: -1; object-fit: cover; background-repeat: no-repeat; "> --}}
-
-
-    {{-- <section class="register">
-        <form method="POST" action="{{ route('new_password', auth()->user()->id)}}">
-            {{ csrf_field() }}
-            <div class="register_content">
-                <!-- First Column -->
-                <div class="register_logo">
-                    <img src="{{ asset('/img/register_logo.jpg') }}" alt="">
-                </div>
-                <!-- Second Column -->
-                <div class="register_form">
-                    <div class="register_form_content">
-                        <div class="register_form_content_center">
-                            <h2 class="r_form_title">Registration: Insert your new account password.</h2>
-                            <div class="register_input_content">
-                                <div class="d-flex">
-                                    <div class="d-iblock">
-                                        <label for="" >First Name <em></em></label>
-                                        <input class="r_input string_only" type="text" name="first_name" value="{{ $user_info->first_name }}" placeholder="Enter your first name" readonly>
-                                    </div>
-                                    <div class="d-iblock">
-                                        <label for="" >Last Name</label>
-                                        <input class="r_input string_only" type="text" name="last_name"  value="{{ $user_info->last_name }}" placeholder="Enter your last name" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="register_input_content">
-                                <div class="d-flex">
-                                    <div class="d-iblock">
-                                        <label for="email" >Email </label>
-                                        <input class="r_input" type="text" name="email" value="{{ $user_info->email }}" readonly>
-                                    </div>
-                                    <div class="d-iblock">
-                                        <label for="" >Mobile Number &nbsp; <em id="req_op">Optional*</em></label>
-                                        <input class="r_input" type="text" name="mobile_number"  placeholder="09*********" pattern="[0-9]{4}[0-9]{3}[0-9]{4}">
-                                    </div>  
-                                </div>
-                                <div class="d-flex">
-                                    <div class="d-iblock">
-                                        @if ($errors->has('mobile_number'))
-                                            <span class="c-danger">{{ $errors->first('mobile_number') }}</span>
-                                        @endif 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="register_input_content">
-                                <label for="password" >New Password</label>
-                                <input class="r_input" type="password" name="password" placeholder="Enter password" required>
-                                @if ($errors->has('password'))
-                                    <span class="c-danger">{{ $errors->first('password') }}</span>
-                                @endif
-                            </div>
-                            <div class="register_input_content">
-                                <label for="password-confirm">Confirm New Password</label>
-                                <input class="r_input" type="password" name="password_confirmation" placeholder="Type your password again" required>
-                                @if ($errors->has('password_confirmation'))
-                                    <span class="c-danger">{{ $errors->first('password_confirmation') }}</span>
-                                @endif
-                            </div>
-                            <div class="register_input_content">
-                                <div class="d-flex">
-                                    <input class="r_radio_btn" type="checkbox" required>
-                                    <span >You agree with our <a class="register_links" href="#ex1" rel="modal:open">Terms of Service, and Privacy Policy.</a></span>                        
-                                </div>
-                                <!-- Terms of service modal -->
-                                <div id="ex1" class="modal">
-                                    <p>Terms of Service and Privacy Policy.</p>
-                                    <br>
-                                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Autem consectetur qui adipisci ipsam sint officia rem aspernatur vero aperiam corporis. Assumenda ratione quia laudantium cumque? Corporis obcaecati magnam, inventore vitae animi modi quia, omnis voluptas, dicta a architecto magni amet fugiat laboriosam id porro corrupti nihil doloribus est incidunt. Dolorum!</p>
-                                    <br>
-                                    <a href="#" rel="modal:close">Close</a>
-                                </div>
-                            </div>
-                            <div class="register_input_content">
-                                <button type="submit" class="create_account">Continue</button>
-                                @if (session('success'))
-                                    <a id="registration_successful" href="#register_success" rel="modal:open" style="visibility: hidden">
-                                        success
-                                    </a> 
-                                    <div id="register_success" class="modal" style="text-align: center; color: green">
-                                        <br><br>
-                                        <p>Registration Success! You Will Be Logged Out.</p>
-                                        <br>
-                                        <p></p>
-                                        <br><br>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </section> --}}
 
     <script>
 
@@ -217,12 +121,27 @@
             element.value = element.value.toUpperCase();
         }
 
-        $('#registration_successful').trigger("click");
-        $("#register_success").modal({
-            escapeClose: true,
-            clickClose: true,
-            showClose: false
-        });
+        function preventBack() {
+            window.history.forward();
+        }
+        window.onunload = function() {
+            null;
+        };
+        setTimeout("preventBack()",0);
+
+        // Check if the page was refreshed
+        if ("{{ $user_info->biometric_register == 1 }}" && performance.navigation.type === 1) {
+            // Redirect to the login page
+            window.location.href = '{{ route("login") }}';
+        }
+
+
+        // $('#registration_successful').trigger("click");
+        // $("#register_success").modal({
+        //     escapeClose: true,
+        //     clickClose: true,
+        //     showClose: false
+        // });
         // $(".string_only").on("input", function() {
         //     $(this).val($(this).val().replace(/[0-9]/g, ''));
         // });
