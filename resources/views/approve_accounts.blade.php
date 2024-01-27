@@ -51,7 +51,7 @@
 
 <div class="mg-bottom">
     <div id="useraccounts_add" class="modal">
-        <form action="{{ route('add_user') }}" method="POST">
+        <form action="{{ route('add_user') }}" method="POST" autocomplete="off">
             @csrf
             <div class="useraccounts_add_header">
                 <p>Add Account</p>
@@ -105,7 +105,7 @@
     </div>
 
     <div id="useraccounts_import" class="modal">
-        <form action="{{ route('importUser') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('importUser') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
             @csrf
             <div class="useraccounts_add_header">
                 <p>Import Excel File</p>

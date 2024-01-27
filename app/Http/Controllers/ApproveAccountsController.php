@@ -52,9 +52,8 @@ class ApproveAccountsController extends Controller
                     'users.deleted_at',
                     'users.approval_status')
                 ->get();
-            $data['privilege_roles'] = Role::orderBy('name')
-                ->where('name', '!=' ,'admin')
-                ->where('name', '!=', 'user')
+            $data['privilege_roles'] = Role::orderBy('name','DESC')
+                ->whereIn('name' ,['employee','admin'])
                 ->get();
     
             return view('approve_accounts', $data);
@@ -80,7 +79,7 @@ class ApproveAccountsController extends Controller
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'mobile_number' => ['required', 'max:11', 'min:11', 'unique:users' ],
+            'mobile_number' => ['required', 'unique:users' ],
             'password' => ['required', 'string', 'min:8']
         ]);
         
@@ -117,7 +116,7 @@ class ApproveAccountsController extends Controller
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'mobile_number' => ['max:11', 'min:11', 'unique:users'],
+            'mobile_number' => ['required','unique:users'],
             'password' => ['required', 'string', 'min:8'],
         ]);
         
