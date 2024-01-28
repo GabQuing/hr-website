@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="{{ asset('accessDeny.css') }}">
+    {{-- Favicon --}}
+    <link rel="icon" type="image/x-icon" href="{{ asset('/img/icon.png') }}">
 </head>
 <body>
     <section>
