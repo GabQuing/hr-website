@@ -80,7 +80,6 @@
     @endrole
     {{-- My Profile Content --}}
     <div class="profile_content">
-        @role('employee')
         <div>
             <a class="user_info_link" href="#password_modal" rel="modal:open">Change Password</a>
             {{-- <a class="user_info_link" id="register_face_btn" href="registerFace/{{ auth()->user()->id }}">Register Face-Biometric</a> --}}
@@ -100,7 +99,6 @@
                 <span style="color: red; display:block;">{{ $errors->first('confirmation_password') }}</span>
             @endif
         </div>
-        @endrole
         <div class="profile_info_section">
             <div class="show_profile">
                 <br>
