@@ -83,16 +83,8 @@
                 </div>
             </div>
         </div>
-
     </div>
-    <div class="container container_my_attendance">
-        <div class="container_title">
-            <p class="header_title_h2">My Task</p>
-        </div>
-        <div class="container_attendance">
 
-        </div>
-    </div>
     <div class="container container_my_store_location">
         <div class="dashboard_table">
             <table id="myTable" class="display" style="width:100%">
