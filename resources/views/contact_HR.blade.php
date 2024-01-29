@@ -31,8 +31,8 @@
                     </div>
                     <div class="contact">
                         <h5 class="u-fw-500"><span>Name: </span>Jubie Nebalga</h5>
-                        <h5 class="u-fw-500"><span>Email: </span>jubienebalga@gmail.com</h5>
-                        <h5 class="u-fw-500"><span>Mobile Number: </span>09178452355</h5>
+                        <h5 class="u-fw-500"><span>Email: </span>jubie@lurtsemacommunications.com</h5>
+                        <h5 class="u-fw-500"><span>Mobile Number: </span>09558371354</h5>
                         <br>
                         <h5 class="u-c-gray">
                             Whether you have inquiries about our services or just want to say hello, we'd love to know who we're talking to. Please provide your name so we can address you personally.
