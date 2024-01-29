@@ -25,7 +25,7 @@
                         <span style="font-weight: 600;">Credits</span>
                     </div>
                     <div class="leave_type">
-                        <label>Sick : Default Sick leave policy</label>
+                        <label>Birthday : Default Birthday leave policy</label>
                         <span>0</span>
                     </div>
                     <div class="leave_type">

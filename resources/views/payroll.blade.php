@@ -7,23 +7,25 @@
         <table id="myTable" class="display" style="width:100%">
             <thead>
                 <tr>
-                    <th>Description</th>
+                    <th>Pay Period</th>
                     <th>Basic</th>
-                    <th>DeMinimis</th>
+                    <th>Pay Date</th>
                     <th>OT</th>
-                    <th>DeMinimis</th>
-                    <th>SSS</th>
-                    <th>PhilHealth</th>
-                    <th>PAGIBIG</th>
-                    <th>Tax</th>            
-                    <th>Adj(+)</th>            
-                    <th>Adj(-)</th>  
-                    <th>NetAmount</th>  
+                    <th>Reimbursements</th>
+                    <th>Incentives</th>
+                    <th>Bonus</th>
+                    <th>Commissions</th>
+                    <th>PTO Conversions</th>            
+                    <th>Month Pay</th>            
+                    <th>Deductions</th>  
+                    <th>Non-taxable Pay</th>  
+                    <th>Non-Taxable Earning</th>  
                     <th></th>        
                 </tr>
             </thead>
             <tbody>
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -43,18 +45,19 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th>Description</th>
+                    <th>Pay Period</th>
                     <th>Basic</th>
-                    <th>DeMinimis</th>
+                    <th>Pay Date</th>
                     <th>OT</th>
-                    <th>DeMinimis</th>
-                    <th>SSS</th>
-                    <th>PhilHealth</th>
-                    <th>PAGIBIG</th>
-                    <th>Tax</th>            
-                    <th>Adj(+)</th>            
-                    <th>Adj(-)</th>  
-                    <th>NetAmount</th>  
+                    <th>Reimbursements</th>
+                    <th>Incentives</th>
+                    <th>Bonus</th>
+                    <th>Commissions</th>
+                    <th>PTO Conversions</th>            
+                    <th>Month Pay</th>            
+                    <th>Deductions</th>  
+                    <th>Non-taxable Pay</th>  
+                    <th>Non-Taxable Earning</th>  
                     <th></th>              
                 </tr>
             </tfoot>
