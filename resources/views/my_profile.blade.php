@@ -43,6 +43,7 @@
 <div id="password_modal" class="modal">
     <form method="POST" action="{{ route('update_password', auth()->user()->id) }}">
         @csrf
+
         <div class="useraccounts_add_header">
             <p style="color: #006064">Change Password:</p>
         </div>
@@ -80,11 +81,14 @@
     @endrole
     {{-- My Profile Content --}}
     <div class="profile_content">
-        <div>
-            <a class="user_info_link" href="#password_modal" rel="modal:open">Change Password</a>
-            {{-- <a class="user_info_link" id="register_face_btn" href="registerFace/{{ auth()->user()->id }}">Register Face-Biometric</a> --}}
-        </div>
         <br>
+        @if($show_password)
+            <div>
+                <a class="user_info_link" href="#password_modal" rel="modal:open">Change Password</a>
+                {{-- <a class="user_info_link" id="register_face_btn" href="registerFace/{{ auth()->user()->id }}">Register Face-Biometric</a> --}}
+            </div>
+            <br>
+        @endif
         <div>
             @if (session('error'))
                 <span style="color: red; display:block;">{{ session('error') }}</span>

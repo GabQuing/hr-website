@@ -54,6 +54,8 @@ class ProfileController extends Controller
             ->get()
             ->toArray();
         $data['user_id'] = auth()->user()->id;
+        $data['show_password'] = true;
+
         
         return view('my_profile', $data);
     }
@@ -84,6 +86,10 @@ class ProfileController extends Controller
             ->get()
             ->toArray();
         $data['user_id'] = $id;
+
+        $data['show_password'] = false;
+
+
 
 
         return view('my_profile', $data);
