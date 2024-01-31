@@ -171,6 +171,7 @@
             if ($(this).attr('disabled')) return;
             $(this).attr('disabled', true);
             const userId = "{{ auth()->user()->id }}";
+            const userSchedID = "{{ auth()->user()->schedule_types_id }}";
             const action = $(this).attr('data-action');
             $.ajax({
                 url: "{{ route('dashboard.log-action') }}",
@@ -179,6 +180,7 @@
                 data: {
                     _token: "{{ csrf_token() }}",
                     user_id: userId,
+                    user_sched_id:userSchedID,
                     action,
                 },
                 success: function(data) {

@@ -41,7 +41,9 @@ class DashboardController extends Controller
 
     public function log_action(Request $request)
     {
+        $test = $request->all();
         $user_id = $request->get('user_id');
+        $user_sched_id = $request->get('user_sched_id');
         $timestamp = date('Y-m-d H:i:s');
         $action = $request->get('action');
 
@@ -54,7 +56,8 @@ class DashboardController extends Controller
         $user_log = UserLog::create([
             'log_type_id' => $log_type->id,
             'log_at' => $timestamp,
-            'user_id' => $user_id
+            'user_id' => $user_id,
+            'schedule_types_id' => $user_sched_id
         ]);
 
         $log_details = $user_log->getDetails();
