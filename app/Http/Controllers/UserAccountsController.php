@@ -46,9 +46,8 @@ class UserAccountsController extends Controller
                     'users.deleted_at',
                     'users.approval_status')
                 ->get();
-            $data['privilege_roles'] = Role::orderBy('name')
-                ->where('name', '!=' ,'admin')
-                ->where('name', '!=', 'user')
+                $data['privilege_roles'] = Role::orderBy('name','DESC')
+                ->whereIn('name' ,['employee','admin'])
                 ->get();
             
             return view('user_accounts', $data);
