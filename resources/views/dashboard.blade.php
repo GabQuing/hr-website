@@ -96,15 +96,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php $count = count($user_logs); @endphp
-                    @foreach ($user_logs as $key => $user_log)
-                        @if($key >= $count - 4)
-                            <tr>
-                                <td>{{ date('M d Y', strtotime($user_log->log_date)) }}</td>
-                                <td>{{ date('h:i a', strtotime($user_log->log_time)) }}</td>
-                                <td>{{ $user_log->log_type_description }}</td>
-                            </tr>
-                        @endif
+                    @php
+                        $user_logs = $user_logs->sortByDesc('log_date')->take(4);
+                    @endphp
+                    @foreach ($user_logs as $user_log)
+                        <tr>
+                            <td>{{ date('M d Y', strtotime($user_log->log_date)) }}</td>
+                            <td>{{ date('h:i a', strtotime($user_log->log_time)) }}</td>
+                            <td>{{ $user_log->log_type_description }}</td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
