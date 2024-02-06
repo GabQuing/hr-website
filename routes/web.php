@@ -27,8 +27,7 @@ use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\MacAddressController;
 use App\Http\Controllers\ScheduleProfileController;
 use App\Http\Controllers\PolicyProcedureController;
-
-
+use App\Models\log_approve;
 
 /*
 |--------------------------------------------------------------------------
