@@ -418,7 +418,7 @@
                     </div>
                 </form>
             </div>
-            <div class="show_goverment_information">
+            {{-- <div class="show_goverment_information">
                 <div class="info_header2 info_header_design2">
                     <p>Government Information</p>
                 </div>
@@ -461,9 +461,9 @@
                         @endrole
                     </form>
                 </div>
-            </div>
+            </div> --}}
             <div class="show_education_background">
-                <div class="info_header3 info_header_design1">
+                <div class="info_header3 info_header_design2">
                     <p>Education Background</p>
                 </div>
                 <div class="education_background_content show_content3 info_padding">
@@ -514,7 +514,7 @@
                 </div>
             </div>
             <div class="show_contact_information">
-                <div class="info_header5 info_header_design2">
+                <div class="info_header5 info_header_design1">
                     <p>Contact Information</p>
                 </div>
                 <form action="{{ route('updateContactInformation',$contact_information->user_id) }}" method="POST">
