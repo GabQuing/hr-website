@@ -28,15 +28,16 @@ use Illuminate\Support\Facades\Session;
 
 class ProfileController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 
         $data = [];
         $data['work_days'] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         $data['genders'] = Gender::get();
         $data['civil_status'] = CivilStatus::get();
-        $data['companies'] = company::get(); 
-        $data['departments'] = department::get(); 
-        $data['employee_types'] = employee_type::get(); 
+        $data['companies'] = company::get();
+        $data['departments'] = department::get();
+        $data['employee_types'] = employee_type::get();
         $data['employment_statuses'] = employment_status::get();
         $data['user_types'] = user_type::get();
         $data['education_types'] = education_type::get();
@@ -48,7 +49,7 @@ class ProfileController extends Controller
         $data['education_background'] = EducationBackground::where('user_id', auth()->user()->id)->first();
         $data['contact_information'] = ContactInformation::where('user_id', auth()->user()->id)->first();
         $data['user_sched'] = User::where('id', auth()->user()->id)->first();
-        $data['work_schedule'] = User::where('users.id',auth()->user()->id)
+        $data['work_schedule'] = User::where('users.id', auth()->user()->id)
             ->leftJoin('schedule_types', 'schedule_types.id', 'users.schedule_types_id')
             ->leftJoin('work_schedules', 'work_schedules.schedule_types_id', 'schedule_types.id')
             ->get()
@@ -56,17 +57,18 @@ class ProfileController extends Controller
         $data['user_id'] = auth()->user()->id;
         $data['show_password'] = true;
 
-        
+
         return view('my_profile', $data);
     }
-    
-    public function show(string $id){
+
+    public function show(string $id)
+    {
         $data = [];
         $data['work_days'] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         $data['user_info'] = User::find($id);
         $data['genders'] = Gender::get();
-        $data['civil_status'] = CivilStatus::get(); 
-        $data['companies'] = company::get(); 
+        $data['civil_status'] = CivilStatus::get();
+        $data['companies'] = company::get();
         $data['departments'] = department::get();
         $data['employee_types'] = employee_type::get();
         $data['employment_statuses'] = employment_status::get();
@@ -74,13 +76,13 @@ class ProfileController extends Controller
         $data['education_types'] = education_type::get();
         $data['schedule_types'] = schedule_type::get();
         $data['work_hour'] = work_hours::get();
-        $data['basic_information'] = BasicInformation::where('user_id',$id)->first();
-        $data['work_information'] = work_information::where('user_id',$id)->first();
-        $data['government_information'] = GovernmentInformation::where('user_id',$id)->first();
-        $data['education_background'] = EducationBackground::where('user_id',$id)->first();
-        $data['contact_information'] = ContactInformation::where('user_id',$id)->first();
+        $data['basic_information'] = BasicInformation::where('user_id', $id)->first();
+        $data['work_information'] = work_information::where('user_id', $id)->first();
+        $data['government_information'] = GovernmentInformation::where('user_id', $id)->first();
+        $data['education_background'] = EducationBackground::where('user_id', $id)->first();
+        $data['contact_information'] = ContactInformation::where('user_id', $id)->first();
         $data['user_sched'] = User::where('id', $id)->first();
-        $data['work_schedule'] = User::where('users.id',$id)
+        $data['work_schedule'] = User::where('users.id', $id)
             ->leftJoin('schedule_types', 'schedule_types.id', 'users.schedule_types_id')
             ->leftJoin('work_schedules', 'work_schedules.schedule_types_id', 'schedule_types.id')
             ->get()
@@ -89,13 +91,11 @@ class ProfileController extends Controller
 
         $data['show_password'] = false;
 
-
-
-
         return view('my_profile', $data);
     }
 
-    public function update(Request $request, string $id){
+    public function update(Request $request, string $id)
+    {
 
         $firstName = strtoupper($request->input('first_name'));
         $middleName = strtoupper($request->input('middle'));
@@ -118,7 +118,8 @@ class ProfileController extends Controller
     }
 
 
-    public function updateWorkInfo(Request $request, string $id){
+    public function updateWorkInfo(Request $request, string $id)
+    {
 
         $title = strtoupper($request->input('title'));
         $designated_work_place = strtoupper($request->input('designated_work_place'));
@@ -128,7 +129,7 @@ class ProfileController extends Controller
         work_information::where('user_id', $id)->update([
             'company_id' => $request->input('company'),
             'department_id' => $request->input('department'),
-            'title' =>$title,
+            'title' => $title,
             'employee_type_id' => $request->input('employee_type'),
             'immediate_supervisor' => $immediate_supervisor,
             'designated_work_place' => $designated_work_place,
@@ -145,7 +146,8 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function updateGovernmentInfo(Request $request, string $id){
+    public function updateGovernmentInfo(Request $request, string $id)
+    {
 
         GovernmentInformation::where('user_id', $id)->update([
             'sss' => $request->input('sss'),
@@ -161,7 +163,8 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function updateEducationBackground(Request $request, string $id){
+    public function updateEducationBackground(Request $request, string $id)
+    {
 
         $school = strtoupper($request->input('school'));
         $degree = strtoupper($request->input('degree'));
@@ -179,7 +182,8 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function updateContactInformation(Request $request, string $id){
+    public function updateContactInformation(Request $request, string $id)
+    {
 
         $home_address = strtoupper($request->input('home_address'));
         $home_city = strtoupper($request->input('home_city'));
@@ -213,13 +217,14 @@ class ProfileController extends Controller
     {
         $user_request = $request->all();
         $user_schedule_type = $user_request['scheduleType'];
-        $working_hours = schedule_type::where('id',$user_schedule_type)->pluck('working_hours')->first();
-        $work_schedules = WorkSchedule::where('schedule_types_id',$user_schedule_type)->get();
-        return response()->json(['working_hours' => $working_hours, 'entry'=>$work_schedules]);
+        $working_hours = schedule_type::where('id', $user_schedule_type)->pluck('working_hours')->first();
+        $work_schedules = WorkSchedule::where('schedule_types_id', $user_schedule_type)->get();
+        return response()->json(['working_hours' => $working_hours, 'entry' => $work_schedules]);
         // return view('schedule_profile', $user_schedule_type );
     }
 
-    public function updateWorkSchedule(Request $request, string $id){
+    public function updateWorkSchedule(Request $request, string $id)
+    {
         User::where('id', $id)->update([
             'schedule_types_id' => $request->input('schedule_type'),
         ]);
@@ -231,12 +236,13 @@ class ProfileController extends Controller
 
 
 
-    public function updatePassword(Request $request, $id){
+    public function updatePassword(Request $request, $id)
+    {
 
 
         $user = User::find($id);
-        if (Hash::check($request->all()['current_password'], $user->password)){
-            
+        if (Hash::check($request->all()['current_password'], $user->password)) {
+
             $request->validate([
 
                 'new_password' => 'required|min:8',
@@ -246,14 +252,9 @@ class ProfileController extends Controller
             $user->password = Hash::make($request->get('new_password'));
             $user->save();
 
-            return redirect()->back()->with('success','Password Updated, You will be Log-out.');
-            
+            return redirect()->back()->with('success', 'Password Updated, You will be Log-out.');
         } else {
-            return redirect()->back()->with('error','Incorrect Current Password.');
+            return redirect()->back()->with('error', 'Incorrect Current Password.');
         }
     }
-
-
-
-
 }

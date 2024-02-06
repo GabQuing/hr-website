@@ -371,7 +371,19 @@
                                             $filterArray = array_filter($work_schedule,function($arr) use ($work_day) {
                                                 return $arr['work_day'] == $work_day;
                                             });
-                                            $filterArray = $filterArray[array_key_first($filterArray)];
+                                            $key = array_key_first($filterArray);
+                                            $filterArray = isset($key) ? $filterArray[$key] : [
+                                                "schedule_types_id" => 1,
+                                                "working_hours" => "10.00",
+                                                "status" => "active",
+                                                "created_by" => 1,
+                                                "work_day" => $work_day,
+                                                "work_from" => null,
+                                                "work_to" => null,
+                                                "break_start" => null,
+                                                "break_end" => null,
+                                                "rest_day" => 1,
+                                            ];
                                         @endphp
                                         <tr>
                                             <td class="body_schedule">{{ $work_day }}</td>
@@ -708,7 +720,7 @@
     // Check Authentication
     if((user_auth == 'admin' || user_auth == 'hr') && (url_segment != 'profile')){
         $('select').removeAttr('disabled');
-        $('input').removeAttr('readonly');
+        $('input').not('.input_time').removeAttr('readonly');
         // $('.checkbox_sunday').removeAttr('disabled');
         // $('.checkbox_monday').removeAttr('disabled');
         // $('.checkbox_tuesday').removeAttr('disabled');
