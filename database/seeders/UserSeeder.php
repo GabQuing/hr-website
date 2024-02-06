@@ -34,6 +34,11 @@ class UserSeeder extends Seeder
             $id = User::where('email', $user['email'])->pluck('id')->first();
             $role = ['role_id' => 4, 'model_type' => 'App\Models\User', 'model_id' => $id];
             DB::table('model_has_roles')->updateOrInsert($role, $role);
+            DB::table('basic_information')->updateOrInsert(['user_id' => $id], ['user_id' => $id]);
+            DB::table('contact_information')->updateOrInsert(['user_id' => $id], ['user_id' => $id]);
+            DB::table('education_backgrounds')->updateOrInsert(['user_id' => $id], ['user_id' => $id]);
+            DB::table('government_information')->updateOrInsert(['user_id' => $id], ['user_id' => $id]);
+            DB::table('work_informations')->updateOrInsert(['user_id' => $id], ['user_id' => $id]);
         }
     }
 }
