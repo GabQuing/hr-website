@@ -83,16 +83,8 @@
                 </div>
             </div>
         </div>
-
     </div>
-    <div class="container container_my_attendance">
-        <div class="container_title">
-            <p class="header_title_h2">My Task</p>
-        </div>
-        <div class="container_attendance">
 
-        </div>
-    </div>
     <div class="container container_my_store_location">
         <div class="dashboard_table">
             <table id="myTable" class="display" style="width:100%">
@@ -104,15 +96,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php $count = count($user_logs); @endphp
-                    @foreach ($user_logs as $key => $user_log)
-                        @if($key >= $count - 4)
-                            <tr>
-                                <td>{{ date('M d Y', strtotime($user_log->log_date)) }}</td>
-                                <td>{{ date('h:i a', strtotime($user_log->log_time)) }}</td>
-                                <td>{{ $user_log->log_type_description }}</td>
-                            </tr>
-                        @endif
+                    @php
+                        $user_logs = $user_logs->sortByDesc('log_date')->take(4);
+                    @endphp
+                    @foreach ($user_logs as $user_log)
+                        <tr>
+                            <td>{{ date('M d Y', strtotime($user_log->log_date)) }}</td>
+                            <td>{{ date('h:i a', strtotime($user_log->log_time)) }}</td>
+                            <td>{{ $user_log->log_type_description }}</td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -179,6 +171,7 @@
             if ($(this).attr('disabled')) return;
             $(this).attr('disabled', true);
             const userId = "{{ auth()->user()->id }}";
+            const userSchedID = "{{ auth()->user()->schedule_types_id }}";
             const action = $(this).attr('data-action');
             $.ajax({
                 url: "{{ route('dashboard.log-action') }}",
@@ -187,6 +180,7 @@
                 data: {
                     _token: "{{ csrf_token() }}",
                     user_id: userId,
+                    user_sched_id:userSchedID,
                     action,
                 },
                 success: function(data) {

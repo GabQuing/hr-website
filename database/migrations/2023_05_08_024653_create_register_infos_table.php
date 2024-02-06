@@ -21,8 +21,6 @@ class CreateRegisterInfosTable extends Migration
             $table->string('last_name')->nullable();
             $table->string('email_address')->nullable();
             $table->string('employee_name')->nullable();
-            // $table->string('gender')->nullable();
-            // $table->string('employee_id')->unique();
             $table->rememberToken();
             $table->timestamps();
         });

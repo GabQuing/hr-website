@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('gender', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->nullable();
-            $table->string('status')->default('ACTIVE')->nullable();
-            $table->integer('created_by')->nullable();
-            $table->timestamps();
+        Schema::table('user_logs', function (Blueprint $table) {
+            $table->mediumInteger('schedule_types_id')->nullable()->unsigned()->after('log_type_id');
         });
     }
 
@@ -25,6 +21,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('gender');
+        Schema::table('user_logs', function (Blueprint $table) {
+            $table->dropColumn('schedule_types_id');
+
+        });
     }
 };

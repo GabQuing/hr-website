@@ -29,6 +29,12 @@
         width: 100%
     }
     .img_container_logo{
+        max-width: 70%;
+        width: 400px;
+        padding: 20px 20px 0px 20px;
+        margin-top: 20px;
+    }
+    .img_container_logo_black{
         max-width: 100%;
         width: 400px;
         padding: 20px 20px 0px 20px;
@@ -36,7 +42,10 @@
     }
     .img_container_logo img {
     width: 100%; /* set the desired width */
-}
+    }
+    .img_container_logo_black img {
+    width: 100%; /* set the desired width */
+    }
     .welcome_text,
     .aboard_text{
         font-size: 70px;
@@ -57,6 +66,7 @@
     }
     .welcome_description{
         padding: 20px 50px 0px 50px;
+        text-align: center;
     }
     @media only screen and (max-width: 1273px) {
         .welcome_text,
@@ -96,7 +106,8 @@
         .employee_text{
             font-size: 40px;
         }
-        .img_container_logo{
+        .img_container_logo,
+        .img_container_logo_black{
             margin-top: 0px;
         }
     }
@@ -116,7 +127,8 @@
         .employee_text{
             font-size: 30px;
         }
-        .img_container_logo{
+        .img_container_logo,
+        .img_container_logo_black{
             margin-top: 0px;
         }
     }
@@ -134,20 +146,25 @@
                 </div>
             </div>
             <div class="welcome_content_body">
+                <div class="img_container_logo_black">
+                    <img src="{{ asset('img/logo_black.png') }}" alt="">
+                </div>
+                <br>
                 <div class="welcome_title">
                     <div class="welcome_text">
                         <span>WELCOME</span>
                     </div>
                     <div class="aboard_text">
-                        <span>ABOARD</span>
+                        <span>ABOARD!</span>
                     </div>
-                    <div class="employee_text">
+                    {{-- <div class="employee_text">
                         <span>TO OUR EMPLOYEE!</span>
-                    </div>
+                    </div> --}}
                 </div>
+                <br>
                 <div class="welcome_description">
                     <div>
-                        <p>"Thank you for logging in for the very first time to our HR Attendance System. We will be using this website to keep track of our daily attendance, monitor schedule profiles, and manage employee information. The system will help the administration stay connected with their employees. Please press 'Get Started' to proceed with changing your password."</p>
+                        <p>Thank you for logging in for the very first time to our HR Attendance System. We will be using this website to keep track of our daily attendance, monitor schedule profiles, and manage employee information. The system will help the administration stay connected with their employees. Please press 'Get Started' to proceed with changing your password.</p>
                     </div>
                 </div>
                 <div class="home_btns">

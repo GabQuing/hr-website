@@ -635,7 +635,7 @@ h6 {
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr)); 
+    grid-template-columns: repeat(2, minmax(22rem, 1fr));  /* Change this line */
     grid-template-rows: 220px;
     grid-gap: 30px;
 }
@@ -655,7 +655,10 @@ h6 {
     rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
     rgba(0, 0, 0, 0.2) 0px -3px 0px inset; */
 }
-
+.container_today,
+.container_my_attendance{
+    width: 100%;
+}
 .container_title {
     display: flex;
     align-items: center;
@@ -734,7 +737,7 @@ h6 {
 /* Store Location */
 .container_my_store_location {
     grid-column: 1/-1;
-    padding: 40px;
+    /* padding: 40px; */
     /* width: 100%; */
 }
 

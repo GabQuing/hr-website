@@ -43,6 +43,7 @@
 <div id="password_modal" class="modal">
     <form method="POST" action="{{ route('update_password', auth()->user()->id) }}">
         @csrf
+
         <div class="useraccounts_add_header">
             <p style="color: #006064">Change Password:</p>
         </div>
@@ -80,12 +81,14 @@
     @endrole
     {{-- My Profile Content --}}
     <div class="profile_content">
-        @role('employee')
-        <div>
-            <a class="user_info_link" href="#password_modal" rel="modal:open">Change Password</a>
-            {{-- <a class="user_info_link" id="register_face_btn" href="registerFace/{{ auth()->user()->id }}">Register Face-Biometric</a> --}}
-        </div>
         <br>
+        @if($show_password)
+            <div>
+                <a class="user_info_link" href="#password_modal" rel="modal:open">Change Password</a>
+                {{-- <a class="user_info_link" id="register_face_btn" href="registerFace/{{ auth()->user()->id }}">Register Face-Biometric</a> --}}
+            </div>
+            <br>
+        @endif
         <div>
             @if (session('error'))
                 <span style="color: red; display:block;">{{ session('error') }}</span>
@@ -100,7 +103,6 @@
                 <span style="color: red; display:block;">{{ $errors->first('confirmation_password') }}</span>
             @endif
         </div>
-        @endrole
         <div class="profile_info_section">
             <div class="show_profile">
                 <br>
@@ -416,7 +418,7 @@
                     </div>
                 </form>
             </div>
-            <div class="show_goverment_information">
+            {{-- <div class="show_goverment_information">
                 <div class="info_header2 info_header_design2">
                     <p>Government Information</p>
                 </div>
@@ -459,9 +461,9 @@
                         @endrole
                     </form>
                 </div>
-            </div>
+            </div> --}}
             <div class="show_education_background">
-                <div class="info_header3 info_header_design1">
+                <div class="info_header3 info_header_design2">
                     <p>Education Background</p>
                 </div>
                 <div class="education_background_content show_content3 info_padding">
@@ -512,7 +514,7 @@
                 </div>
             </div>
             <div class="show_contact_information">
-                <div class="info_header5 info_header_design2">
+                <div class="info_header5 info_header_design1">
                     <p>Contact Information</p>
                 </div>
                 <form action="{{ route('updateContactInformation',$contact_information->user_id) }}" method="POST">

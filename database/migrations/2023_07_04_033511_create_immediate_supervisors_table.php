@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('immediate_supervisors', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->enum('status',['active', 'inactive'])->nullable();
+            $table->mediumInteger('user_id')->unsigned()->nullable();
+            $table->string('status')->default('ACTIVE')->nullable();
             $table->integer('created_by')->nullable();
             $table->timestamps();
         });
