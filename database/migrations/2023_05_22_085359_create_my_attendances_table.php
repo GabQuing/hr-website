@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('undertime_minutes')->nullable();
             $table->integer('total_late')->nullable();
             $table->integer('total_hours')->nullable();
+            $table->string('status')->default('ACTIVE')->nullable();
             $table->timestamps();
         });
     }

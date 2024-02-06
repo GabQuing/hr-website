@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('first_name')->nullable();
             $table->string('middle')->nullable();
             $table->string('last_name')->nullable();
-            // $table->string('employee_id')->nullable();
             $table->string('mobile_number')->nullable();
             $table->integer('gender_id')->length(10)->unsigned()->nullable();
             $table->integer('civil_status_id')->length(10)->unsigned()->nullable();

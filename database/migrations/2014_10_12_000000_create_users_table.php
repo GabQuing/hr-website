@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('img')->nullable();
             $table->string('approval_status')->nullable();
             $table->integer('schedule_types_id')->length(10)->default(1)->unsigned()->nullable();
-            $table->integer('work_hours_id')->length(10)->unsigned()->nullable();
             $table->integer('biometric_register')->default(0)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();

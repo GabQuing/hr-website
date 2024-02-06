@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('civil_status', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('status',['active', 'inactive'])->nullable();
+            $table->string('status')->default('ACTIVE')->nullable();
             $table->integer('created_by')->nullable();
             $table->timestamps();
         });
