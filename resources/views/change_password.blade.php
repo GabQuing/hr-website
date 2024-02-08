@@ -92,7 +92,9 @@
                             <div id="ex1" class="modal">
                                 <p>Terms of Service and Privacy Policy.</p>
                                 <br>
-                                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Autem consectetur qui adipisci ipsam sint officia rem aspernatur vero aperiam corporis. Assumenda ratione quia laudantium cumque? Corporis obcaecati magnam, inventore vitae animi modi quia, omnis voluptas, dicta a architecto magni amet fugiat laboriosam id porro corrupti nihil doloribus est incidunt. Dolorum!</p>
+                                <p>This website uses cookies to personalize content, provide social media features, and analyze our traffic. By continuing to browse this site, you agree to our privacy policy. Your data is safe with us; we do not sell or share your information with third parties without your explicit consent. For more details, please review our Privacy Policy.</p>
+                                <br>
+                                <a href="https://lurtsemacommunications.com/privacy-policy/">https://lurtsemacommunications.com/privacy-policy/</a>
                                 <br>
                                 <a href="#" rel="modal:close">Close</a>
                             </div>
