@@ -5,32 +5,6 @@
 @section('content')
 
 <div class="mg-bottom">
-    <div id="useraccounts_import" class="modal">
-        <form action="{{ route('editUser') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="useraccounts_add_header">
-                <p>Import Excel File</p>
-            </div>
-            <br>
-            <div class="label_input_import" style="text-align: center">
-                <br>
-                <label for="">Attach File: </label> &nbsp;
-                <input type="file" id="import_accounts" name="import_accounts"  required>
-                {{-- <input type="file" id="import_accounts" name="import_accounts" accept=".xlsx, .xlsm, .csv" required> --}}
-                <br><br>
-                <label for="">Download Template: </label> &nbsp;
-                <a class="download_temp_btn" href="{{ route('downloadEditProfileTemplate') }}" >Edit-Profile-Template</a>
-            </div>
-            <br><br><br><br><br>
-            <div style="text-align: center;">
-            <a class="addaccount_close" href="#" rel="modal:close" id="clsaccount_btn">Close</a>
-            <button type="submit" class="addaccount_btn" id="import_account_btn">Submit</button>
-            </div>
-        </form>
-    </div>
-
-        <!-- Link to open the modal -->
-    <p><a class="user_info_link" href="#useraccounts_import" rel="modal:open">Edit Profile Accounts</a></p>
     @if (session('errors'))
     <div class="add_user_success"> 
         @foreach (session('errors')->getBag('default')->all() as $error)
