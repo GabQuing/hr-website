@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Exports\ActivityLogsExport;
 use App\Models\UserLog;
+use App\Models\UserLogView;
 use DB;
 use Storage;
 
@@ -32,29 +33,31 @@ class ActivityLogsController extends Controller
 
     public function generateFile(Request $request)
     {
+        $user_id = auth()->user()->id;
+        $data=[];
+        $data['user_logs'] = (new UserLog())
+            ->getByUserId($user_id)
+            ->paginate(10);
+
         $employeeId = auth()->user()->id;
         $fromDate = $request->input('from_date');
         $toDate = $request->input('to_date');
-        $numEntry = DB::table('user_logs')
+        $numEntry = DB::table('user_log_view')
             ->where('user_id',$employeeId)
             ->whereBetween('log_date',[$fromDate,$toDate])
-            ->select('id',
+            ->select('user_id',
                 'log_date',
-                'log_time',
+                'latest',
                 'log_type_id')
             ->get();
 
         $dataEntry=[];
-        $data=[];
-
-        $data['user'] = DB::table('user_logs')
-        ->where('user_id', $employeeId)
-        ->get();
         $dataEntry['fromDate'] = $fromDate;
         $dataEntry['toDate'] = $toDate;
         $dataEntry['numEntry'] = $numEntry;
         $dataEntry['has_generated'] = true;
         
+        $request->session()->flash('success', '"Export File" generated successfully!');
         return view ('my_activity_logs', $dataEntry, $data);
 
     }

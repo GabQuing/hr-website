@@ -173,7 +173,6 @@ Route::get('/approve_accounts/{id}/accept', [ApproveAccountsController::class, '
 Route::get('/employee_informations', [EmployeeInformationsController::class, 'index'])->name('employee_informations');
 Route::get('/employee_information/{id}/show', [ProfileController::class, 'show'])->name('edit_profile');
 Route::get('/employee_informations/downloadEditProfileTemplate', [EmployeeInformationsController::class, 'downloadEditProfileTemplate'])->name('downloadEditProfileTemplate');
-Route::post('/employee_informations/editUser', [EmployeeInformationsController::class, 'editUser'])->name('editUser');
 Route::post('/employee_informations/getSchedule', [ProfileController::class, 'getSchedule'])->name('getSchedule');
 
 

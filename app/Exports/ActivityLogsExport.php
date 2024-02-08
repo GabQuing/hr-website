@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use App\Models\loginAttendance;
 use App\Models\User;
-use App\Models\UserLog;
+use App\Models\UserLogView;
 use DB;
 
 class ActivityLogsExport implements FromCollection, WithHeadings
@@ -19,29 +19,19 @@ class ActivityLogsExport implements FromCollection, WithHeadings
 
     public function collection()
     {
-        $collection = UserLog::join('users', 'users.id', '=', 'user_logs.user_id')
-            ->where('users.id',auth()->user()->id)
-            ->whereBetween('date', [$this->data['from_date'], $this->data['to_date']])
+        $collection = UserLogView::join('users', 'users.id', '=', 'user_log_view.user_id')
+            ->join('log_types', 'log_types.id', '=', 'user_log_view.log_type_id')            ->where('users.id',auth()->user()->id)
+            ->whereBetween('log_date', [$this->data['from_date'], $this->data['to_date']])
             ->select(
                 'users.name',
-                'user_logs.log_type_id',
-                'user_logs.log_date',
-                'user_logs.log_time',
+                'user_log_view.log_date',
+                'user_log_view.latest',
+                'log_types.description',
             )
+            ->orderBy('user_log_view.log_date', 'DESC')
+            ->orderBy('user_log_view.latest', 'DESC')
             ->get();
 
-        // $collection = loginAttendance::join('users', 'users.employee_name', '=', 'login_attendances.employee_name')
-        //     ->where('users.employee_name', auth()->user()->employee_name)
-        //     ->whereBetween('date', [$this->data['from_date'], $this->data['to_date']])
-        //     ->select(
-        //         'users.mobile_number',
-        //         'login_attendances.employee_name',
-        //         'login_attendances.date',
-        //         'login_attendances.time',
-        //         'login_attendances.log_type',
-        //         'login_attendances.store_address',
-        //     )
-        //     ->get();
         
         return $collection;
     }
