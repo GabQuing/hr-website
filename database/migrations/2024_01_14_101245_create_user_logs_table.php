@@ -16,9 +16,9 @@ return new class extends Migration
             $table->mediumInteger('user_id')->nullable()->unsigned();
             $table->mediumInteger('log_type_id')->nullable()->unsigned();
             $table->timestamp('log_at')->nullable();
-            $table->date('log_date')->virtualAs('DATE(log_at)');
-            $table->time('log_time')->virtualAs('TIME(log_at)');
-            $table->string('day_name')->virtualAs('DAYNAME(log_at)');
+            $table->date('log_date')->storedAs('DATE(log_at)');
+            $table->time('log_time')->storedAs('TIME(log_at)');
+            $table->string('day_name')->storedAs('DAYNAME(log_at)');
             $table->string('status')->length(20)->nullable()->default('ACTIVE');
             $table->timestamps();
             $table->softDeletes();
