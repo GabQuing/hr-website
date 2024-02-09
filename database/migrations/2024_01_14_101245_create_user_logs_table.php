@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('log_at')->nullable();
             $table->date('log_date')->virtualAs('DATE(log_at)');
             $table->time('log_time')->virtualAs('TIME(log_at)');
+            $table->string('day_name')->virtualAs('DAYNAME(log_at)');
             $table->string('status')->length(20)->nullable()->default('ACTIVE');
             $table->timestamps();
             $table->softDeletes();
@@ -25,6 +26,8 @@ return new class extends Migration
             //index
             $table->index('user_id');
             $table->index('log_type_id');
+            $table->index('log_at');
+            $table->index('day_name');
             $table->index(['log_date']);
             $table->index(['log_type_id', 'log_date']);
         });
