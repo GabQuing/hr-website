@@ -122,14 +122,14 @@
                             <img src="{{ asset('img/icon-img/list.png') }}" alt="">
                             <a href="{{ route('activitylogs') }}">Activity Logs</a>
                                 </li>
-                            {{-- @if ( Request::segment(1)  == 'my_official_business')
+                            @if ( Request::segment(1)  == 'my_official_business')
                                 <li class="active" id="current_link">
                                 @else
                                 <li class="active">
                             @endif                        
                                     <img src="{{ asset('img/icon-img/edit_calendar.png') }}" alt="">
                                     <a href="{{ route('officialbusiness') }}">My Official Business</a>
-                                </li> --}}
+                                </li>
                             @if ( Request::segment(1)  == 'my_overtimes')
                                 <li class="active" id="current_link">
                                 @else
