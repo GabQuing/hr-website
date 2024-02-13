@@ -79,7 +79,7 @@
                     <h4 class="f-weight-5 break_action">
                         @php
                             $breakLabel = "";
-                            if ($today_log){
+                            if ($today_log && ($today_log->break_end || $today_log->break_start)){
                                 if ($today_log->break_end){
                                     $breakLabel = "BREAK END";
                                     $breakLogTime = "$today_log->break_end";
