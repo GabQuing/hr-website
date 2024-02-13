@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('government_information', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->nullable();
-            $table->string('sss')->nullable();
-            $table->string('phil_health')->nullable();
-            $table->string('tin')->nullable();
-            $table->string('hdmf')->nullable();
-            $table->string('pag_ibig')->nullable();
-            $table->string('tax_status')->nullable();
+            $table->mediumInteger('user_id')->unsigned()->nullable();
+            $table->string('name')->length(255)->nullable();
+            $table->text('address')->nullable();
+            $table->string('bank_name')->length(255)->nullable();
+            $table->text('bank_address')->nullable();
+            $table->string('bank_account_number')->length(255)->nullable();
+            $table->string('bank_swift_code')->length(255)->nullable();
+            $table->string('bank_routing_number')->length(255)->nullable();
             $table->timestamps();
         });
     }

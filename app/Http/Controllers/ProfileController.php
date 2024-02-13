@@ -150,12 +150,13 @@ class ProfileController extends Controller
     {
 
         GovernmentInformation::where('user_id', $id)->update([
-            'sss' => $request->input('sss'),
-            'phil_health' => $request->input('phil_health'),
-            'tin' => $request->input('tin'),
-            'hdmf' => $request->input('hdmf'),
-            'pag_ibig' => $request->input('pag_ibig'),
-            'tax_status' => $request->input('tax_status'),
+            'name' => $request->input('name'),
+            'address' => $request->input('address'),
+            'bank_name' => $request->input('bank_name'),
+            'bank_address' => $request->input('bank_address'),
+            'bank_account_number' => $request->input('bank_account_number'),
+            'bank_swift_code' => $request->input('bank_swift_code'),
+            'bank_routing_number' => $request->input('bank_routing_number'),
         ]);
 
         return response()->json([

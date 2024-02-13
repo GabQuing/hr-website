@@ -430,37 +430,41 @@
                     </div>
                 </form>
             </div>
-            {{-- <div class="show_goverment_information">
+            <div class="show_goverment_information">
                 <div class="info_header2 info_header_design2">
-                    <p>Government Information</p>
+                    <p>Bank Information</p>
                 </div>
                 <form action="{{ route('updateGovernmentInfo',$government_information->user_id) }}" method="POST">
                     @csrf
                     <div class="goverment_information_content show_content2 info_padding">
                         <div class="pic">
                             <div class="pic_input">
-                                <label>SSS #</label>
-                                <input type="text"  value="{{ $government_information->sss }}" name="sss" readonly>
+                                <label>Name</label>
+                                <input type="text"  value="{{ $government_information->name }}" name="name" readonly>
                             </div>
                             <div class="pic_input">
-                                <label>PhilHealth #</label>
-                                <input type="text"  value="{{ $government_information->phil_health }}" name="phil_health" readonly>
+                                <label>Address</label>
+                                <input type="text"  value="{{ $government_information->address }}" name="address" readonly>
                             </div>
                             <div class="pic_input">
-                                <label>TIN</label>
-                                <input type="text"  value="{{ $government_information->tin }}" name="tin" readonly>
+                                <label>Bank Name</label>
+                                <input type="text"  value="{{ $government_information->bank_name }}" name="bank_name" readonly>
                             </div>
                             <div class="pic_input">
-                                <label>HDMF #</label>
-                                <input type="text"  value="{{ $government_information->hdmf }}" name="hdmf" readonly>
+                                <label>Bank Address</label>
+                                <input type="text"  value="{{ $government_information->bank_address }}" name="bank_address" readonly>
                             </div>
                             <div class="pic_input">
-                                <label>Pag-Ibig</label>
-                                <input type="text"  value="{{ $government_information->pag_ibig }}" name="pag_ibig" readonly>
+                                <label>Bank Account Number</label>
+                                <input type="text"  value="{{ $government_information->bank_account_number }}" name="bank_account_number" readonly>
                             </div>
                             <div class="pic_input">
-                                <label>Tax Status</label>
-                                <input type="text"  value="{{ $government_information->tax_status }}" name="tax_status" readonly>
+                                <label>Bank Swift Code</label>
+                                <input type="text"  value="{{ $government_information->bank_swift_code }}" name="bank_swift_code" readonly>
+                            </div>
+                            <div class="pic_input">
+                                <label>Bank Routing Number</label>
+                                <input type="text"  value="{{ $government_information->bank_routing_number }}" name="bank_routing_number" readonly>
                             </div>
                         </div>
                         @role('hr|admin')
@@ -473,9 +477,9 @@
                         @endrole
                     </form>
                 </div>
-            </div> --}}
+            </div>
             <div class="show_education_background">
-                <div class="info_header3 info_header_design2">
+                <div class="info_header3 info_header_design1">
                     <p>Education Background</p>
                 </div>
                 <div class="education_background_content show_content3 info_padding">
@@ -526,7 +530,7 @@
                 </div>
             </div>
             <div class="show_contact_information">
-                <div class="info_header5 info_header_design1">
+                <div class="info_header5 info_header_design2">
                     <p>Contact Information</p>
                 </div>
                 <form action="{{ route('updateContactInformation',$contact_information->user_id) }}" method="POST">
