@@ -1,4 +1,4 @@
-@extends('layouts.side_top_content')
+@extends('layouts.side_top_content', ['title' => 'Policy & Procedure'])
 
 @section('module_name', 'Policies & PRocedures')
 <style>

@@ -1,4 +1,4 @@
-@extends('layouts.side_top_content')
+@extends('layouts.side_top_content' , ['title' => 'My Leaves'])
 
 @section('module_name', 'My Leaves')
 

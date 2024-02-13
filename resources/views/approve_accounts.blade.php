@@ -1,4 +1,4 @@
-@extends('layouts.side_top_content')
+@extends('layouts.side_top_content', ['title' => 'Approve Registration'])
 
 @section('module_name', 'Approve Registration')
 

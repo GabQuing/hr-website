@@ -1,4 +1,4 @@
-@extends('layouts.side_top_content')
+@extends('layouts.side_top_content', ['title' => 'Schedule Profiles'])
 
 @section('module_name', 'Schedule Profiles')
 
