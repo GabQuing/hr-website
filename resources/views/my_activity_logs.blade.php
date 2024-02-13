@@ -1,4 +1,4 @@
-@extends('layouts.side_top_content')
+@extends('layouts.side_top_content', ['title' => 'Employee Activity Logs'])
 
 @section('module_name', 'Employee Activity Logs')
 

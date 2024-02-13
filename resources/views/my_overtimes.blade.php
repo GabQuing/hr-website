@@ -1,4 +1,4 @@
-@extends('layouts.side_top_content')
+@extends('layouts.side_top_content', ['title' => 'My Overtimes'])
 
 @section('module_name', 'My Overtimes')
 

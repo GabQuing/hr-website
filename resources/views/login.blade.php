@@ -7,7 +7,7 @@
     <title>Login Page</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     {{-- Favicon --}}
-    <link rel="icon" type="image/x-icon" href="{{ asset('/img/icon.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('/img/Icon.png') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 </head>
 <style>
