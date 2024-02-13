@@ -78,6 +78,7 @@
                 <div class="my_break_p">
                     <h4 class="f-weight-5 break_action">
                         @php
+                            $breakLabel = "";
                             if ($today_log){
                                 if ($today_log->break_end){
                                     $breakLabel = "BREAK END";
