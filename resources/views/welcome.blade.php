@@ -146,10 +146,10 @@
                 </div>
             </div>
             <div class="welcome_content_body">
-                <div class="img_container_logo_black">
+                {{-- <div class="img_container_logo_black">
                     <img src="{{ asset('img/logo_black.png') }}" alt="">
                 </div>
-                <br>
+                <br> --}}
                 <div class="welcome_title">
                     <div class="welcome_text">
                         <span>WELCOME</span>
