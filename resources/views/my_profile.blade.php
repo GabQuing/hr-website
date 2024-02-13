@@ -547,14 +547,14 @@
                                 <label>Mobile Number</label>
                                 <input type="text"  value="{{ $basic_information->mobile_number }}" name="mobile_number" readonly>
                             </div>
-                            <div class="pic_input">
+                            {{-- <div class="pic_input">
                                 <label> Local Trunk Line</label>
                                 <input type="text"  value="{{ $contact_information->local_trunk_line }}" name="local_trunk_line" readonly>
                             </div>
                             <div class="pic_input">
                                 <label>Pin</label>
                                 <input type="text"  value="{{ $contact_information->pin }}" name="pin" readonly>
-                            </div>
+                            </div> --}}
                         </div>
                         <br>
                         <hr>
