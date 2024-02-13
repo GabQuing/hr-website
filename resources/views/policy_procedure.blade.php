@@ -307,6 +307,7 @@
                     <div class="policy_paragraph">
                         <p>The 3-day work trial serves as an assessment period during which candidates or employees can experience the role and work environment firsthand.New hires in the 3-day work trial will not receive monetary compensation for their time during the trial period.</p>
                     </div>
+                    <br>
                 </div>
             </div>
             <div class="show_work_information">
@@ -407,6 +408,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <br>
                 </div>
             </div>
             <div class="show_goverment_information">
@@ -451,6 +453,7 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <br>
                     </div>
                 </div>
             </div>
@@ -492,6 +495,7 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <br>
                     </div>
                 </div>
             </div>
@@ -512,6 +516,7 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <br>
                     </div>
                 </div>
             </div>
@@ -665,6 +670,7 @@
                             <li>Correct or remove any misleading or false content as quickly as possible</li>
                         </ul>
                     </div>
+                    <br>
                 </div>
             </div>
             <div class="show_education_background">
@@ -690,6 +696,7 @@
                             try to help you resolve it.
                         </p>
                     </div>
+                    <br>
                 </div>
             </div>
             <div class="show_education_background">
@@ -715,6 +722,7 @@
                             <li>Mourn</li>
                         </ul>
                     </div>
+                    <br>
                 </div>
             </div>
             <div class="show_education_background">
@@ -843,13 +851,11 @@
                         expect you to be certain you made the right choice and keep accurate performance and/or disciplinary records
                         to support your decision.
                     </p>
-                </div>
-            </div>
-            <div class="show_education_background">
-                <div class="info_header13 info_header_design2">
-                    <p>References</p>
-                </div>
-                <div class="education_background_content show_content13 info_padding">
+                    <br>
+                    <div class="pic">
+                        <h5>References</h5>
+                    </div>
+                    <hr>
                     <div class="policy_paragraph">
                         <p>
                             When we terminate employees, we may provide references for those who leave in good standing. This means
@@ -858,10 +864,11 @@
                             refuse.
                         </p>
                     </div>
+                    <br>
                 </div>
             </div>
             <div class="show_education_background">
-                <div class="info_header6 info_header_design1">
+                <div class="info_header6 info_header_design2">
                     <p>Policy Revision</p>
                 </div>
                 <div class="education_background_content show_content6 info_padding">
@@ -895,6 +902,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <br>
                 </div>
             </div>
         </div>
@@ -952,9 +960,6 @@
                 })
                 $('.info_header12').click(function(){
                     $('.show_content12').slideToggle('fast');
-                })
-                $('.info_header13').click(function(){
-                    $('.show_content13').slideToggle('fast');
                 })
 
 
