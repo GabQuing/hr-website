@@ -86,8 +86,8 @@
                                     $breakLabel = "BREAK START";
                                     $breakLogTime = "$today_log->break_start";
                                 }
+                                $break = "$breakLabel: $today_log->log_date ($breakLogTime)";
                             }
-                            $break = "$breakLabel: $today_log->log_date ($breakLogTime)";
                         @endphp
                         {{ $break ?? "Press Break Start (00:00:00)" }}
                     </h4>
