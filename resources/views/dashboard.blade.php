@@ -33,7 +33,21 @@
         <div class="today_attendance">
             <div class="today_attendance flex-column">
                 <div class="today_attendance_p">
-                    <h4 class="f-weight-5 attendance_action">{{ ($today_log && $today_log->log_date ? 'CLOCK IN: ' . $today_log->log_date : 'Press Clock In To Start') . ' (' . ($today_log->clock_in ?? '00:00:00') . ')' }}</h4>
+                    <h4 class="f-weight-5 attendance_action">
+                        @php
+                            if ($today_log) {
+                                if ($today_log->clock_out) {
+                                    $label = 'CLOCK OUT';
+                                    $log_time = $today_log->clock_out;
+                                } else if ($today_log->clock_in) {
+                                    $label = 'CLOCK IN';
+                                    $log_time = $today_log->clock_in;
+                                }
+                                $text = "$label: $today_log->log_date ($log_time)";
+                            }
+                        @endphp
+                        {{ $text ?? "Press Clock In To Start (00:00:00)" }}
+                    </h4>
                 </div>
                 <div class="today_attendance_message">
                     <h5 class="f-weight-4"><strong>Clock in</strong> once per day and then <strong>clock out</strong>.</h5>
@@ -62,7 +76,21 @@
         <div class="my_break">
             <div class="my_break flex-column">
                 <div class="my_break_p">
-                    <h4 class="f-weight-5 break_action">{{ ($today_log && $today_log->log_date ? 'BREAK START: ' . $today_log->log_date : 'Press Break Start') . ' (' . ($today_log->break_start ?? '00:00:00') . ')' }}</h4>
+                    <h4 class="f-weight-5 break_action">
+                        @php
+                            if ($today_log){
+                                if ($today_log->break_end){
+                                    $breakLabel = "BREAK END";
+                                    $breakLogTime = "$today_log->break_end";
+                                } elseif ($today_log->break_start) {
+                                    $breakLabel = "BREAK START";
+                                    $breakLogTime = "$today_log->break_start";
+                                }
+                            }
+                            $break = "$breakLabel: $today_log->log_date ($breakLogTime)";
+                        @endphp
+                        {{ $break ?? "Press Break Start (00:00:00)" }}
+                    </h4>
                 </div>
                 <div class="my_break_message">
                     <h5 class="f-weight-4"><strong>Break start</strong> once per day and then <strong>break end</strong>.</h5>
