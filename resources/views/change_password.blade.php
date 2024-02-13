@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Setting</title>
     {{-- Favicon --}}
-    <link rel="icon" type="image/x-icon" href="{{ asset('/img/icon.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('/img/Icon.png') }}">
     {{-- CSS --}}
     <link rel="stylesheet" href="{{ asset('css/change-password.css') }}">
     <!-- Jquery Link -->
