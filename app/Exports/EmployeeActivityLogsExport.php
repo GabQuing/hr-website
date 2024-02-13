@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use App\Models\loginAttendance;
 use App\Models\User;
+use App\Models\UserLogView;
 use DB;
 
 class EmployeeActivityLogsExport implements FromCollection, WithHeadings
@@ -19,16 +20,17 @@ class EmployeeActivityLogsExport implements FromCollection, WithHeadings
     public function collection()
     {
     
-        $collection = loginAttendance::join('users', 'users.employee_name', '=', 'login_attendances.employee_name')
-            ->whereBetween('date', [$this->data['from_date'], $this->data['to_date']])
+        $collection = UserLogView::join('users', 'users.id', '=', 'user_log_view.user_id')
+            ->join('log_types', 'log_types.id', '=', 'user_log_view.log_type_id')
+            ->whereBetween('log_date', [$this->data['from_date'], $this->data['to_date']])
             ->select(
-                'users.mobile_number',
-                'login_attendances.employee_name',
-                'login_attendances.date',
-                'login_attendances.time',
-                'login_attendances.log_type',
-                'login_attendances.store_address',
+                'users.name',
+                'user_log_view.log_date',
+                'user_log_view.latest',
+                'log_types.description',
             )
+            ->orderBy('user_log_view.log_date', 'DESC')
+            ->orderBy('user_log_view.latest', 'DESC')
             ->get();
         
         return $collection;
@@ -37,12 +39,10 @@ class EmployeeActivityLogsExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'Mobile Number',
             'Employee Name',
             'Date',
             'Time',
             'Log-Type',
-            'Store Address',
             // Add more column headings as needed
         ];
     }

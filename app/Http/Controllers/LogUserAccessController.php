@@ -19,35 +19,39 @@ class LogUserAccessController extends Controller
             ->getAllLogs()
             ->paginate(10);
 
-        // $data['has_generated'] = false;
+        $data['has_generated'] = false;
         return view('log_user_access', $data);
     }
 
     public function generateEmployeeFile(Request $request)
     {
+        $data=[];
+
+        $data['user_logs'] = (new UserLog())
+            ->getAllLogs()
+            ->paginate(10);
+
         $fromDate = $request->input('from_date');
         $toDate = $request->input('to_date');
-        $numEntry = DB::table('login_attendances')
-            ->whereBetween('date',[$fromDate,$toDate])
-            ->select('employee_name',
-                'date',
-                'time',
-                'log_type',
-                'store_address')
+        $numEntry = DB::table('user_log_view')
+            ->whereBetween('log_date',[$fromDate,$toDate])
+            ->select('user_id',
+                'log_date',
+                'latest',
+                'log_type_id')
             ->get();
 
         $dataEntry=[];
-        $data=[];
 
-        $data['user'] = DB::table('login_attendances')
-        ->get();
+            
         $dataEntry['fromDate'] = $fromDate;
         $dataEntry['toDate'] = $toDate;
         $dataEntry['numEntry'] = $numEntry;
         $dataEntry['has_generated'] = true;
         
-        return view ('log_user_access', $dataEntry, $data);
+        $request->session()->flash('success', '"Export File" generated successfully!');
 
+        return view ('log_user_access', $dataEntry, $data);
     }
 
     public function exportEmployeeFile(Request $request)

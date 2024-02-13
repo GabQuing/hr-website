@@ -28,23 +28,19 @@
                     <button type="submit" class="date_generate">Generate</button>
                 </div>
             </div>
-
         </form>
     </div>
-    @if (session('success'))
-        <div class="add_user_success"> 
-            <span>{{ session('success') }}</span>
-        </div>
-    @endif
 </div>
-
 <a class="user_info_link" href="#pop_image" rel="modal:open">Generate File</a>
 @if ($has_generated ?? false)
     <a href="{{ route('export_user_activity_log') }}?data_entry={{ $numEntry }}&from_date={{ $fromDate }}&to_date={{ $toDate }}" id="export_excel">Export File</a>
 @endif
-<br>
-<br>
-
+<div>
+    @if (session('success'))
+        <br>
+        <span style="color: green; display:block;">{{ session('success') }}</span>
+    @endif
+</div>
 <div class="user_accounts_table">
     <table id="myTable" class="display" style="width:100%">
         <thead>

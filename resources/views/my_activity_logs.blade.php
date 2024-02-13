@@ -4,44 +4,41 @@
 
 @section('content')
 
-<div>
-    <div class="modal" id="pop_image">
-        <form method="POST" action="{{ route('generate_file') }}">
-        @csrf
-            <div class="modal_body" >
-                <input type="text" name="employeeName" value="{{ auth()->user()->employee_name }}" style="display: none;"> 
-                <div class="container_title">
-                    <p class="header_title_h2">My Activity Logs Summary</p>
+<div class="modal" id="pop_image">
+    <form method="POST" action="{{ route('generate_file') }}">
+    @csrf
+        <div class="modal_body" >
+            <input type="text" name="employeeName" value="{{ auth()->user()->employee_name }}" style="display: none;"> 
+            <div class="container_title">
+                <p class="header_title_h2">My Activity Logs Summary</p>
+            </div>
+            <div class="summary_report">
+                <div class="sr_from_date">
+                    <label for="">From:</label>
+                    <input type="date" name="from_date" id="from_date" value="{{ $from ?? '' }}" required>
                 </div>
-                <div class="summary_report">
-                    <div class="sr_from_date">
-                        <label for="">From:</label>
-                        <input type="date" name="from_date" id="from_date" value="{{ $from ?? '' }}" required>
-                    </div>
-                    <div class="sr_to_date">
-                        <label for="">To:</label>
-                        <input type="date" name="to_date" id="to_date" value="{{ $to ?? '' }}" required>
-                    </div>
-                </div>
-                <div class="datebtn">
-                    <button type="submit" class="date_generate">Generate</button>
+                <div class="sr_to_date">
+                    <label for="">To:</label>
+                    <input type="date" name="to_date" id="to_date" value="{{ $to ?? '' }}" required>
                 </div>
             </div>
-
-        </form>
-    </div>
-    @if (session('success'))
-        <div class="add_user_success"> 
-            <span>{{ session('success') }}</span>
+            <div class="datebtn">
+                <button type="submit" class="date_generate">Generate</button>
+            </div>
         </div>
-    @endif
+    </form>
 </div>
 
 <a class="user_info_link" href="#pop_image" rel="modal:open">Generate File</a>
 @if ($has_generated ?? false)
     <a href="{{ route('export_activity_log') }}?data_entry={{ $numEntry }}&from_date={{ $fromDate }}&to_date={{ $toDate }}" id="export_excel">Export File</a>
 @endif
-<br>
+<div>
+    @if (session('success'))
+        <br>
+        <span style="color: green; display:block;">{{ session('success') }}</span>
+    @endif
+</div>
 <div class="user_accounts_table">
     <table id="myTable" class="display" style="width:100%">
         <thead>
