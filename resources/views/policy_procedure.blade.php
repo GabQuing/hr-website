@@ -1,6 +1,6 @@
 @extends('layouts.side_top_content', ['title' => 'Policy & Procedure'])
 
-@section('module_name', 'Policies & PRocedures')
+@section('module_name', 'Policies & Procedures')
 <style>
     .profile_info_section{
         padding: 20px;
