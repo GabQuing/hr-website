@@ -265,14 +265,6 @@
                     </div>
                     <br>
                     <div class="pic">
-                        <h5>Employee Regularization</h5>
-                    </div>
-                    <hr>
-                    <div class="policy_paragraph">
-                        <p>Regularization of employee services after a thorough performance assessment and review upon the sixth (3rd) month of service for probationary. After the Q1 Performance Review, this status will entitle the Employee to all benefits and privileges due to a regular employee.                    </p>
-                    </div>
-                    <br>
-                    <div class="pic">
                         <h5>Employee Probation</h5>
                     </div>
                     <hr>
