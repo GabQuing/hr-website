@@ -48,7 +48,7 @@
                                 <td>{{ 0 }}</td>
                                 <td>{{ 0 }}</td>
                                 <td>{{ 0}}</td>
-                                <td>{{ 0 }}</td>
+                                <td>{{ $total_hours }}</td>
                             </tr>                        
                     </tbody>
                 </table>
