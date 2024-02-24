@@ -3,23 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\AttendanceSummary;
-use App\Models\User;
-use App\Models\Gender;
-use App\Models\CivilStatus;
-use App\Models\company;
-use App\Models\department;
-use App\Models\employee_type;
-use App\Models\user_type;
-use App\Models\immediate_supervisor;
-use App\Models\employment_status;
-use App\Models\education_type;
 use App\Models\LogType;
-use App\Models\schedule_type;
 use App\Models\UserLog;
-use App\Models\work_hours;
 use Illuminate\Http\Request;
-use DB;
-use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
@@ -29,13 +15,13 @@ class DashboardController extends Controller
 
         $user_id = auth()->user()->id;
         $data = [];
-        $data['serverDateTime']=now();
+        $data['serverDateTime'] = now();
         $data['today_log'] = (new AttendanceSummary())->getByDate(date('Y-m-d'), auth()->user()->id);
         $data['user_logs'] = (new UserLog())
             ->getByUserId($user_id)
             ->get();
 
-        
+
         return view('dashboard', $data);
     }
 

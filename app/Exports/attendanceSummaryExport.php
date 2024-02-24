@@ -4,14 +4,13 @@ namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use App\Models\loginAttendance;
-use App\Models\User;
 use App\Models\AttendanceSummary;
-use DB;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class attendanceSummaryExport implements FromCollection, WithHeadings
 {
+    public $schedule_query;
+    public $data;
     public function __construct($data)
     {
         $this->data = $data;
@@ -20,22 +19,12 @@ class attendanceSummaryExport implements FromCollection, WithHeadings
             ->getUserAttendanceSummary($user_id)
             ->get()
             ->toArray();
-        
-
-        // $this->data = $data;
-        // $this->schedule_query = DB::table('work_schedules')
-        //     ->where('user_id', auth()->user()->id)
-        //     ->whereRaw('(rest_day != 1 or rest_day is null)');
-
-        // $this->schedule_day_name = $this->schedule_query->pluck('work_day')->toArray();
-        // $this->work_from = $this->schedule_query->select('work_from', 'work_day')->get()->toArray();
-        // $this->work_to = $this->schedule_query->select('work_to', 'work_day')->get()->toArray();
     }
 
     public function collection()
     {
-        $collection = DB::table('attendance_summary')
-            ->where('user_id' , auth()->user()->id)
+        $collection = FacadesDB::table('attendance_summary')
+            ->where('user_id', auth()->user()->id)
             ->join('users', 'attendance_summary.user_id', '=', 'users.id')
             ->selectRaw("
                 users.name,
@@ -47,32 +36,10 @@ class attendanceSummaryExport implements FromCollection, WithHeadings
             ")
             ->whereBetween('log_date', [$this->data['from_date'], $this->data['to_date']])
             ->get();
-        
-
-
-        // $collection = DB::table('login_attendances')
-        //     ->where('employee_name', auth()->user()->employee_name)
-        //     ->selectRaw("
-        //         employee_name,
-        //         date,
-        //         MIN(CASE WHEN log_type = 'Time-In' THEN time END) AS time_in,
-        //         MIN(CASE WHEN log_type = 'Time-In' THEN store_address END) AS time_in_location,
-        //         MAX(CASE WHEN log_type = 'Time-Out' THEN time END) AS time_out,
-        //         MAX(CASE WHEN log_type = 'Time-Out' THEN store_address END) AS time_out_location
-        //     ")
-        //     ->whereRaw("log_type IN ('Time-In', 'Time-Out')")
-        //     ->whereBetween('date', [$this->data['from_date'], $this->data['to_date']])
-        //     ->whereIn(DB::raw('DATE_FORMAT(date, "%W")'), $this->schedule_day_name)
-        //     ->groupBy('employee_name', 'date')
-        //     ->get();
 
         $collection = $collection->map(function ($item) {
             $item->days_present = $this->hasTimeInAndTimeOut($item) ? 1 : 0;
             $item->numberOfAbsences = $this->NoTimeInAndTimeOut($item) ? 1 : 0;
-            // $item->lateMinutes = $this->calculateLateMinutes($item);
-            // $item->underMinutes = $this->calculateUnderMinutes($item);
-            // $item->totalMinutesLates = $this->calculateTotalLates($item);
-            // $item->total_hours = $this->calculateTotalHours($item);
             return $item;
         });
 
@@ -80,14 +47,16 @@ class attendanceSummaryExport implements FromCollection, WithHeadings
         return $collection;
     }
 
-    private function hasTimeInAndTimeOut($item) {
+    private function hasTimeInAndTimeOut($item)
+    {
         return !empty($item->clock_in) && !empty($item->clock_out);
     }
 
-    private function NoTimeInAndTimeOut($item) {
+    private function NoTimeInAndTimeOut($item)
+    {
         return empty($item->clock_in) || empty($item->clock_out);
     }
-    
+
     // private function calculateLateMinutes($item) {
     //     $date = Carbon::parse($item->date);
     //     $formattedDate = $date->format('l');
