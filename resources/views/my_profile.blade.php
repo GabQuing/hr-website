@@ -40,7 +40,48 @@
     </style>
 @endsection
 
-<div id="password_modal" class="modal">
+<div class="modal-center" style="display: none">
+    <div class="modal-box">
+        <div class="modal-content">
+            <form method="POST" action="{{ route('update_password', auth()->user()->id) }}">
+                @csrf
+                <div style="overflow-x: auto; width: 100%;">
+                    <table class="custom_normal_table">
+                        <tbody>
+                            <tr>
+                                <td colspan="4">
+                                    <h3 class="f-weight-bold"><i class="fa-solid fa-eye"></i> Change Password</h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Current Password:</p>
+                                    <input class="u-input" name="current_password" type="password" required>
+                                </td>                                                                             
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>New Password:</p>
+                                    <input class="u-input" name="new_password" type="password" required>
+                                </td>                           
+                                <td>
+                                    <p>Confirm Password:</p>
+                                    <input class="u-input" name="confirmation_password" type="password" required>
+                                </td>  
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="u-flex-space-between">
+                    <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default" id="btn-close" type="button">Close</button>
+                    <button class="u-t-white u-fw-b u-btn u-bg-accent u-m-10 u-border-1-default" id="btn-close" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- <div id="password_modal" class="modal">
     <form method="POST" action="{{ route('update_password', auth()->user()->id) }}">
         @csrf
 
@@ -66,7 +107,7 @@
             </div>
         </div>
     </form>
-</div>
+</div> --}}
 
 
 
@@ -84,7 +125,7 @@
         <br>
         @if($show_password)
             <div>
-                <a class="user_info_link" href="#password_modal" rel="modal:open">Change Password</a>
+                <a class="user_info_link open-modal">Change Password</a>
                 {{-- <a class="user_info_link" id="register_face_btn" href="registerFace/{{ auth()->user()->id }}">Register Face-Biometric</a> --}}
             </div>
             <br>
@@ -746,6 +787,15 @@
     //Disabled TimeSchedule by Checkbox
 
     $(document).ready(function() {
+
+        $('.open-modal').on('click', function(){
+            $('.modal-center').show();
+        })
+
+        $('#btn-close').on('click', function(){
+            $('.modal-center').hide();
+        })
+
         if($('.checkbox_sunday').val() === '1'){
             $('.input_time_sunday').prop('readonly', true).val('--:--:--').attr('placeholder', '--:--:--');
             $('.checkbox_sunday').prop('checked', true);

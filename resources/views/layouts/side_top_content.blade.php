@@ -29,7 +29,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
-    
+    {{-- Utilities --}}
+    <link rel="stylesheet" href="{{ asset('css/utilities.css') }}">
 
 </head>
 @yield('css')

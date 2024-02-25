@@ -46,7 +46,7 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: 0;
+    box-sizing: border-box;
     /* font-family: "Merriweather", serif; */
     /* font-family: 'Lato', sans-serif; */
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -91,6 +91,14 @@ h6 {
     font-size: 0.875rem; /* 0.875 times the base font size (14px) */
 }
 
+h1,h2,h3,h4,h5,h6{
+    font-weight: 400;
+}
+
+.f-weight-bold{
+    font-weight: bold;
+}
+
 .f-weight-6{
     font-weight: 600;
 }
@@ -105,6 +113,34 @@ h6 {
 
 .f-weight-3{
     font-weight: 300;
+}
+
+.u-bg-white{
+    background-color: var(--white);
+}
+
+.u-bg-primary{
+    background-color: var(--primary);
+}
+
+.u-bg-danger{
+    background-color: var(--danger);
+}
+
+.u-m-15{
+    margin: 15px;
+}
+
+.u-action-btn{
+    padding: 5px 10px;
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.u-action-btn:hover{
+    opacity: 0.7;
 }
 
 .m-auto-p{
@@ -219,14 +255,69 @@ h6 {
 }
 }
 
-.footer{
-    /* min-height: 75px; */
+.u-input {
+    height: 2.5rem;
+    width: 100%;
+    border: 1px solid transparent;
+    padding: 0 10px;
+    border-radius: 5px;
+    color: #3c3b3b;
+    font-size: 1rem;
+    outline: none;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border: 1px solid #ddd;
+}
+
+.u-input-border-boottom{
+    height: 2.5rem;
+    width: 100%;
+    border: 1px solid transparent;
+    padding: 0 10px;
+    color: #3c3b3b;
+    font-size: 1rem;
+    outline: none;
+    border-bottom: 1px solid #717171;
+}
+
+.u-responsive-table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: white;
+    border-radius: 0.5rem;
+}
+
+.u-responsive-table th,
+.u-responsive-table td {
+    padding: 0.7rem;
+    text-align: left;
+    font-size: 1rem;
+    border-bottom: 1px solid #eae9e9;
+}
+
+.u-responsive-table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+.u-responsive-table th {
+    background-color: #f0f2f5;
+    font-weight: bold;
+}
+
+.u-responsive-table tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+.u-responsive-table tbody tr:hover {
+    background-color: #02718a28;
+}
+
+/* .footer{
     background-color: var(--background-color);
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
     display: flex;
     align-items: center;
     padding: 20px 20px;
-}
+} */
 
 /* End of Scrollbar */
 
@@ -414,25 +505,25 @@ h6 {
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    width: 230px;
+    width: 270px;
     padding: 10px 30px;
     background: var(--gradient-color);
     position: fixed;
     top: 0;
     left: 0;
-    overflow-y: auto;
-    scrollbar-width: thin; 
+    /* overflow-y: auto; */
+    /* scrollbar-width: thin; 
     scrollbar-color: transparent transparent; 
-    -ms-overflow-style: none; 
+    -ms-overflow-style: none;  */
 }
 
-.sidenav::-webkit-scrollbar {
+/* .sidenav::-webkit-scrollbar {
     width: 5px; 
 }
 
 .sidenav::-webkit-scrollbar-thumb {
     background-color: transparent; 
-}
+} */
 
 /* .sidenav {
     display: flex;
@@ -464,9 +555,33 @@ h6 {
     width: 100%;
     object-fit: contain;
 }
-.sidenav_links{
+
+.sidenav_links {
     margin-bottom: 20%;
+    overflow-x: auto;
+    max-height: 600px;
+    scrollbar-width: thin; /* Set the scrollbar width for modern browsers */
+    scrollbar-color: #ccc transparent; /* Set the scrollbar color for modern browsers */
+    -ms-overflow-style: none; /* Hide the scrollbar in Internet Explorer/Edge */
 }
+
+/* For WebKit browsers (Chrome, Safari) */
+.sidenav_links::-webkit-scrollbar {
+    width: 6px; /* Set the scrollbar width */
+}
+
+/* For WebKit browsers (Chrome, Safari) */
+.sidenav_links::-webkit-scrollbar-thumb {
+    background-color: #aaa; /* Set the scrollbar thumb color */
+    border-radius: 3px; /* Set the scrollbar thumb border radius */
+}
+
+/* For WebKit browsers (Chrome, Safari) */
+.sidenav_links::-webkit-scrollbar-track {
+    background-color: transparent; /* Set the scrollbar track color */
+}
+
+
 .sidenav .sidenav_links ul {
     list-style: none;
 }
@@ -557,7 +672,7 @@ h6 {
 }
 .user_info_logout {
     text-align: center;
-    margin-bottom: 20%;
+    margin-bottom: 7%;
 }
 
 #img_user_photo:hover {
@@ -1344,29 +1459,35 @@ table.dataTable tfoot th {
 }
 
 .my_official_businesses{
-    margin: 25px 25px 0px 25px;
+    /* margin: 25px 25px 0px 25px; */
 }
 
 .my_official_businesses_header{
     color: var(--header-color);
     font-weight: bold;
-    text-decoration: underline var(--header-color);
     text-underline-offset: 10px;
     transition: text-decoration 0.1s ease-in-out;
     cursor: pointer;
     margin-right: 15px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--header-color);
+}
+
+.my_official_businesses_header_active{
+    color: var(--card-header-color);
+    border-bottom: 2px solid var(--card-header-color);
 }
 
 .my_official_businesses_header:hover{
     color: var(--card-header-color);
-    text-decoration: underline var(--card-header-color);
+    border-bottom: 2px solid var(--card-header-color);
 }
 
 .my_official_business_add{
     text-align: center;
     padding: 10px;
     border-radius: 5px;
-    width: 90px;
+    max-width: 100px;
     background-color: var(--accent-color);
     font-size: 15px;
     color: white;
@@ -1390,9 +1511,7 @@ table.dataTable tfoot th {
 }
 
 .my_official_business_request_pending{
-    margin: 5px 25px;
     color: var(--header-color);
-    font-weight: bold;
     border-top: 1px solid #ddd;
     padding-top: 15px;
 }
