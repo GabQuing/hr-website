@@ -13,7 +13,7 @@
     <div class="modal-center" style="display: none;">
         <div class="modal-box">
             <div class="modal-content">
-                <form wire:submit="editUser">
+                <form method="POST" action="{{ route('submitOB') }}">
                     @csrf
                     <div style="overflow-x: auto; width: 100%;">
                         <table class="custom_normal_table">
@@ -34,11 +34,11 @@
                                     </td>                            
                                     <td>
                                         <p>Time From:</p>
-                                        <input class="u-input" name="time_from" type="date" required>
+                                        <input class="u-input" name="time_from" type="time" required>
                                     </td>                            
                                     <td>
                                         <p>Time To:</p>
-                                        <input class="u-input" name="time_to" type="date" required>
+                                        <input class="u-input" name="time_to" type="time" required>
                                     </td>                            
                                 </tr>
                                 <tr>
@@ -74,7 +74,7 @@
                 <div style="display: flex; flex-wrap: wrap;">
                     <h5 class="my_official_businesses_header my_official_businesses_header_active" id="mob-pending">Pending/Resubmit for editing</h5>
                     <h5 class="my_official_businesses_header" id="mob-approve">Approved</h5>
-                    <h5 class="my_official_businesses_header" id="mob-rejected">Rejected/Cancelled</h5>
+                    <h5 class="my_official_businesses_header" id="mob-rejected">Rejected/Canceled</h5>
                 </div>
                 <button  class="u-btn u-bg-accent u-t-white" style="display: block; margin-top: 12px;" id="my_official_business_add" type="button">
                     <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 16px; font-weight: bold;">
@@ -82,101 +82,123 @@
                     </span>
                     Add OB
                 </button>
+                <div>
+                    @if (session('success'))
+                        <br>
+                        <span style="color: green; display:block;">{{ session('success') }}</span>
+                    @endif
+                </div>
             </div>
             <div class="my_official_business_request_pending u-m-15">
                 <h5 style="font-weight: bold;">My Request - <span class="request-title">Pending</span></h5>
             </div>
             <div class="mob-pending-table u-m-15" style="overflow-x: auto; border-radifus: 0.5rem;">
                 <table class="u-responsive-table">
-                    <tr class="f-weight-bold">
-                        <td><h6 class="f-weight-bold">Status</h6></td>
-                        <td><h6 class="f-weight-bold">Date Filed</h6></td>
-                        <td><h6 class="f-weight-bold">Location</h6></td>
-                        <td><h6 class="f-weight-bold">Date From</h6></td>
-                        <td><h6 class="f-weight-bold">Date To</h6></td>
-                        <td><h6 class="f-weight-bold">Time From</h6></td>
-                        <td><h6 class="f-weight-bold">Time To</h6></td>
-                        <td><h6 class="f-weight-bold">Purpose</h6></td>
-                        <td><h6 class="f-weight-bold">Actions</h6></td>
-                    </tr>
-                    <tr>
-                        <td><h6>Status</h6></td>
-                        <td><h6>Date Filed</h6></td>
-                        <td><h6>Location</h6></td>
-                        <td><h6>Date From</h6></td>
-                        <td><h6>Date To</h6></td>
-                        <td><h6>Time From</h6></td>
-                        <td><h6>Time To</h6></td>
-                        <td><h6>Purpose</h6></td>
-                        <td>
-                            <div class="d-flex;">
-                                <button type="button" class="u-action-btn u-bg-danger">
-                                    <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
-                                        delete
-                                    </span>
-                                </button>
-                                <button type="button" class="u-action-btn u-bg-primary">
-                                    <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
-                                        edit
-                                    </span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                    <thead>
+                        <tr class="f-weight-bold">
+                            <td><h6 class="f-weight-bold">Status</h6></td>
+                            <td><h6 class="f-weight-bold">Date Filed</h6></td>
+                            <td><h6 class="f-weight-bold">Location</h6></td>
+                            <td><h6 class="f-weight-bold">Date From</h6></td>
+                            <td><h6 class="f-weight-bold">Date To</h6></td>
+                            <td><h6 class="f-weight-bold">Time From</h6></td>
+                            <td><h6 class="f-weight-bold">Time To</h6></td>
+                            <td><h6 class="f-weight-bold">Purpose</h6></td>
+                            <td><h6 class="f-weight-bold">Actions</h6></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($pending_logs as $pending_log)
+                            <tr>
+                                <td><h6>{{ $pending_log->status }}</h6></td>
+                                <td><h6>{{ $pending_log->created_at }}</h6></td>
+                                <td><h6>{{ $pending_log->location }}</h6></td>
+                                <td><h6>{{ $pending_log->date_from }}</h6></td>
+                                <td><h6>{{ $pending_log->date_to }}</h6></td>
+                                <td><h6>{{ $pending_log->time_from }}</h6></td>
+                                <td><h6>{{ $pending_log->time_to }}</h6></td>
+                                <td><h6>{{ $pending_log->reason }}</h6></td>
+                                <td>
+                                    <div class="d-flex;">
+                                        <button type="button" class="u-action-btn u-bg-danger">
+                                            <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                                delete
+                                            </span>
+                                        </button>
+                                        <button type="button" class="u-action-btn u-bg-primary">
+                                            <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                                edit
+                                            </span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
             <div class="mob-approve-table u-m-15" style="overflow-x: auto; border-radius: 0.5rem;">
                 <table class="u-responsive-table">
-                    <tr class="f-weight-bold">
-                        <td><h6 class="f-weight-bold">Status</h6></td>
-                        <td><h6 class="f-weight-bold">Date Filed</h6></td>
-                        <td><h6 class="f-weight-bold">Location</h6></td>
-                        <td><h6 class="f-weight-bold">Date From</h6></td>
-                        <td><h6 class="f-weight-bold">Date To</h6></td>
-                        <td><h6 class="f-weight-bold">Time From</h6></td>
-                        <td><h6 class="f-weight-bold">Time To</h6></td>
-                        <td><h6 class="f-weight-bold">Purpose</h6></td>
-                        <td><h6 class="f-weight-bold">Date Approved</h6></td>
-                    </tr>
-                    <tr>
-                        <td><h6>Status</h6></td>
-                        <td><h6>Date Filed</h6></td>
-                        <td><h6>Location</h6></td>
-                        <td><h6>Date From</h6></td>
-                        <td><h6>Date To</h6></td>
-                        <td><h6>Time From</h6></td>
-                        <td><h6>Time To</h6></td>
-                        <td><h6>Purpose</h6></td>
-                        <td><h6>Date Approved</h6></td>
-                    </tr>
+                    <thead>
+                        <tr class="f-weight-bold">
+                            <td><h6 class="f-weight-bold">Status</h6></td>
+                            <td><h6 class="f-weight-bold">Date Filed</h6></td>
+                            <td><h6 class="f-weight-bold">Location</h6></td>
+                            <td><h6 class="f-weight-bold">Date From</h6></td>
+                            <td><h6 class="f-weight-bold">Date To</h6></td>
+                            <td><h6 class="f-weight-bold">Time From</h6></td>
+                            <td><h6 class="f-weight-bold">Time To</h6></td>
+                            <td><h6 class="f-weight-bold">Purpose</h6></td>
+                            <td><h6 class="f-weight-bold">Date Approved</h6></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($approved_logs as $approved_log)
+                            <tr>
+                                <td><h6>{{ $approved_log->status }}</h6></td>
+                                <td><h6>{{ $approved_log->created_at }}</h6></td>
+                                <td><h6>{{ $approved_log->location }}</h6></td>
+                                <td><h6>{{ $approved_log->date_from }}</h6></td>
+                                <td><h6>{{ $approved_log->date_to }}</h6></td>
+                                <td><h6>{{ $approved_log->time_from }}</h6></td>
+                                <td><h6>{{ $approved_log->time_to }}</h6></td>
+                                <td><h6>{{ $approved_log->reason }}</h6></td>
+                                <td><h6>{{ $approved_log->approved_at }}</h6></td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
             <div class="mob-rejected-table u-m-15" style="overflow-x: auto; border-radius: 0.5rem;">
                 <table class="u-responsive-table">
-                    <tr class="f-weight-bold">
-                        <td><h6 class="f-weight-bold">Status</h6></td>
-                        <td><h6 class="f-weight-bold">Date Filed</h6></td>
-                        <td><h6 class="f-weight-bold">Location</h6></td>
-                        <td><h6 class="f-weight-bold">Date From</h6></td>
-                        <td><h6 class="f-weight-bold">Date To</h6></td>
-                        <td><h6 class="f-weight-bold">Time From</h6></td>
-                        <td><h6 class="f-weight-bold">Time To</h6></td>
-                        <td><h6 class="f-weight-bold">Purpose</h6></td>
-                        <td><h6 class="f-weight-bold">Reject/Cancel Reason</h6></td>
-                        <td><h6 class="f-weight-bold">Date Rejected/Cancelled</h6></td>
-                    </tr>
-                    <tr>
-                        <td><h6>Status</h6></td>
-                        <td><h6>Date Filed</h6></td>
-                        <td><h6>Location</h6></td>
-                        <td><h6>Date From</h6></td>
-                        <td><h6>Date To</h6></td>
-                        <td><h6>Time From</h6></td>
-                        <td><h6>Time To</h6></td>
-                        <td><h6>Purpose</h6></td>
-                        <td><h6>Reject/Cancel Reason</h6></td>
-                        <td><h6>Date Rejected/Cancelled</h6></td>
-                    </tr>
+                    <thead>
+                        <tr class="f-weight-bold">
+                            <td><h6 class="f-weight-bold">Status</h6></td>
+                            <td><h6 class="f-weight-bold">Date Filed</h6></td>
+                            <td><h6 class="f-weight-bold">Location</h6></td>
+                            <td><h6 class="f-weight-bold">Date From</h6></td>
+                            <td><h6 class="f-weight-bold">Date To</h6></td>
+                            <td><h6 class="f-weight-bold">Time From</h6></td>
+                            <td><h6 class="f-weight-bold">Time To</h6></td>
+                            <td><h6 class="f-weight-bold">Purpose</h6></td>
+                            <td><h6 class="f-weight-bold">Reject/Cancel Reason</h6></td>
+                            <td><h6 class="f-weight-bold">Date Rejected/Canceled</h6></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><h6>Status</h6></td>
+                            <td><h6>Date Filed</h6></td>
+                            <td><h6>Location</h6></td>
+                            <td><h6>Date From</h6></td>
+                            <td><h6>Date To</h6></td>
+                            <td><h6>Time From</h6></td>
+                            <td><h6>Time To</h6></td>
+                            <td><h6>Purpose</h6></td>
+                            <td><h6>Reject/Cancel Reason</h6></td>
+                            <td><h6>Date Rejected/Canceled</h6></td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>

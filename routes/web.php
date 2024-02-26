@@ -126,6 +126,7 @@ Route::get('/my_activity_logs/export', [ActivityLogsController::class, 'exportFi
 
 // Official Business
 Route::get('/my_official_business', [OfficialBusinessController::class, 'index'])->name('officialbusiness');
+Route::post('/my_official_business/submit', [OfficialBusinessController::class, 'createOB'])->name('submitOB');
 
 // Overtimes
 Route::get('/my_overtimes', [OvertimesController::class, 'index'])->name('overtimes');
