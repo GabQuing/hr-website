@@ -561,7 +561,7 @@ h1,h2,h3,h4,h5,h6{
     overflow-x: auto;
     max-height: 600px;
     scrollbar-width: thin; /* Set the scrollbar width for modern browsers */
-    scrollbar-color: #ccc transparent; /* Set the scrollbar color for modern browsers */
+    scrollbar-color: #02718A transparent; /* Set the scrollbar color for modern browsers */
     -ms-overflow-style: none; /* Hide the scrollbar in Internet Explorer/Edge */
 }
 

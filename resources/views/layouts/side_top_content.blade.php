@@ -140,15 +140,14 @@
                                     <img src="{{ asset('img/icon-img/note_edit.png') }}" alt="">
                                     <a href="{{ route('overtimes') }}">My Overtimes</a>
                                 </li>
-                            @if ( Request::segment(1)  == 'my_undertimes')
+                            {{-- @if ( Request::segment(1)  == 'my_undertimes')
                                 <li class="active" id="current_link">
                                 @else
                                 <li class="active">
                             @endif
-                                    {{-- <span class="material-symbols-outlined">edit_attributes</span> --}}
                                     <img src="{{ asset('img/icon-img/square_edit.png') }}" alt="">
                                     <a href="{{ route('undertimes') }}">My Undertimes</a>
-                                </li>
+                                </li> --}}
                             @if ( Request::segment(1)  == 'my_leaves')
                                 <li class="active" id="current_link">
                                 @else
