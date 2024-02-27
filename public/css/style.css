@@ -506,7 +506,7 @@ h1,h2,h3,h4,h5,h6{
     justify-content: space-between;
     height: 100%;
     width: 270px;
-    padding: 10px 30px;
+    padding: 10px 20px;
     background: var(--gradient-color);
     position: fixed;
     top: 0;
@@ -559,15 +559,16 @@ h1,h2,h3,h4,h5,h6{
 .sidenav_links {
     margin-bottom: 20%;
     overflow-x: auto;
-    max-height: 600px;
+    max-height: 650px;
     scrollbar-width: thin; /* Set the scrollbar width for modern browsers */
     scrollbar-color: #02718A transparent; /* Set the scrollbar color for modern browsers */
     -ms-overflow-style: none; /* Hide the scrollbar in Internet Explorer/Edge */
+    padding-right: 15px;
 }
 
 /* For WebKit browsers (Chrome, Safari) */
 .sidenav_links::-webkit-scrollbar {
-    width: 6px; /* Set the scrollbar width */
+    width: 15px; /* Set the scrollbar width */
 }
 
 /* For WebKit browsers (Chrome, Safari) */

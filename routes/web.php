@@ -24,6 +24,7 @@ use App\Http\Controllers\LogUserAccessController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\ManageAddressController;
 use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\EmployeeRequestController;
 use App\Http\Controllers\MacAddressController;
 use App\Http\Controllers\ScheduleProfileController;
 use App\Http\Controllers\PolicyProcedureController;
@@ -121,10 +122,14 @@ Route::get('/my_activity_logs', [ActivityLogsController::class, 'index'])->name(
 Route::post('/my_activity_logs/show', [ActivityLogsController::class, 'generateFile'])->name('generate_file');
 Route::get('/my_activity_logs/export', [ActivityLogsController::class, 'exportFile'])->name('export_activity_log');
 
-
-
+// Employee Reqyest
+Route::get('/employee_request', [EmployeeRequestController::class, 'index'])->name('employee_request');
+Route::get('/employee_request/obd/{id}', [EmployeeRequestController::class, 'officialBusinessData'])->name('obd');
 
 // Official Business
+Route::post('/my_official_business/{id}/update', [OfficialBusinessController::class, 'updateOB'])->name('update');
+Route::get('/my_official_business/{id}/edit', [OfficialBusinessController::class, 'edit'])->name('editInfo');
+Route::get('/my_official_business/{id}/delete', [OfficialBusinessController::class, 'deleteOB'])->name('deleteOB');
 Route::get('/my_official_business', [OfficialBusinessController::class, 'index'])->name('officialbusiness');
 Route::post('/my_official_business/submit', [OfficialBusinessController::class, 'createOB'])->name('submitOB');
 

@@ -203,6 +203,15 @@
                                     {{-- <span class="material-symbols-outlined">list_alt</span> --}}
                                     <img src="{{ asset('img/icon-img/document.png') }}" alt="">
                                     <a href="{{ route('log_user_access') }}">Employee Activity Logs</a>
+                                </li>
+                            @if ( Request::segment(1)  == 'employee_request')
+                                <li class="active" id="current_link">
+                                @else
+                                <li class="active">
+                            @endif
+                                    {{-- <span class="material-symbols-outlined">list_alt</span> --}}
+                                    <img src="{{ asset('img/icon-img/document.png') }}" alt="">
+                                    <a href="{{ route('employee_request') }}">Employee Request</a>
                                 </li> 
                             @if ( Request::segment(1)  == 'schedule_profile')
                                 <li class="active" id="current_link">
