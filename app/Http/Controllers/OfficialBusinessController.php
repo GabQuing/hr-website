@@ -44,4 +44,43 @@ class OfficialBusinessController extends Controller
         $request->session()->flash('success', 'Official Business Generated Successfully!');
         return redirect()->back();
     }
+
+    public function edit($id)
+    {
+        $showOB = OfficialBusiness::where('id',$id)
+            ->first();
+
+        return $showOB;
+    }
+
+    public function updateOB(Request $request, $id)
+    {
+
+        $updateOb = OfficialBusiness::find($id);
+
+        $updateOb->update([
+            'date_from' => $request->input('date_from'),
+            'date_to' => $request->input('date_to'),
+            'time_from' => $request->input('time_from'),
+            'time_to' => $request->input('time_to'),
+            'location' => $request->input('location'),
+            'reason' => $request->input('reason'),
+        ]);
+
+        $request->session()->flash('success', 'Official Business has Been Edited!');
+        return redirect()->back();
+    }
+
+    public function deleteOB($id)
+    {
+        $cancelOb = OfficialBusiness::find($id);
+        $userId = (auth()->user()->id);
+
+        $cancelOb->update([
+            'status' => 'CANCELED',
+            'cancelled_by' => $userId,
+            'cancelled_at' => now()
+        ]);
+        return true;
+    }
 }

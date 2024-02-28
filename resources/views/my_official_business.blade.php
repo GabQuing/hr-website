@@ -10,7 +10,7 @@
         }
     </style>
 
-    <div class="modal-center" style="display: none;">
+    <div class="modal-center add-ob-form" style="display: none;">
         <div class="modal-box">
             <div class="modal-content">
                 <form method="POST" action="{{ route('submitOB') }}">
@@ -59,6 +59,61 @@
                     <div class="u-flex-space-between">
                         <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default" id="btn-close" type="button">Close</button>
                         <button class="u-t-white u-fw-b u-btn u-bg-accent u-m-10 u-border-1-default" id="btn-close" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-center edit-ob-form" id="edit-ob-form" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-content">
+                <form method="POST">
+                    @csrf
+                    <div style="overflow-x: auto; width: 100%;">
+                        <table class="custom_normal_table">
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <h3 class="f-weight-bold"><i class="fa-solid fa-eye"></i>Edit Official Business Form</h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Date From:</p>
+                                        <input class="u-input" name="date_from" id="edit_date_from" type="date" required>
+                                    </td>
+                                    <td>
+                                        <p>Date To:</p>
+                                        <input class="u-input" name="date_to" id="edit_date_to" type="date" required>
+                                    </td>                            
+                                    <td>
+                                        <p>Time From:</p>
+                                        <input class="u-input" name="time_from" id="edit_time_from" type="time" required>
+                                    </td>                            
+                                    <td>
+                                        <p>Time To:</p>
+                                        <input class="u-input" name="time_to" id="edit_time_to" type="time" required>
+                                    </td>                            
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <p>Location:</p>
+                                        <input class="u-input-border-boottom" name="location" id="edit_location" type="text" placeholder="Enter Location" required>
+                                    </td>                            
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <p>Reason:</p>
+                                        <input class="u-input-border-boottom" name="reason" id="edit_reason" type="text" placeholder="Enter Reason" required>
+                                    </td>                            
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="u-flex-space-between">
+                        <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default" id="btn-close-edit" type="button">Close</button>
+                        <button class="u-t-white u-fw-b u-btn u-bg-accent u-m-10 u-border-1-default" id="btn-edit-submit" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -120,14 +175,14 @@
                                 <td><h6>{{ $pending_log->reason }}</h6></td>
                                 <td>
                                     <div class="d-flex;">
-                                        <button type="button" class="u-action-btn u-bg-danger">
-                                            <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
-                                                delete
-                                            </span>
-                                        </button>
-                                        <button type="button" class="u-action-btn u-bg-primary">
+                                        <button type="button" class="u-action-btn u-bg-primary btn-edit" data-entry-id="{{ $pending_log->id }}" data-href="{{ route('editInfo', $pending_log->id) }}">
                                             <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
                                                 edit
+                                            </span>
+                                        </button>
+                                        <button type="button" class="u-action-btn u-bg-danger btn-cancel" data-entry-id="{{ $pending_log->id }}" data-href="{{ route('deleteOB', $pending_log->id) }}" >
+                                            <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                                delete
                                             </span>
                                         </button>
                                     </div>
@@ -181,23 +236,23 @@
                             <td><h6 class="f-weight-bold">Time From</h6></td>
                             <td><h6 class="f-weight-bold">Time To</h6></td>
                             <td><h6 class="f-weight-bold">Purpose</h6></td>
-                            <td><h6 class="f-weight-bold">Reject/Cancel Reason</h6></td>
                             <td><h6 class="f-weight-bold">Date Rejected/Canceled</h6></td>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><h6>Status</h6></td>
-                            <td><h6>Date Filed</h6></td>
-                            <td><h6>Location</h6></td>
-                            <td><h6>Date From</h6></td>
-                            <td><h6>Date To</h6></td>
-                            <td><h6>Time From</h6></td>
-                            <td><h6>Time To</h6></td>
-                            <td><h6>Purpose</h6></td>
-                            <td><h6>Reject/Cancel Reason</h6></td>
-                            <td><h6>Date Rejected/Canceled</h6></td>
-                        </tr>
+                        @foreach ($rejected_canceled_logs as $rejected_canceled_log)
+                            <tr>
+                                <td><h6>{{ $rejected_canceled_log->status }}</h6></td>
+                                <td><h6>{{ $rejected_canceled_log->created_at }}</h6></td>
+                                <td><h6>{{ $rejected_canceled_log->location }}</h6></td>
+                                <td><h6>{{ $rejected_canceled_log->date_from }}</h6></td>
+                                <td><h6>{{ $rejected_canceled_log->date_to }}</h6></td>
+                                <td><h6>{{ $rejected_canceled_log->time_from }}</h6></td>
+                                <td><h6>{{ $rejected_canceled_log->time_to }}</h6></td>
+                                <td><h6>{{ $rejected_canceled_log->reason }}</h6></td>
+                                <td><h6>{{ $rejected_canceled_log->rejected_at ?? $rejected_canceled_log->cancelled_at }}</h6></td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -229,12 +284,88 @@
         })
 
         $('#my_official_business_add').on('click', function(){
-            $('.modal-center').show();
+            $('.add-ob-form').show();
         })
 
         $('#btn-close').on('click', function(){
-            $('.modal-center').hide();
+            $('.add-ob-form').hide();
         })
+        $('#btn-close-edit').on('click', function(){
+            $('.edit-ob-form').hide();
+        })
+
+        $('')
+
+        $('.btn-edit').click(function(e) {
+            e.preventDefault();
+            const entryId = $(this).data('entry-id');
+            const url = $(this).attr('href');
+            let editUrl = "{{ route('editInfo', 'entryId') }}";
+            const newUrl = editUrl.replace('entryId', entryId);
+            console.log(newUrl);
+            $.ajax({
+            url: newUrl,   
+            dataType: 'json',
+            type: 'GET',
+                success: function(response) {
+                    $('#edit_date_from').val(response.date_from);
+                    $('#edit_date_to').val(response.date_to);
+                    $('#edit_time_from').val(response.time_from);
+                    $('#edit_time_to').val(response.time_to);
+                    $('#edit_location').val(response.location);
+                    $('#edit_reason').val(response.reason);
+                    $('.edit-ob-form').show(); // Show the modal
+                    $('form').attr('action', '/my_official_business/' + response.id + '/update');
+                    console.log(response);
+                },
+                error: function(error) {
+                console.log(error);
+                }
+            });
+
+        });
+
+        $('.btn-cancel').click(function(e) {
+            e.preventDefault();
+            const entryId = $(this).data('entry-id');
+            const url = $(this).attr('href');
+            let editUrl = "{{ route('deleteOB', 'entryId') }}";
+            const newUrl = editUrl.replace('entryId', entryId);
+            console.log(newUrl);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                reverseButtons: true,
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Remove It!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: newUrl,   
+                    dataType: 'json',
+                    type: 'GET',
+                        success: function(response) {
+                            Swal.fire(
+                                'Removed!',
+                                'The OB request has been canceled.',
+                                'success'
+                            )
+                            .then(() => {
+                                location.reload(); // Refresh the browser
+                            });
+                        },
+                        error: function(error) {
+                        console.log(error);
+                        }
+                    });
+
+                }
+            });
+
+        });
 
         function hideTable(button, title){
             $('.mob-pending-table').hide();
