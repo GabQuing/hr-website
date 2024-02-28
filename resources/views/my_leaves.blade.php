@@ -26,7 +26,10 @@
                                 <tr>
                                     <td>
                                         <p>Leave Type:</p>
-                                        <input class="u-input" name="start_date" type="date" required>
+                                        <select class="u-input" name="" id="" required>
+                                            <option value="">Sick</option>
+                                            <option value="">Vacation</option>
+                                        </select>
                                     </td>        
                                 </tr>
                                 <tr>                   

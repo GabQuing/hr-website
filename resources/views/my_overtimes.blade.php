@@ -42,6 +42,24 @@
                                 </td>                            
                             </tr>
                             <tr>
+                                <td>
+                                    <p>Day:</p>
+                                    <input class="u-input-border-boottom" name="reason" type="text" placeholder="Day..." readonly>
+                                </td>
+                                <td>
+                                    <p>Shift Date:</p>
+                                    <input class="u-input-border-boottom" type="date" readonly>
+                                </td>
+                                <td>
+                                    <p>Shift From:</p>
+                                    <input class="u-input-border-boottom" type="time" readonly>
+                                </td>
+                                <td>
+                                    <p>To:</p>
+                                    <input class="u-input-border-boottom" type="time" readonly>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td colspan="4">
                                     <h3 class="f-weight-bold"><i class="fa-solid fa-eye"></i> Overtime Details</h3>
                                 </td>

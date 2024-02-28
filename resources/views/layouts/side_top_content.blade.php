@@ -175,7 +175,7 @@
                             @endif
                             {{-- <span class="material-symbols-outlined">rule</span> --}}
                             <img src="{{ asset('img/icon-img/list.png') }}" alt="">
-                            <a href="{{ route('user_accounts') }}">User Accounts</a>
+                            <a href="{{ route('user_accounts') }}">Employee Accounts</a>
                                 </li>  
                             @if ( Request::segment(1)  == 'approve_accounts')
                                 <li class="active" id="current_link">
@@ -184,7 +184,7 @@
                             @endif
                                     {{-- <span class="material-symbols-outlined">person_add</span> --}}
                                     <img src="{{ asset('img/icon-img/user_setting.png') }}" alt="">
-                                    <a href="{{ route('approve_accounts') }}">Approve Registration</a>
+                                    <a href="{{ route('approve_accounts') }}">Employee Registration</a>
                                 </li>  
                             @if ( Request::segment(1)  == 'employee_informations')
                                 <li class="active" id="current_link">

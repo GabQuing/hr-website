@@ -122,9 +122,10 @@ Route::get('/my_activity_logs', [ActivityLogsController::class, 'index'])->name(
 Route::post('/my_activity_logs/show', [ActivityLogsController::class, 'generateFile'])->name('generate_file');
 Route::get('/my_activity_logs/export', [ActivityLogsController::class, 'exportFile'])->name('export_activity_log');
 
-// Employee Reqyest
+// Employee Request
 Route::get('/employee_request', [EmployeeRequestController::class, 'index'])->name('employee_request');
 Route::get('/employee_request/obd/{id}', [EmployeeRequestController::class, 'officialBusinessData'])->name('obd');
+Route::get('/employee_request/ot/{id}', [EmployeeRequestController::class, 'overtimeData'])->name('otd');
 
 // Official Business
 Route::post('/my_official_business/{id}/update', [OfficialBusinessController::class, 'updateOB'])->name('update');
