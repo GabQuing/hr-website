@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\attendanceSummaryExport;
 use App\Models\AttendanceSummary;
+use App\Models\UserLog;
 
 // use ExportController;
 
@@ -25,14 +26,20 @@ class AttendanceController extends Controller
         $toDate = $request->input('to_date');
         $userId = $request->input('employeeId');
 
-        $DaysPresent = (new AttendanceSummary())->countPresentDays($userId, $fromDate, $toDate);
-        $DaysAbsent = (new AttendanceSummary())->countAbsentDays($userId, $fromDate, $toDate);
+        $DaysPresent = (new UserLog())->countTotalPresent($userId, $fromDate, $toDate);
+        $DaysAbsent = (new AttendanceSummary())->countTotalAbsent($userId, $fromDate, $toDate);
         $totalHours = (new AttendanceSummary())->countTotalHours($userId, $fromDate, $toDate);
+        $totalLates = (new UserLog())->countTotalLates($userId, $fromDate, $toDate)->pluck('late_time')->toArray();
+        $totalLates = array_reduce($totalLates, function ($total, $late_time) {
+            return $total + $late_time;
+        });
+        $totalLates = round($totalLates / 60, 2);
         $totalHours = round($totalHours / 60 / 60, 2);
 
         $data['has_generated'] = true;
         $data['days_present'] = $DaysPresent;
         $data['total_hours'] = $totalHours;
+        $data['total_lates'] = $totalLates;
         $data['numberOfAbsences'] = $DaysAbsent;
         $data['fromDate'] = $fromDate;
         $data['toDate'] = $toDate;

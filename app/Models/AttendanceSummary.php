@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use DateTime;
 
 class AttendanceSummary extends Model
 {
@@ -18,16 +17,21 @@ class AttendanceSummary extends Model
         return $this->where('user_id', $user_id)->where('log_date', $date)->first();
     }
 
-    public function countPresentDays($user_id, $fromDate, $toDate)
+    // public function countPresentDays($user_id, $fromDate, $toDate)
+    // {
+    //     return $this->where('user_id', $user_id)
+    //         ->whereBetween('log_date', [$fromDate, $toDate])
+    //         ->whereNotNull('clock_in')
+    //         ->whereNotNull('clock_out')
+    //         ->count();
+    // }
+    public function countTotalAbsent($user_id, $fromDate, $toDate)
     {
-        return $this->where('user_id', $user_id)
-            ->whereBetween('log_date', [$fromDate, $toDate])
-            ->whereNotNull('clock_in')
-            ->whereNotNull('clock_out')
-            ->count();
-    }
-    public function countAbsentDays($user_id, $fromDate, $toDate)
-    {
+        $schedule_types_id = User::find($user_id)->schedule_types_id;
+        $work_day_names = WorkSchedule::where('schedule_types_id', $schedule_types_id)
+            ->where('rest_day', 0)
+            ->pluck('work_day')->toArray();
+
         $present_dates = $this->where('user_id', $user_id)
             ->whereBetween('log_date', [$fromDate, $toDate])
             ->whereNotNull('clock_in')
@@ -41,14 +45,14 @@ class AttendanceSummary extends Model
             $dates[] = $fromDate;
             while ($fromDate < $toDate) {
                 $newDateString = date('Y-m-d', strtotime($fromDate . ' +1 day'));
-
                 $dates[] = $newDateString;
                 $fromDate = $newDateString;
             }
         }
 
         foreach ($dates as $date) {
-            if (!in_array($date, $present_dates)) {
+            $day_name = date('l', strtotime($date));
+            if (!in_array($date, $present_dates) && in_array($day_name, $work_day_names)) {
                 $absent_count++;
             }
         }
