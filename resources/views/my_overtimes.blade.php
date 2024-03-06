@@ -13,7 +13,7 @@
 <div class="modal-center" style="display: none;">
     <div class="modal-box">
         <div class="modal-content">
-            <form wire:submit="editUser">
+            <form method="POST" action="{{ route('submitOT') }}">
                 @csrf
                 <div style="overflow-x: auto; width: 100%;">
                     <table class="custom_normal_table">
@@ -26,7 +26,7 @@
                             <tr>
                                 <td>
                                     <p>Shift:</p>
-                                    <span>REST DAY</span>
+                                    <span>{{ $employee_schedule ?? "No Schedule" }}</span>
                                 </td>
                                 <td>
                                     <p>Biometric Logs</p>
@@ -44,19 +44,19 @@
                             <tr>
                                 <td>
                                     <p>Day:</p>
-                                    <input class="u-input-border-boottom" name="reason" type="text" placeholder="Day..." readonly>
+                                    <input class="u-input-border-boottom" type="text" value="{{ $serverCurrentDay }}" readonly>
                                 </td>
                                 <td>
                                     <p>Shift Date:</p>
-                                    <input class="u-input-border-boottom" type="date" readonly>
+                                    <input class="u-input-border-boottom" type="date" name="shift_date" value="{{ $serverDateTime->format('Y-m-d') }}" id="shift_date" readonly>
                                 </td>
                                 <td>
                                     <p>Shift From:</p>
-                                    <input class="u-input-border-boottom" type="time" readonly>
+                                    <input class="u-input-border-boottom" name="shift_from" value="{{ $shift_from }}" placeholder="{{ $shift_from }}" type="time" readonly>
                                 </td>
                                 <td>
-                                    <p>To:</p>
-                                    <input class="u-input-border-boottom" type="time" readonly>
+                                    <p>Shift To:</p>
+                                    <input class="u-input-border-boottom" name="shift_to" value="{{ $shift_to }}" placeholder="{{ $shift_to }}" type="time" readonly>
                                 </td>
                             </tr>
                             <tr>
@@ -68,17 +68,16 @@
                                 <td colspan="2">
                                     <p>OT Classification:</p>
                                     <select class="u-input" name="ot_classification" required>
-                                        <option value="">Normal OT</option>
-                                        <option value="">Early OT</option>
+                                        <option selected value="Normal OT">Normal OT</option>
                                     </select>
                                 </td> 
                                 <td>
                                     <p>Start:</p>
-                                    <input class="u-input" name="start_date" type="date" placeholder="Enter Location" required>
+                                    <input class="u-input" name="start_time" value="{{ $shift_to }}" placeholder="{{ $shift_to }}" type="time" readonly>
                                 </td>                           
                                 <td>
                                     <p>End:</p>
-                                    <input class="u-input" name="end_date" type="date" placeholder="Enter Location" required>
+                                    <input class="u-input" name="end_time" type="time" required>
                                 </td>                           
                             </tr>
                             <tr>
@@ -115,101 +114,117 @@
                 </span>
                 Add OT
             </button>
+            <div>
+                @if (session('success'))
+                    <br>
+                    <span style="color: green; display:block;">{{ session('success') }}</span>
+                @endif
+            </div>
         </div>
         <div class="my_official_business_request_pending u-m-15">
             <h5 style="font-weight: bold;">My Request - <span class="request-title">Pending</span></h5>
         </div>
         <div class="mob-pending-table u-m-15" style="overflow-x: auto; border-radifus: 0.5rem;">
             <table class="u-responsive-table">
-                <tr class="f-weight-bold">
-                    <td><h6 class="f-weight-bold">Status</h6></td>
-                    <td><h6 class="f-weight-bold">Date Filed</h6></td>
-                    <td><h6 class="f-weight-bold">Location</h6></td>
-                    <td><h6 class="f-weight-bold">Date From</h6></td>
-                    <td><h6 class="f-weight-bold">Date To</h6></td>
-                    <td><h6 class="f-weight-bold">Time From</h6></td>
-                    <td><h6 class="f-weight-bold">Time To</h6></td>
-                    <td><h6 class="f-weight-bold">Purpose</h6></td>
-                    <td><h6 class="f-weight-bold">Actions</h6></td>
-                </tr>
-                <tr>
-                    <td><h6>Status</h6></td>
-                    <td><h6>Date Filed</h6></td>
-                    <td><h6>Location</h6></td>
-                    <td><h6>Date From</h6></td>
-                    <td><h6>Date To</h6></td>
-                    <td><h6>Time From</h6></td>
-                    <td><h6>Time To</h6></td>
-                    <td><h6>Purpose</h6></td>
-                    <td>
-                        <div class="d-flex;">
-                            <button type="button" class="u-action-btn u-bg-danger">
-                                <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
-                                    delete
-                                </span>
-                            </button>
-                            <button type="button" class="u-action-btn u-bg-primary">
-                                <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
-                                    edit
-                                </span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+                <thead>
+                    <tr class="f-weight-bold">
+                        <td><h6 class="f-weight-bold">Status</h6></td>
+                        <td><h6 class="f-weight-bold">Date Filed</h6></td>
+                        <td><h6 class="f-weight-bold">Shift From</h6></td>
+                        <td><h6 class="f-weight-bold">Shift To</h6></td>
+                        <td><h6 class="f-weight-bold">Time Start</h6></td>
+                        <td><h6 class="f-weight-bold">Time End</h6></td>
+                        <td><h6 class="f-weight-bold">Purpose</h6></td>
+                        <td><h6 class="f-weight-bold">Actions</h6></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($pending_logs as $pending_log)
+                        <tr>
+                            <td><h6>{{ $pending_log->status }}</h6></td>
+                            <td><h6>{{ $pending_log->shift_date }}</h6></td>
+                            <td><h6>{{ $pending_log->shift_from }}</h6></td>
+                            <td><h6>{{ $pending_log->shift_to }}</h6></td>
+                            <td><h6>{{ $pending_log->time_start }}</h6></td>
+                            <td><h6>{{ $pending_log->time_end }}</h6></td>
+                            <td><h6>{{ $pending_log->reason }}</h6></td>
+                            <td>
+                                <div class="d-flex;">
+                                    <button type="button" class="u-action-btn u-bg-primary btn-edit" data-entry-id="{{ $pending_log->id }}" data-href="{{ route('editInfo', $pending_log->id) }}">
+                                        <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                            edit
+                                        </span>
+                                    </button>
+                                    <button type="button" class="u-action-btn u-bg-danger btn-cancel" data-entry-id="{{ $pending_log->id }}" data-href="{{ route('deleteOB', $pending_log->id) }}" >
+                                        <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                            delete
+                                        </span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
             </table>
         </div>
         <div class="mob-approve-table u-m-15" style="overflow-x: auto; border-radius: 0.5rem;">
             <table class="u-responsive-table">
-                <tr class="f-weight-bold">
-                    <td><h6 class="f-weight-bold">Status</h6></td>
-                    <td><h6 class="f-weight-bold">Date Filed</h6></td>
-                    <td><h6 class="f-weight-bold">Location</h6></td>
-                    <td><h6 class="f-weight-bold">Date From</h6></td>
-                    <td><h6 class="f-weight-bold">Date To</h6></td>
-                    <td><h6 class="f-weight-bold">Time From</h6></td>
-                    <td><h6 class="f-weight-bold">Time To</h6></td>
-                    <td><h6 class="f-weight-bold">Purpose</h6></td>
-                    <td><h6 class="f-weight-bold">Date Approved</h6></td>
-                </tr>
-                <tr>
-                    <td><h6>Status</h6></td>
-                    <td><h6>Date Filed</h6></td>
-                    <td><h6>Location</h6></td>
-                    <td><h6>Date From</h6></td>
-                    <td><h6>Date To</h6></td>
-                    <td><h6>Time From</h6></td>
-                    <td><h6>Time To</h6></td>
-                    <td><h6>Purpose</h6></td>
-                    <td><h6>Date Approved</h6></td>
-                </tr>
+                <thead>
+                    <tr class="f-weight-bold">
+                        <td><h6 class="f-weight-bold">Status</h6></td>
+                        <td><h6 class="f-weight-bold">Date Filed</h6></td>
+                        <td><h6 class="f-weight-bold">Shift From</h6></td>
+                        <td><h6 class="f-weight-bold">Shift To</h6></td>
+                        <td><h6 class="f-weight-bold">Time Start</h6></td>
+                        <td><h6 class="f-weight-bold">Time End</h6></td>
+                        <td><h6 class="f-weight-bold">Purpose</h6></td>
+                        <td><h6 class="f-weight-bold">Date Approved</h6></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($approved_logs as $approved_log)
+                        <tr>
+                            <td><h6>{{ $approved_log->status }}</h6></td>
+                            <td><h6>{{ $approved_log->shift_date }}</h6></td>
+                            <td><h6>{{ $approved_log->shift_from }}</h6></td>
+                            <td><h6>{{ $approved_log->shift_to }}</h6></td>
+                            <td><h6>{{ $approved_log->time_start }}</h6></td>
+                            <td><h6>{{ $approved_log->time_end }}</h6></td>
+                            <td><h6>{{ $approved_log->reason }}</h6></td>
+                            <td><h6>{{ $approved_log->approved_at }}</h6></td>
+                        </tr>
+                    @endforeach
+                </tbody>
             </table>
         </div>
         <div class="mob-rejected-table u-m-15" style="overflow-x: auto; border-radius: 0.5rem;">
             <table class="u-responsive-table">
-                <tr class="f-weight-bold">
-                    <td><h6 class="f-weight-bold">Status</h6></td>
-                    <td><h6 class="f-weight-bold">Date Filed</h6></td>
-                    <td><h6 class="f-weight-bold">Location</h6></td>
-                    <td><h6 class="f-weight-bold">Date From</h6></td>
-                    <td><h6 class="f-weight-bold">Date To</h6></td>
-                    <td><h6 class="f-weight-bold">Time From</h6></td>
-                    <td><h6 class="f-weight-bold">Time To</h6></td>
-                    <td><h6 class="f-weight-bold">Purpose</h6></td>
-                    <td><h6 class="f-weight-bold">Reject/Cancel Reason</h6></td>
-                    <td><h6 class="f-weight-bold">Date Rejected/Cancelled</h6></td>
-                </tr>
-                <tr>
-                    <td><h6>Status</h6></td>
-                    <td><h6>Date Filed</h6></td>
-                    <td><h6>Location</h6></td>
-                    <td><h6>Date From</h6></td>
-                    <td><h6>Date To</h6></td>
-                    <td><h6>Time From</h6></td>
-                    <td><h6>Time To</h6></td>
-                    <td><h6>Purpose</h6></td>
-                    <td><h6>Reject/Cancel Reason</h6></td>
-                    <td><h6>Date Rejected/Cancelled</h6></td>
-                </tr>
+                <thead>
+                    <tr class="f-weight-bold">
+                        <td><h6 class="f-weight-bold">Status</h6></td>
+                        <td><h6 class="f-weight-bold">Date Filed</h6></td>
+                        <td><h6 class="f-weight-bold">Shift From</h6></td>
+                        <td><h6 class="f-weight-bold">Shift To</h6></td>
+                        <td><h6 class="f-weight-bold">Time Start</h6></td>
+                        <td><h6 class="f-weight-bold">Time End</h6></td>
+                        <td><h6 class="f-weight-bold">Purpose</h6></td>
+                        <td><h6 class="f-weight-bold">Date Rejected/Cancelled</h6></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($rejected_canceled_logs as $rejected_canceled_log)
+                    <tr>
+                        <td><h6>{{ $rejected_canceled_log->status }}</h6></td>
+                        <td><h6>{{ $rejected_canceled_log->shift_date }}</h6></td>
+                        <td><h6>{{ $rejected_canceled_log->shift_from }}</h6></td>
+                        <td><h6>{{ $rejected_canceled_log->shift_to }}</h6></td>
+                        <td><h6>{{ $rejected_canceled_log->time_start }}</h6></td>
+                        <td><h6>{{ $rejected_canceled_log->time_end }}</h6></td>
+                        <td><h6>{{ $rejected_canceled_log->reason }}</h6></td>
+                        <td><h6>{{ $rejected_canceled_log->rejected_at ?? $rejected_canceled_log->cancelled_at }}</h6></td>
+                    </tr>
+                    @endforeach
+                </tbody>
             </table>
         </div>
     </div>
@@ -249,6 +264,11 @@
             $('#btn-close').on('click', function(){
                 $('.modal-center').hide();
             })
+
+            const test = "{{ $serverDateTime }}"
+            console.log(test);
+
+
 
             function hideTable(button, title){
                 $('.mob-pending-table').hide();

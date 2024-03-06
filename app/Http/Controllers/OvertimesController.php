@@ -3,12 +3,81 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\schedule_type; 
+use App\Models\Overtime; 
+use App\Models\WorkSchedule; 
+use Carbon\Carbon;
 
 class OvertimesController extends Controller
 {
     
     public function index(Request $request)
     {
-        return view('my_overtimes');
+        $data=[];
+        $user_id = auth()->user()->id;
+        $server_datetime_today = now();
+        $server_day = $server_datetime_today->format('l');
+        $user_sched_id = auth()->user()->schedule_types_id;
+
+        $user_sched = schedule_type::where('id', $user_sched_id)
+            ->pluck('name')
+            ->first();
+
+        $user_shift_from = WorkSchedule::where('schedule_types_id', $user_sched_id)
+            ->where('work_day', $server_day)
+            ->pluck('work_from')
+            ->first();
+
+        $user_shift_to = WorkSchedule::where('schedule_types_id', $user_sched_id)
+            ->where('work_day', $server_day)
+            ->pluck('work_to')
+            ->first();
+
+        $data['pending_logs'] = Overtime::where('created_by',$user_id)
+                ->where('status', 'PENDING')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        $data['approved_logs'] = Overtime::where('created_by',$user_id)
+                ->where('status', 'APPROVED')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        $data['rejected_canceled_logs'] = Overtime::where('created_by',$user_id)
+                ->whereIn('status', ['REJECTED','CANCELED'])
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+        $data['shift_from'] = $user_shift_from;
+        $data['shift_to'] = $user_shift_to;
+        $data['serverCurrentDay'] = $server_day;
+        $data['serverDateTime'] = $server_datetime_today;
+        $data['employee_schedule'] = $user_sched;
+
+        return view('my_overtimes' , $data);
+    }
+
+    public function createOT(Request $request)
+    {
+        $employee_id = auth()->user()->id;
+        $employee_name = auth()->user()->name;
+        $user_sched_id = auth()->user()->schedule_types_id;
+        
+        Overtime::insert([
+            'schedule_types_id' => $user_sched_id,
+            'shift_date' => $request->input('shift_date'),
+            'shift_from' => $request->input('shift_from'),
+            'shift_to' => $request->input('shift_to'),
+            'time_start' => $request->input('start_time'),
+            'time_end' => $request->input('end_time'),
+            'status' => 'PENDING',
+            'ot_classification' => $request->input('ot_classification'),
+            'reason' => $request->input('reason'),
+            'created_at' => now(),
+            'created_by' => $employee_id,
+
+            
+        ]);
+
+        $request->session()->flash('success', 'Overtime Generated Successfully!');
+        return redirect()->back();
     }
 }

@@ -136,6 +136,7 @@ Route::post('/my_official_business/submit', [OfficialBusinessController::class, 
 
 // Overtimes
 Route::get('/my_overtimes', [OvertimesController::class, 'index'])->name('overtimes');
+Route::post('/my_overtimes/submit', [OvertimesController::class, 'createOT'])->name('submitOT');
 
 // Undertimes
 Route::get('/my_undertimes', [UndertimesController::class, 'index'])->name('undertimes');
