@@ -10,7 +10,7 @@
     }
 </style>
 
-<div class="modal-center" style="display: none;">
+<div class="modal-center add-ot-form" style="display: none;">
     <div class="modal-box">
         <div class="modal-content">
             <form method="POST" action="{{ route('submitOT') }}">
@@ -97,6 +97,91 @@
         </div>
     </div>
 </div>
+<div class="modal-center edit-ot-form" id="edit-ot-form" style="display: none;">
+    <div class="modal-box">
+        <div class="modal-content">
+            <form method="POST" >
+                @csrf
+                <div style="overflow-x: auto; width: 100%;">
+                    <table class="custom_normal_table">
+                        <tbody>
+                            <tr>
+                                <td colspan="4">
+                                    <h3 class="f-weight-bold"><i class="fa-solid fa-eye"></i> Overtime Application Form</h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Shift:</p>
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <p>Biometric Logs</p>
+                                    <span>No Logs</span>
+                                </td>                            
+                                <td>
+                                    <p>OT:</p>
+                                    <span>NO OT</span>
+                                </td>                            
+                                <td>
+                                    <p>OT Minutes:</p>
+                                    <span>0</span>
+                                </td>                            
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Day:</p>
+                                    <input class="u-input-border-boottom" type="text" id="edit_day_name" value="" readonly>
+                                </td>
+                                <td>
+                                    <p>Shift Date:</p>
+                                    <input class="u-input-border-boottom" type="date" name="shift_date" value="" id="edit_shift_date" readonly>
+                                </td>
+                                <td>
+                                    <p>Shift From:</p>
+                                    <input class="u-input-border-boottom" name="shift_from" value=""  id="edit_shift_from" type="time" readonly>
+                                </td>
+                                <td>
+                                    <p>Shift To:</p>
+                                    <input class="u-input-border-boottom" name="shift_to" value=""  id="edit_shift_to"type="time" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <h3 class="f-weight-bold"><i class="fa-solid fa-eye"></i> Overtime Details</h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <p>OT Classification:</p>
+                                    <input class="u-input-border-boottom" name="ot_classification" value="" id="edit_ot_classification" type="text" readonly>
+                                </td> 
+                                <td>
+                                    <p>Start:</p>
+                                    <input class="u-input" name="start_time" value="" id="edit_time_start"  type="time" readonly>
+                                </td>                           
+                                <td>
+                                    <p>End:</p>
+                                    <input class="u-input" name="end_time" type="time" id="edit_time_end" required>
+                                </td>                           
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <p>Indicate Ticket Number (If Applicable) and Reason</p>
+                                    <input class="u-input-border-boottom" name="reason" id="edit_reason"type="text" placeholder="Enter Reason" required>
+                                </td>                            
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="u-flex-space-between">
+                    <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default" id="btn-close-edit" type="button">Close</button>
+                    <button class="u-t-white u-fw-b u-btn u-bg-accent u-m-10 u-border-1-default" id="btn-edit-submit" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="my_official_business_content" style="display: none">
     <div class="my_official_business_main_content u-bg-white">
         <div class="my_official_business_header">
@@ -150,12 +235,12 @@
                             <td><h6>{{ $pending_log->reason }}</h6></td>
                             <td>
                                 <div class="d-flex;">
-                                    <button type="button" class="u-action-btn u-bg-primary btn-edit" data-entry-id="{{ $pending_log->id }}" data-href="{{ route('editInfo', $pending_log->id) }}">
+                                    <button type="button" class="u-action-btn u-bg-primary btn-edit" data-entry-id="{{ $pending_log->id }}" data-href="{{ route('editOT', $pending_log->id) }}">
                                         <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
                                             edit
                                         </span>
                                     </button>
-                                    <button type="button" class="u-action-btn u-bg-danger btn-cancel" data-entry-id="{{ $pending_log->id }}" data-href="{{ route('deleteOB', $pending_log->id) }}" >
+                                    <button type="button" class="u-action-btn u-bg-danger btn-cancel" data-entry-id="{{ $pending_log->id }}" data-href="{{ route('deleteOT', $pending_log->id) }}" >
                                         <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
                                             delete
                                         </span>
@@ -258,15 +343,87 @@
             })
 
             $('#my_official_business_add').on('click', function(){
-                $('.modal-center').show();
+                $('.add-ot-form').show();
             })
 
             $('#btn-close').on('click', function(){
-                $('.modal-center').hide();
+                $('.add-ot-form').hide();
             })
 
-            const test = "{{ $serverDateTime }}"
-            console.log(test);
+            $('#btn-close-edit').on('click', function(){
+            $('.edit-ot-form').hide();
+            })
+
+
+            $('.btn-edit').click(function(e){
+                e.preventDefault();
+                const entryId = $(this).data('entry-id');
+                const url = $(this).attr('href');
+                let editUrl = "{{ route('editOT', 'entryId') }}";
+                const newUrl = editUrl.replace('entryId', entryId);
+                console.log(newUrl);
+                $.ajax({
+                    url: newUrl,   
+                    dataType: 'json',
+                    type: 'GET',
+                    success: function(response) {
+                        $('#edit_shift_date').val(response.shift_date);
+                        $('#edit_day_name').val(response.day_name);
+                        $('#edit_shift_from').val(response.shift_from);
+                        $('#edit_shift_to').val(response.shift_to);
+                        $('#edit_time_start').val(response.time_start);
+                        $('#edit_time_end').val(response.time_end);
+                        $('#edit_ot_classification').val(response.ot_classification);
+                        $('#edit_reason').val(response.reason);
+                        $('.edit-ot-form').show(); 
+                        $('form').attr('action', '/my_overtimes/' + response.id + '/update');
+                        console.log(response);
+                    },
+                    error: function(error) {
+                    console.log(error);
+                    }
+                });
+            });
+
+            $('.btn-cancel').click(function(e) {
+            e.preventDefault();
+            const entryId = $(this).data('entry-id');
+            const url = $(this).attr('href');
+            let editUrl = "{{ route('deleteOT', 'entryId') }}";
+            const newUrl = editUrl.replace('entryId', entryId);
+            console.log(newUrl);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                reverseButtons: true,
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Remove It!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: newUrl,   
+                    dataType: 'json',
+                    type: 'GET',
+                        success: function(response) {
+                            Swal.fire(
+                                'Removed!',
+                                'The OT request has been canceled.',
+                                'success'
+                            )
+                            .then(() => {
+                                location.reload(); // Refresh the browser
+                            });
+                        },
+                        error: function(error) {
+                        console.log(error);
+                        }
+                    });
+                }
+            });
+        });
 
 
 

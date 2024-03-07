@@ -55,7 +55,7 @@ class OfficialBusinessController extends Controller
 
     public function updateOB(Request $request, $id)
     {
-
+        $employee_id = auth()->user()->id;
         $updateOb = OfficialBusiness::find($id);
 
         $updateOb->update([
@@ -65,9 +65,12 @@ class OfficialBusinessController extends Controller
             'time_to' => $request->input('time_to'),
             'location' => $request->input('location'),
             'reason' => $request->input('reason'),
+            'updated_by' => $employee_id,
+            'updated_at' => now(),
+
         ]);
 
-        $request->session()->flash('success', 'Official Business has Been Edited!');
+        $request->session()->flash('success', 'Official Business Has Been Edited!');
         return redirect()->back();
     }
 

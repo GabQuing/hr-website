@@ -80,4 +80,40 @@ class OvertimesController extends Controller
         $request->session()->flash('success', 'Overtime Generated Successfully!');
         return redirect()->back();
     }
+
+    public function edit ($id){
+
+        $showOt = Overtime::where('id',$id)
+        ->first();
+
+        return $showOt;
+    }
+
+    public function updateOT(Request $request, $id)
+    {
+        $employee_id = auth()->user()->id;
+        $updateOT = Overtime::find($id);
+
+        $updateOT->update([
+            'time_end' => $request->input('end_time'),
+            'reason' => $request->input('reason'),
+            'updated_by' => $employee_id,
+            'updated_at' => now(),
+        ]);
+        $request->session()->flash('success', 'Overtime Form Has Been Edited!');
+        return redirect()->back();
+    }
+
+    public function deleteOT($id)
+    {
+        $cancelOT = Overtime::find($id);
+        $userId = (auth()->user()->id);
+
+        $cancelOT->update([
+            'status' => 'CANCELED',
+            'cancelled_by' => $userId,
+            'cancelled_at' => now()
+        ]);
+        return true;
+    }
 }

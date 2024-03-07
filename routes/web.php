@@ -136,7 +136,11 @@ Route::post('/my_official_business/submit', [OfficialBusinessController::class, 
 
 // Overtimes
 Route::get('/my_overtimes', [OvertimesController::class, 'index'])->name('overtimes');
+Route::get('/my_overtimes/{id}/edit', [OvertimesController::class, 'edit'])->name('editOT');
+Route::get('/my_overtimes/{id}/delete', [OvertimesController::class, 'deleteOT'])->name('deleteOT');
 Route::post('/my_overtimes/submit', [OvertimesController::class, 'createOT'])->name('submitOT');
+Route::post('/my_overtimes/{id}/update', [OvertimesController::class, 'updateOT'])->name('update');
+
 
 // Undertimes
 Route::get('/my_undertimes', [UndertimesController::class, 'index'])->name('undertimes');
