@@ -28,6 +28,7 @@ use App\Http\Controllers\EmployeeRequestController;
 use App\Http\Controllers\MacAddressController;
 use App\Http\Controllers\ScheduleProfileController;
 use App\Http\Controllers\PolicyProcedureController;
+use App\Http\Controllers\EmployeeLeavesController;
 use App\Models\log_approve;
 
 /*
@@ -126,6 +127,9 @@ Route::get('/my_activity_logs/export', [ActivityLogsController::class, 'exportFi
 Route::get('/employee_request', [EmployeeRequestController::class, 'index'])->name('employee_request');
 Route::get('/employee_request/obd/{id}', [EmployeeRequestController::class, 'officialBusinessData'])->name('obd');
 Route::get('/employee_request/ot/{id}', [EmployeeRequestController::class, 'overtimeData'])->name('otd');
+
+//Employee Leaves
+Route::get('/employee_leave', [EmployeeLeavesController::class, 'index'])->name('employee_leaves');
 
 // Official Business
 Route::post('/my_official_business/{id}/update', [OfficialBusinessController::class, 'updateOB'])->name('update');

@@ -213,6 +213,14 @@
                                     <img src="{{ asset('img/icon-img/document.png') }}" alt="">
                                     <a href="{{ route('employee_request') }}">Employee Request</a>
                                 </li> 
+                            @if ( Request::segment(1)  == 'employee_leave')
+                                <li class="active" id="current_link">
+                                @else
+                                <li class="active">
+                            @endif
+                                    <img src="{{ asset('img/icon-img/document.png') }}" alt="">
+                                    <a href="{{ route('employee_leaves') }}">Employee Leaves</a>
+                                </li> 
                             @if ( Request::segment(1)  == 'schedule_profile')
                                 <li class="active" id="current_link">
                                 @else
