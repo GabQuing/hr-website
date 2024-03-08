@@ -56,4 +56,8 @@ class User extends Authenticatable
         return $this->hasOne(BasicInformation::class);
     }
 
+    public function getAllActiveUsers()
+    {
+        return $this->whereNull('deleted_at');
+    }
 }

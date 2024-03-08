@@ -5,6 +5,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Exports\EmployeeActivityLogsExport;
 use App\Models\UserLog;
+use App\Models\User;
 use DB;
 
 class LogUserAccessController extends Controller
@@ -18,6 +19,13 @@ class LogUserAccessController extends Controller
         $data['user_logs'] = (new UserLog())
             ->getAllLogs()
             ->paginate(10);
+        $data['usernames'] = (new User())
+            ->getAllActiveUsers()
+            ->select(
+                'users.id',
+                'users.name',
+            )
+            ->get();
 
         $data['has_generated'] = false;
         return view('log_user_access', $data);
@@ -26,14 +34,25 @@ class LogUserAccessController extends Controller
     public function generateEmployeeFile(Request $request)
     {
         $data=[];
+        $fromDate = $request->input('from_date');
+        $toDate = $request->input('to_date');
 
         $data['user_logs'] = (new UserLog())
             ->getAllLogs()
+            ->whereBetween('log_date',[$fromDate,$toDate])
+            ->whereIn('user_id',$request->input('users_id'))
             ->paginate(10)
             ->appends($request->all());
 
-        $fromDate = $request->input('from_date');
-        $toDate = $request->input('to_date');
+        $data['usernames'] = (new User())
+            ->getAllActiveUsers()
+            ->select(
+                'users.id',
+                'users.name',
+            )
+            ->get();
+
+
         $numEntry = DB::table('user_log_view')
             ->whereBetween('log_date',[$fromDate,$toDate])
             ->select('user_id',
