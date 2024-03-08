@@ -119,7 +119,7 @@ Route::get('/export', [AttendanceController::class, 'export'])->name('export');
 
 // Activity Logs
 Route::get('/my_activity_logs', [ActivityLogsController::class, 'index'])->name('activitylogs');
-Route::post('/my_activity_logs/show', [ActivityLogsController::class, 'generateFile'])->name('generate_file');
+Route::get('/my_activity_logs/show', [ActivityLogsController::class, 'generateFile'])->name('generate_file');
 Route::get('/my_activity_logs/export', [ActivityLogsController::class, 'exportFile'])->name('export_activity_log');
 
 // Employee Request
@@ -191,7 +191,7 @@ Route::post('/employee_informations/getSchedule', [ProfileController::class, 'ge
 
 //Log User Access
 Route::get('/log_user_access', [LogUserAccessController::class, 'index'])->name('log_user_access');
-Route::post('/log_user_access/show', [LogUserAccessController::class, 'generateEmployeeFile'])->name('generate_user_file');
+Route::get('/log_user_access/show', [LogUserAccessController::class, 'generateEmployeeFile'])->name('generate_user_file');
 Route::get('/log_user_access/show/export', [LogUserAccessController::class, 'exportEmployeeFile'])->name('export_user_activity_log');
 Route::post('/log_user_access/uuid', [LogUserAccessController::class, 'getGoogleImages'])->name('getGoogleImages');
 

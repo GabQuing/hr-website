@@ -29,7 +29,8 @@ class LogUserAccessController extends Controller
 
         $data['user_logs'] = (new UserLog())
             ->getAllLogs()
-            ->paginate(10);
+            ->paginate(10)
+            ->appends($request->all());
 
         $fromDate = $request->input('from_date');
         $toDate = $request->input('to_date');
@@ -58,7 +59,6 @@ class LogUserAccessController extends Controller
     {
         $dataEntry = $request->input('data_entry');
         $data = [];
-        $data['data_entry'] = $dataEntry;
         $data['from_date'] = $request->input('from_date');
         $data['to_date'] = $request->input('to_date');
 

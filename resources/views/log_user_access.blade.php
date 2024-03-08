@@ -8,7 +8,7 @@
 
 <div>
     <div class="modal" id="pop_image">
-        <form method="POST" action="{{ route('generate_user_file') }}">
+        <form method="GET" action="{{ route('generate_user_file') }}">
         @csrf
             <div class="modal_body" >
                 <div class="container_title">
@@ -33,7 +33,7 @@
 </div>
 <a class="user_info_link" href="#pop_image" rel="modal:open">Generate File</a>
 @if ($has_generated ?? false)
-    <a href="{{ route('export_user_activity_log') }}?data_entry={{ $numEntry }}&from_date={{ $fromDate }}&to_date={{ $toDate }}" id="export_excel">Export File</a>
+    <a href="{{ route('export_user_activity_log') }}?from_date={{ $fromDate }}&to_date={{ $toDate }}" id="export_excel">Export File</a>
 @endif
 <div>
     @if (session('success'))

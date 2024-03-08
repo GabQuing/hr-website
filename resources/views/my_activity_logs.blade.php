@@ -13,7 +13,7 @@
 <div class="modal-center" style="display: none;">
     <div class="modal-box">
         <div class="modal-content">
-            <form method="POST" action="{{ route('generate_file') }}">
+            <form method="GET" action="{{ route('generate_file') }}">
                 @csrf
                 <div style="overflow-x: auto; width: 100%;">
                     <table class="custom_normal_table">
@@ -73,7 +73,7 @@
 <a class="user_info_link open-modal">Generate File</a>
 {{-- <a class="user_info_link" href="#pop_image" rel="modal:open">Generate File</a> --}}
 @if ($has_generated ?? false)
-    <a href="{{ route('export_activity_log') }}?data_entry={{ $numEntry }}&from_date={{ $fromDate }}&to_date={{ $toDate }}" id="export_excel">Export File</a>
+    <a href="{{ route('export_activity_log') }}?from_date={{ $fromDate }}&to_date={{ $toDate }}" id="export_excel">Export File</a>
 @endif
 <div>
     @if (session('success'))

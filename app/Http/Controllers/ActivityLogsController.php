@@ -37,7 +37,8 @@ class ActivityLogsController extends Controller
         $data=[];
         $data['user_logs'] = (new UserLog())
             ->getByUserId($user_id)
-            ->paginate(10);
+            ->paginate(10)
+            ->appends($request->all());
 
         $employeeId = auth()->user()->id;
         $fromDate = $request->input('from_date');
@@ -67,7 +68,6 @@ class ActivityLogsController extends Controller
         $dataEntry = $request->input('data_entry');
         $employeeName = auth()->user()->employee_name;
         $data = [];
-        $data['data_entry'] = $dataEntry;
         $data['from_date'] = $request->input('from_date');
         $data['to_date'] = $request->input('to_date');
         
