@@ -45,8 +45,9 @@
     </div>
 </div>
 
-
-<a class="user_info_link open-modal">Generate Table</a>
+<div class="u-mt-10">
+    <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default open-modal">Generate Table</button>
+</div>
 {{-- <a class="user_info_link" href="#pop_image" rel="modal:open">Generate File</a> --}}
 @if ($has_generated ?? false)
     <a href="{{ route('export_activity_log') }}?from_date={{ $fromDate }}&to_date={{ $toDate }}" id="export_excel">Export File</a>

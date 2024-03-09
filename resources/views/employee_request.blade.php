@@ -10,13 +10,14 @@
     </style>
 
     <div>
-
         {{-- Modals --}}
         <div class="modal-center" id="official-business-modal" style="display: none;">
             <div class="modal-box">
                 <div class="modal-content">
-                    <form method="POST" action="{{ route('submitOB') }}">
+                    <form method="POST" action="{{ route('obForm') }}">
                         @csrf
+                        <input type="hidden" name="ob_id">
+                        <input type="hidden" name="ob_form_btn"> 
                         <div style="overflow-x: auto; width: 100%;">
                             <table class="custom_normal_table">
                                 <tbody>
@@ -28,31 +29,31 @@
                                     <tr>
                                         <td>
                                             <p>Date From:</p>
-                                            <input class="u-input" name="ob_date_from" type="date" disabled>
+                                            <input class="u-input" name="ob_date_from" type="date" readonly>
                                         </td>
                                         <td>
                                             <p>Date To:</p>
-                                            <input class="u-input" name="ob_date_to" type="date" disabled>
+                                            <input class="u-input" name="ob_date_to" type="date" readonly>
                                         </td>                            
                                         <td>
                                             <p>Time From:</p>
-                                            <input class="u-input" name="ob_time_from" type="time" disabled>
+                                            <input class="u-input" name="ob_time_from" type="time" readonly>
                                         </td>                            
                                         <td>
                                             <p>Time To:</p>
-                                            <input class="u-input" name="ob_time_to" type="time" disabled>
+                                            <input class="u-input" name="ob_time_to" type="time" readonly>
                                         </td>                            
                                     </tr>
                                     <tr>
                                         <td colspan="4">
                                             <p>Location:</p>
-                                            <input class="u-input-border-boottom" name="ob_location" type="text" placeholder="Enter Location" disabled>
+                                            <input class="u-input-border-boottom" name="ob_location" type="text" placeholder="Enter Location" readonly>
                                         </td>                            
                                     </tr>
                                     <tr>
                                         <td colspan="4">
                                             <p>Reason:</p>
-                                            <input class="u-input-border-boottom" name="ob_reason" type="text" placeholder="Enter Reason" disabled>
+                                            <input class="u-input-border-boottom" name="ob_reason" type="text" placeholder="Enter Reason" readonly>
                                         </td>                            
                                     </tr>
                                 </tbody>
@@ -61,8 +62,8 @@
                         <div class="u-flex-space-between u-flex-wrap">
                             <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" id="ob-btn-close" type="button">Close</button>
                             <div class="u-flex-space-between">
-                                <button class="u-t-white u-fw-b u-btn u-bg-danger u-m-5 u-border-1-default"  type="submit">Rejected</button>
-                                <button class="u-t-white u-fw-b u-btn u-bg-accent u-m-5 u-border-1-default"  type="submit">Approve</button>
+                                <button class="ob-btns u-t-white u-fw-b u-btn u-bg-danger u-m-5 u-border-1-default" type="submit">Reject</button>
+                                <button class="ob-btns u-t-white u-fw-b u-btn u-bg-accent u-m-5 u-border-1-default" type="submit">Approve</button>
                             </div>
                         </div>
                     </form>
@@ -73,8 +74,10 @@
         <div class="modal-center" id="overtime-modal" style="display: none;">
             <div class="modal-box">
                 <div class="modal-content">
-                    <form wire:submit="editUser">
+                    <form method="POST" action="{{ route('otForm') }}">
                         @csrf
+                        <input type="hidden" name="ot_id">
+                        <input type="hidden" name="ot_form_btn"> 
                         <div style="overflow-x: auto; width: 100%;">
                             <table class="custom_normal_table">
                                 <tbody>
@@ -83,7 +86,7 @@
                                             <h3 class="f-weight-bold"><i class="fa-solid fa-eye"></i> Overtime Application Form</h3>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    {{-- <tr>
                                         <td>
                                             <p>Shift:</p>
                                             <span>REST DAY</span>
@@ -100,23 +103,23 @@
                                             <p>OT Minutes:</p>
                                             <span>0</span>
                                         </td>                            
-                                    </tr>
+                                    </tr> --}}
                                     <tr>
                                         <td>
                                             <p>Day:</p>
-                                            <input class="u-input-border-boottom" name="reason" type="text" placeholder="Day..." readonly>
+                                            <input class="u-input-border-boottom" name="ot_day" type="text" placeholder="Day..." readonly>
                                         </td>
                                         <td>
                                             <p>Shift Date:</p>
-                                            <input class="u-input-border-boottom" type="date" readonly>
+                                            <input class="u-input-border-boottom" name="ot_shift_date" type="date" readonly>
                                         </td>
                                         <td>
                                             <p>Shift From:</p>
-                                            <input class="u-input-border-boottom" type="time" readonly>
+                                            <input class="u-input-border-boottom" name="ot_shift_from" type="time" readonly>
                                         </td>
                                         <td>
                                             <p>To:</p>
-                                            <input class="u-input-border-boottom" type="time" readonly>
+                                            <input class="u-input-border-boottom" name="ot_shift_to" type="time" readonly>
                                         </td>
                                     </tr>
                                     <tr>
@@ -134,17 +137,17 @@
                                         </td> 
                                         <td>
                                             <p>Start:</p>
-                                            <input class="u-input" name="start_date" type="date" placeholder="Enter Location" disabled>
+                                            <input class="u-input" name="ot_time_from" type="time" placeholder="Enter Location" disabled>
                                         </td>                           
                                         <td>
                                             <p>End:</p>
-                                            <input class="u-input" name="end_date" type="date" placeholder="Enter Location" disabled>
+                                            <input class="u-input" name="ot_time_to" type="time" placeholder="Enter Location" disabled>
                                         </td>                           
                                     </tr>
                                     <tr>
                                         <td colspan="4">
                                             <p>Indicate Ticket Number (If Applicable) and Reason</p>
-                                            <input class="u-input-border-boottom" name="reason" type="text" placeholder="Enter Reason" disabled>
+                                            <input class="u-input-border-boottom" name="ot_reason" type="text" placeholder="Enter Reason" disabled>
                                         </td>                            
                                     </tr>
                                 </tbody>
@@ -153,8 +156,8 @@
                         <div class="u-flex-space-between">
                             <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" id="ot-btn-close" type="button">Close</button>
                             <div class="u-flex-space-between">
-                                <button class="u-t-white u-fw-b u-btn u-bg-danger u-m-5 u-border-1-default"  type="submit">Rejected</button>
-                                <button class="u-t-white u-fw-b u-btn u-bg-accent u-m-5 u-border-1-default"  type="submit">Approve</button>
+                                <button class="ot-btns u-t-white u-fw-b u-btn u-bg-danger u-m-5 u-border-1-default"  type="ot-btns submit">Rejected</button>
+                                <button class="ot-btns u-t-white u-fw-b u-btn u-bg-accent u-m-5 u-border-1-default"  type="submit">Approve</button>
                             </div>
                         </div>
                     </form>
@@ -197,6 +200,15 @@
             </div>
         </div>
 
+        <div class="u-mt-10 u-mb-10 u-t-success">
+            @if(session('ob-success'))
+                <h5>{{ session('ob-success') }}</h5>
+            @endif
+            @if(session('ot-success'))
+                <h5>{{ session('ot-success') }}</h5>
+            @endif
+        </div>
+
         <div class="official-business-table" style="display: none;">
             <div class="u-mt-10">
                 <table class="myTable" class="display" style="width:100%;">
@@ -217,7 +229,7 @@
                         @if (!empty($official_businesses))
                             @foreach ($official_businesses as $official_business)
                                 <tr>
-                                    <td>{{ $official_business->status }}</td>
+                                    <td class="u-t-warning u-fw-b">{{ $official_business->status }}</td>
                                     <td>{{ $official_business->created_at }}</td>
                                     <td>{{ $official_business->location }}</td>
                                     <td>{{ $official_business->date_from }}</td>
@@ -270,28 +282,43 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (!empty($overtimes))
-                            @foreach ($overtimes as $overtime)
-                                <tr>
-                                    <td>{{ $overtime->status }}</td>
-                                    <td>{{ $overtime->created_at }}</td>
-                                    <td>{{ date('l', strtotime($overtime->shift_date)) }}</td>
-                                    <td>{{ $overtime->start_date }}</td>
-                                    <td>{{ $overtime->start_end }}</td>
-                                    <td>50</td>
-                                    <td>Patrick Punzalan</td>
-                                    <td>
-                                        <div class="d-flex;">
-                                            <button class="ot-btn u-action-btn u-bg-primary" type="button" ot-id="{{ $overtime->id }}">
-                                                <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
-                                                    edit
-                                                </span>
-                                            </button>
-                                        </div>
-                                    </td>
-                            @endforeach
-                        @endif
-                    </tbody>
+                    @if (!empty($overtimes))
+                        @foreach ($overtimes as $overtime)
+                            <tr>
+                                <td class="u-t-warning u-fw-b">{{ $overtime->status }}</td>
+                                <td>{{ $overtime->created_at }}</td>
+                                <td>{{ date('l', strtotime($overtime->shift_date)) }}</td>
+                                <td>{{ $overtime->time_start }}</td>
+                                <td>{{ $overtime->time_end }}</td>
+                                <td>
+                                    <?php
+                                        // Calculate the time difference
+                                        $start = new DateTime($overtime->time_start);
+                                        $end = new DateTime($overtime->time_end);
+                                        $interval = $start->diff($end);
+                                        $hours = $interval->h;
+                                        $minutes = $interval->i;
+
+                                        if ($hours > 0) {
+                                            echo $hours . " hr and ";
+                                        }
+                                        
+                                        echo $minutes . " minutes";
+                                    ?>
+                                </td>
+                                <td>Patrick Punzalan</td>
+                                <td>
+                                    <div class="d-flex;">
+                                        <button class="ot-btn u-action-btn u-bg-primary" type="button" ot-id="{{ $overtime->id }}">
+                                            <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                                edit
+                                            </span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                     <tfoot>
                         <tr>
                             <th>Status</th>
@@ -316,7 +343,6 @@
     $(document).ready(function(){
 
         $('.btn-close').on('click', function(){
-            console.log('hello world');
             $('.modal-center').hide();
         })
 
@@ -353,10 +379,11 @@
                 dataType: 'json',
                 type: 'GET',
                 success: function(response){
+                    $('input[name="ob_id"]').val(response.id);
                     $('input[name="ob_date_from"]').val(response.date_from);
                     $('input[name="ob_date_to"]').val(response.date_to);
                     $('input[name="ob_time_from"]').val(response.time_from);
-                    $('input[name="ob_time_from"]').val(response.time_to);
+                    $('input[name="ob_time_to"]').val(response.time_to);
                     $('input[name="ob_location"]').val(response.location);
                     $('input[name="ob_reason"]').val(response.reason);
                 },
@@ -373,23 +400,42 @@
             let url = "{{ route('otd', ':otId') }}";
             url = url.replace(':otId', otId);
             
-            // $.ajax({
-            //     url: url, 
-            //     dataType: 'json',
-            //     type: 'GET',
-            //     success: function(response){
-            //         $('input[name="ob_date_from"]').val(response.date_from);
-            //         $('input[name="ob_date_to"]').val(response.date_to);
-            //         $('input[name="ob_time_from"]').val(response.time_from);
-            //         $('input[name="ob_time_from"]').val(response.time_to);
-            //         $('input[name="ob_location"]').val(response.location);
-            //         $('input[name="ob_reason"]').val(response.reason);
-            //     },
-            //     error: function(error){
-            //         console.log(error)
-            //     }
-            // })
+            $.ajax({
+                url: url, 
+                dataType: 'json',
+                type: 'GET',
+                success: function(response){
+                    console.log(response);
+                    $('input[name="ot_id"]').val(response.id);
+                    $('input[name="ot_day"]').val(new Date(response.shift_date).toLocaleDateString('en-US', { weekday: 'long' }));
+                    $('input[name="ot_shift_date"]').val(response.shift_date);
+                    $('input[name="ot_shift_from"]').val(response.shift_from);
+                    $('input[name="ot_shift_to"]').val(response.shift_to);
+                    $('input[name="ot_time_from"]').val(response.time_start);
+                    $('input[name="ot_time_to"]').val(response.time_end);
+                    $('input[name="ot_reason"]').val(response.reason);
+                },
+                error: function(error){
+                    console.log(error)
+                }
+            })
         })
+
+        $('.ob-btns').on('click', (event) => {
+            $('input[name="ob_form_btn"]').val($(event.target).text().toLowerCase());
+        });
+
+        $('.ot-btns').on('click', (event) => {
+            $('input[name="ot_form_btn"]').val($(event.target).text().toLowerCase());
+        });
+
+        // session success
+        if ("{{ session('ob-success') }}"){
+            $('.official-business-table').fadeIn('slow');
+        }else if ("{{ session('ot-success') }}"){
+            $('.overtimes-table').fadeIn('slow');
+        }
+
 
         function removeBtnClassActive(){
             $('.u-btn-active').removeClass('u-btn-active');

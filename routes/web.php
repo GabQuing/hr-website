@@ -127,6 +127,8 @@ Route::get('/my_activity_logs/export', [ActivityLogsController::class, 'exportFi
 Route::get('/employee_request', [EmployeeRequestController::class, 'index'])->name('employee_request');
 Route::get('/employee_request/obd/{id}', [EmployeeRequestController::class, 'officialBusinessData'])->name('obd');
 Route::get('/employee_request/ot/{id}', [EmployeeRequestController::class, 'overtimeData'])->name('otd');
+Route::post('/employee_request/obForm', [EmployeeRequestController::class, 'obForm'])->name('obForm');
+Route::post('/employee_request/otForm', [EmployeeRequestController::class, 'otForm'])->name('otForm');
 
 //Employee Leaves
 Route::get('/employee_leave', [EmployeeLeavesController::class, 'index'])->name('employee_leaves');
