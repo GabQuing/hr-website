@@ -17,14 +17,6 @@ class AttendanceSummary extends Model
         return $this->where('user_id', $user_id)->where('log_date', $date)->first();
     }
 
-    // public function countPresentDays($user_id, $fromDate, $toDate)
-    // {
-    //     return $this->where('user_id', $user_id)
-    //         ->whereBetween('log_date', [$fromDate, $toDate])
-    //         ->whereNotNull('clock_in')
-    //         ->whereNotNull('clock_out')
-    //         ->count();
-    // }
     public function countTotalAbsent($user_id, $fromDate, $toDate)
     {
         $schedule_types_id = User::find($user_id)->schedule_types_id;
@@ -74,10 +66,7 @@ class AttendanceSummary extends Model
     {
         return $this
             ->select(
-                DB::raw("
-                    TIME_TO_SEC(TIME_FORMAT(break_start, '%H:%i')) - TIME_TO_SEC(TIME_FORMAT(clock_in, '%H:%i')) + 
-                    TIME_TO_SEC(TIME_FORMAT(clock_out, '%H:%i')) - TIME_TO_SEC(TIME_FORMAT(break_end, '%H:%i')) as total_hours
-                "),
+                DB::raw("TIME_TO_SEC(clock_out) - TIME_TO_SEC(clock_in) as total_hours"),
             )
             ->where('user_id', $user_id)
             ->whereBetween('log_date', [$from_date, $to_date])

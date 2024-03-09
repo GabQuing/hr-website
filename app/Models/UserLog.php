@@ -87,7 +87,7 @@ class UserLog extends Model
                 CASE 
                     WHEN 
                         work_schedules.work_from < user_logs.log_time 
-                    THEN TIME_TO_SEC(TIME_FORMAT(user_logs.log_time, '%H:%i')) - TIME_TO_SEC(TIME_FORMAT(work_schedules.work_from, '%H:%i'))
+                    THEN TIME_TO_SEC(user_logs.log_time) - TIME_TO_SEC(work_schedules.work_from)
                     ELSE 0
                 END AS late_time
             ")
@@ -99,6 +99,27 @@ class UserLog extends Model
             ->where('user_logs.user_id', $user_id)
             ->whereBetween('log_date', [$from_date, $to_date])
             ->where('user_logs.log_type_id', 1)
+            ->where('work_schedules.rest_day', 0);
+    }
+    public function countTotalUnderTimes($user_id, $from_date, $to_date)
+    {
+        return $this
+            ->selectRaw("
+                CASE 
+                    WHEN 
+                        work_schedules.work_to > user_logs.log_time 
+                    THEN  TIME_TO_SEC(work_schedules.work_to) - TIME_TO_SEC(user_logs.log_time)
+                    ELSE 0
+                END AS under_time
+            ")
+            ->leftJoin('work_schedules', function ($join) {
+                $join
+                    ->on('work_schedules.schedule_types_id', '=', 'user_logs.schedule_types_id')
+                    ->on('work_schedules.work_day', '=', DB::raw('dayname(user_logs.log_date)'));
+            })
+            ->where('user_logs.user_id', $user_id)
+            ->whereBetween('log_date', [$from_date, $to_date])
+            ->where('user_logs.log_type_id', 2)
             ->where('work_schedules.rest_day', 0);
     }
 }

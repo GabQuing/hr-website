@@ -29,18 +29,26 @@ class AttendanceController extends Controller
         $DaysPresent = (new UserLog())->countTotalPresent($userId, $fromDate, $toDate);
         $DaysAbsent = (new AttendanceSummary())->countTotalAbsent($userId, $fromDate, $toDate);
         $totalHours = (new AttendanceSummary())->countTotalHours($userId, $fromDate, $toDate);
+        $totalHours = round($totalHours / 60 / 60, 2);
         $totalLates = (new UserLog())->countTotalLates($userId, $fromDate, $toDate)->pluck('late_time')->toArray();
         $totalLates = array_reduce($totalLates, function ($total, $late_time) {
             return $total + $late_time;
         });
-        $totalLates = round($totalLates / 60, 2);
-        $totalHours = round($totalHours / 60 / 60, 2);
+        $totalLates = floor($totalLates / 60);
+        $totalUndertimes = (new UserLog())->countTotalUnderTimes($userId, $fromDate, $toDate)->pluck('under_time')->toArray();
+        $totalUndertimes = array_reduce($totalUndertimes, function ($total, $under_time) {
+            return $total + $under_time;
+        });
+        $totalUndertimes = floor($totalUndertimes / 60);
+        $totalLatesUndertimes = $totalLates + $totalUndertimes;
 
         $data['has_generated'] = true;
         $data['days_present'] = $DaysPresent;
+        $data['numberOfAbsences'] = $DaysAbsent;
         $data['total_hours'] = $totalHours;
         $data['total_lates'] = $totalLates;
-        $data['numberOfAbsences'] = $DaysAbsent;
+        $data['total_undertimes'] = $totalUndertimes;
+        $data['total_lates_undertimes'] = $totalLatesUndertimes;
         $data['fromDate'] = $fromDate;
         $data['toDate'] = $toDate;
         $data['from'] = $fromDate;

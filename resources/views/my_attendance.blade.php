@@ -45,9 +45,9 @@
                                 <td>{{ auth()->user()->name }}</td>
                                 <td> {{ $days_present ?? 0}}</td>
                                 <td>{{ $numberOfAbsences ?? 0}}</td>
-                                <td>{{ 0 }}</td>
-                                <td>{{ 0 }}</td>
                                 <td>{{ $total_lates }}</td>
+                                <td>{{ $total_undertimes }}</td>
+                                <td>{{ $total_lates_undertimes }}</td>
                                 <td>{{ $total_hours }}</td>
                             </tr>                        
                     </tbody>
