@@ -28,9 +28,9 @@
                                 </td>                           
                             </tr>
                             <tr>
-                                <td>
+                                <td colspan="2">
                                     <p>Select Users:</p>
-                                    <select class="js-example-basic-single s-single" name="users_id[]" id="users_id" multiple="multiple" >
+                                    <select class="js-example-basic-single s-single multiple-select" name="users_id[]" id="users_id" multiple="multiple" >
                                         @foreach ( $usernames as $username )
                                             <option value="{{ $username->id }}">{{ $username->name }}</option>
                                         @endforeach
@@ -51,7 +51,7 @@
 
 <a class="user_info_link open-modal" >Generate Table</a>
 @if ($has_generated ?? false)
-    <a href="{{ route('export_user_activity_log') }}?from_date={{ $fromDate }}&to_date={{ $toDate }}" id="export_excel">Export File</a>
+    <a href="{{ route('export_user_activity_log') }}?{{ $query_params }}" id="export_excel">Export File</a>
 @endif
 <div>
     @if (session('success'))

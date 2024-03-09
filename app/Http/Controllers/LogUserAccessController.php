@@ -36,6 +36,7 @@ class LogUserAccessController extends Controller
         $data=[];
         $fromDate = $request->input('from_date');
         $toDate = $request->input('to_date');
+        $UserId = $request->input('users_id');
 
         $data['user_logs'] = (new UserLog())
             ->getAllLogs()
@@ -64,10 +65,12 @@ class LogUserAccessController extends Controller
         $dataEntry=[];
 
             
-        $dataEntry['fromDate'] = $fromDate;
-        $dataEntry['toDate'] = $toDate;
-        $dataEntry['numEntry'] = $numEntry;
+        $dataEntry['from_date'] = $fromDate;
+        $dataEntry['to_date'] = $toDate;
+        $dataEntry['users_id'] = $UserId;
+        $dataEntry['num_entry'] = $numEntry;
         $dataEntry['has_generated'] = true;
+        $data['query_params'] = http_build_query($dataEntry);
         
         $request->session()->flash('success', '"Export File" generated successfully!');
 
@@ -78,8 +81,10 @@ class LogUserAccessController extends Controller
     {
         $dataEntry = $request->input('data_entry');
         $data = [];
+        $data['users_id'] = $request->input('users_id');
         $data['from_date'] = $request->input('from_date');
         $data['to_date'] = $request->input('to_date');
+
 
         return Excel::download(new EmployeeActivityLogsExport($data), "Employee-activity-log-summary.xlsx");
     }

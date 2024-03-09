@@ -23,6 +23,7 @@ class EmployeeActivityLogsExport implements FromCollection, WithHeadings
         $collection = UserLogView::join('users', 'users.id', '=', 'user_log_view.user_id')
             ->join('log_types', 'log_types.id', '=', 'user_log_view.log_type_id')
             ->whereBetween('log_date', [$this->data['from_date'], $this->data['to_date']])
+            ->whereIn('user_id',$this->data['users_id'])
             ->select(
                 'users.name',
                 'user_log_view.log_date',
