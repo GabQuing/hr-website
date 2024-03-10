@@ -80,7 +80,158 @@
         </div>
     </div>
 
-    <div class="my_leaves_content" style="display: none;">
+    <div class="u-box u-box-shadow-medium" style="overflow: hidden">
+        <form method="POST" action="{{route('generateTable')}}">
+            @csrf
+            <input type="text" name="employeeId" value="{{ auth()->user()->id }}" style="display: none;">
+            <div class="u-bg-primary u-p-15" >
+                <h4 class="u-t-center u-t-white u-fw-b">My Leaves</h4>
+            </div>
+            <div class="u-m-10">
+                <table class="custom_normal_table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div style="display: flex; flex-wrap: wrap;">
+                                    <h5 class="my_official_businesses_header my_official_businesses_header_active" id="mob-pending">Pending/Resubmit for editing</h5>
+                                    <h5 class="my_official_businesses_header" id="mob-approve">Approved</h5>
+                                    <h5 class="my_official_businesses_header" id="mob-rejected">Rejected/Canceled</h5>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="u-flex-end">
+                                    <button class="u-btn u-t-white u-bg-primary" style="display: block;" id="my_official_business_add" type="button">
+                                        <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 16px; font-weight: bold;">
+                                            add
+                                        </span>
+                                        Add
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <table class="custom_normal_table u-m-10">
+                <tbody>
+                    <tr>
+                        <td>
+                            <h5 class="u-fw-b">Current Leave Credits</h5>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="custom_normal_table u-m-10">
+                <tbody>
+                    <tr>
+                        <td>
+                            <h5 class="u-fw-b u-t-gray">Leave Type</h5>
+                        </td>
+                        <td>
+                            <h5 class="u-fw-b u-t-gray">Credits</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5 class="u-fw-b u-t-gray">Birthday : Default Birthday leave policy</h5>
+                        </td>
+                        <td>
+                            <h5 class="u-fw-b u-t-gray">0</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5 class="u-fw-b u-t-gray">Vacation : Default Vacation leave policy</h5>
+                        </td>
+                        <td>
+                            <h5 class="u-fw-b u-t-gray">0</h5>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="u-m-10">
+                <table class="custom_normal_table">
+                    <tbody>
+                        @if (session('success'))
+                            <tr>
+                                <td>
+                                    <h5 class="u-fw-b" style="color: green; display:block;">{{ session('success') }}</h5>
+                                </td>
+                            </tr>
+                        @endif
+                        <tr class="">
+                            <td><h5 class="u-fw-b">My Request - Pending</h5></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mob-pending-table u-m-10" style="overflow-x: auto;">
+                <table class="u-responsive-table">
+                    <thead>
+                        <tr class="f-weight-bold u-t-gray">
+                            <td><h5 class="f-weight-bold">Status</h5></td>
+                            <td><h5 class="f-weight-bold">Date Filed</h5></td>
+                            <td><h5 class="f-weight-bold">Location</h5></td>
+                            <td><h5 class="f-weight-bold">Date From</h5></td>
+                            <td><h5 class="f-weight-bold">Date To</h5></td>
+                            <td><h5 class="f-weight-bold">Time From</h5></td>
+                            <td><h5 class="f-weight-bold">Time To</h5></td>
+                            <td><h5 class="f-weight-bold">Purpose</h5></td>
+                            <td><h5 class="f-weight-bold">Actions</h5></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+           
+                    </tbody>
+                </table>
+            </div>
+            <div class="mob-approve-table u-m-10" style="overflow-x: auto;">
+                <table class="u-responsive-table">
+                    <thead>
+                        <tr class="f-weight-bold u-t-gray">
+                            <td><h5 class="f-weight-bold">Status</h5></td>
+                            <td><h5 class="f-weight-bold">Date Filed</h5></td>
+                            <td><h5 class="f-weight-bold">Location</h5></td>
+                            <td><h5 class="f-weight-bold">Date From</h5></td>
+                            <td><h5 class="f-weight-bold">Date To</h5></td>
+                            <td><h5 class="f-weight-bold">Time From</h5></td>
+                            <td><h5 class="f-weight-bold">Time To</h5></td>
+                            <td><h5 class="f-weight-bold">Purpose</h5></td>
+                            <td><h5 class="f-weight-bold">Date Approved</h5></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+             
+                    </tbody>
+                </table>
+            </div>
+            <div class="mob-rejected-table u-m-10" style="overflow-x: auto;">
+                <table class="u-responsive-table">
+                    <thead>
+                        <tr class="f-weight-bold u-t-gray">
+                            <td><h5 class="f-weight-bold">Status</h5></td>
+                            <td><h5 class="f-weight-bold">Date Filed</h5></td>
+                            <td><h5 class="f-weight-bold">Location</h5></td>
+                            <td><h5 class="f-weight-bold">Date From</h5></td>
+                            <td><h5 class="f-weight-bold">Date To</h5></td>
+                            <td><h5 class="f-weight-bold">Time From</h5></td>
+                            <td><h5 class="f-weight-bold">Time To</h5></td>
+                            <td><h5 class="f-weight-bold">Purpose</h5></td>
+                            <td><h5 class="f-weight-bold">Date Rejected/Canceled</h5></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+       
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+
+    {{-- <div class="my_leaves_content" style="display: none;">
         <div class="my_leaves_main_content">
             <div class="my_official_business_header" >
                 <p class="header_title_h2">My Leaves</p>
@@ -116,7 +267,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
 @section('script_content')
     <script>

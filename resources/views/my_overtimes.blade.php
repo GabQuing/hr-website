@@ -182,7 +182,163 @@
         </div>
     </div>
 </div>
-<div class="my_official_business_content" style="display: none">
+
+<div class="u-box u-box-shadow-medium" style="overflow: hidden">
+    <form method="POST" action="{{route('generateTable')}}">
+        @csrf
+        <input type="text" name="employeeId" value="{{ auth()->user()->id }}" style="display: none;">
+        <div class="u-bg-primary u-p-15" >
+            <h4 class="u-t-center u-t-white u-fw-b">My Overtimes</h4>
+        </div>
+        <div class="u-m-10">
+            <table class="custom_normal_table">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div style="display: flex; flex-wrap: wrap;">
+                                <h5 class="my_official_businesses_header my_official_businesses_header_active" id="mob-pending">Pending/Resubmit for editing</h5>
+                                <h5 class="my_official_businesses_header" id="mob-approve">Approved</h5>
+                                <h5 class="my_official_businesses_header" id="mob-rejected">Rejected/Canceled</h5>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="u-flex-end">
+                                <button class="u-btn u-t-white u-bg-primary" style="display: block;" id="my_official_business_add" type="button">
+                                    <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 16px; font-weight: bold;">
+                                        add
+                                    </span>
+                                    Add OT
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>    
+
+        <div class="u-m-10">
+            <table class="custom_normal_table">
+                <tbody>
+                    @if (session('success'))
+                        <tr>
+                            <td>
+                                <h5 class="u-fw-b" style="color: green; display:block;">{{ session('success') }}</h5>
+                            </td>
+                        </tr>
+                    @endif
+                    <tr class="u-t-gray">
+                        <td><h5 class="u-fw-b">My Request - Pending</h5></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mob-pending-table u-m-10" style="overflow-x: auto;">
+            <table class="u-responsive-table">
+                <thead>
+                    <tr class="f-weight-bold u-t-gray">
+                        <td><h5 class="f-weight-bold">Status</h5></td>
+                        <td><h5 class="f-weight-bold">Date Filed</h5></td>
+                        <td><h5 class="f-weight-bold">Shift From</h5></td>
+                        <td><h5 class="f-weight-bold">Shift To</h5></td>
+                        <td><h5 class="f-weight-bold">Time Start</h5></td>
+                        <td><h5 class="f-weight-bold">Time End</h5></td>
+                        <td><h5 class="f-weight-bold">Purpose</h5></td>
+                        <td><h5 class="f-weight-bold">Actions</h5></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($pending_logs as $pending_log)
+                        <tr>
+                            <td><h5>{{ $pending_log->status }}</h5></td>
+                            <td><h5>{{ $pending_log->shift_date }}</h5></td>
+                            <td><h5>{{ $pending_log->shift_from }}</h5></td>
+                            <td><h5>{{ $pending_log->shift_to }}</h5></td>
+                            <td><h5>{{ $pending_log->time_start }}</h5></td>
+                            <td><h5>{{ $pending_log->time_end }}</h5></td>
+                            <td><h5>{{ $pending_log->reason }}</h5></td>
+                            <td>
+                                <div class="d-flex;">
+                                    <button type="button" class="u-action-btn u-bg-primary btn-edit" data-entry-id="{{ $pending_log->id }}" data-href="{{ route('editOT', $pending_log->id) }}">
+                                        <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                            edit
+                                        </span>
+                                    </button>
+                                    <button type="button" class="u-action-btn u-bg-danger btn-cancel" data-entry-id="{{ $pending_log->id }}" data-href="{{ route('deleteOT', $pending_log->id) }}" >
+                                        <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                            delete
+                                        </span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="mob-approve-table u-m-10" style="overflow-x: auto;">
+            <table class="u-responsive-table">
+                <thead>
+                    <tr class="f-weight-bold u-t-gray">
+                        <td><h5 class="f-weight-bold">Status</h5></td>
+                        <td><h5 class="f-weight-bold">Date Filed</h5></td>
+                        <td><h5 class="f-weight-bold">Shift From</h5></td>
+                        <td><h5 class="f-weight-bold">Shift To</h5></td>
+                        <td><h5 class="f-weight-bold">Time Start</h5></td>
+                        <td><h5 class="f-weight-bold">Time End</h5></td>
+                        <td><h5 class="f-weight-bold">Purpose</h5></td>
+                        <td><h5 class="f-weight-bold">Date Approved</h5></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($approved_logs as $approved_log)
+                        <tr>
+                            <td><h5>{{ $approved_log->status }}</h5></td>
+                            <td><h5>{{ $approved_log->shift_date }}</h5></td>
+                            <td><h5>{{ $approved_log->shift_from }}</h5></td>
+                            <td><h5>{{ $approved_log->shift_to }}</h5></td>
+                            <td><h5>{{ $approved_log->time_start }}</h5></td>
+                            <td><h5>{{ $approved_log->time_end }}</h5></td>
+                            <td><h5>{{ $approved_log->reason }}</h5></td>
+                            <td><h5>{{ $approved_log->approved_at }}</h5></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="mob-rejected-table u-m-10" style="overflow-x: auto;">
+            <table class="u-responsive-table">
+                <thead>
+                    <tr class="f-weight-bold u-t-gray">
+                        <td><h5 class="f-weight-bold">Status</h5></td>
+                        <td><h5 class="f-weight-bold">Date Filed</h5></td>
+                        <td><h5 class="f-weight-bold">Shift From</h5></td>
+                        <td><h5 class="f-weight-bold">Shift To</h5></td>
+                        <td><h5 class="f-weight-bold">Time Start</h5></td>
+                        <td><h5 class="f-weight-bold">Time End</h5></td>
+                        <td><h5 class="f-weight-bold">Purpose</h5></td>
+                        <td><h5 class="f-weight-bold">Date Rejected/Cancelled</h5></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($rejected_canceled_logs as $rejected_canceled_log)
+                    <tr>
+                        <td><h5>{{ $rejected_canceled_log->status }}</h5></td>
+                        <td><h5>{{ $rejected_canceled_log->shift_date }}</h5></td>
+                        <td><h5>{{ $rejected_canceled_log->shift_from }}</h5></td>
+                        <td><h5>{{ $rejected_canceled_log->shift_to }}</h5></td>
+                        <td><h5>{{ $rejected_canceled_log->time_start }}</h5></td>
+                        <td><h5>{{ $rejected_canceled_log->time_end }}</h5></td>
+                        <td><h5>{{ $rejected_canceled_log->reason }}</h5></td>
+                        <td><h5>{{ $rejected_canceled_log->rejected_at ?? $rejected_canceled_log->cancelled_at }}</h5></td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
+
+{{-- <div class="my_official_business_content" style="display: none">
     <div class="my_official_business_main_content u-bg-white">
         <div class="my_official_business_header">
             <p class="header_title_h2">My Official Businesses</p>
@@ -313,8 +469,7 @@
             </table>
         </div>
     </div>
-</div>
-<div style="clear: both;"></div>
+</div> --}}
 
     @section('script_content')
         <script>
