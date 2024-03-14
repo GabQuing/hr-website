@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\OfficialBusiness;
 use App\Models\Overtime;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
@@ -15,8 +16,22 @@ class EmployeeRequestController extends Controller
     public function index()
     {
         $data = [];
-        $data['official_businesses'] = OfficialBusiness::get()->where('status', 'PENDING');
-        $data['overtimes'] = Overtime::get()->where('status', 'PENDING');
+        $data['official_businesses'] = OfficialBusiness::leftJoin('users','users.id','official_businesses.created_by')
+            ->select(
+                'users.*',
+                'users.name',
+                'official_businesses.*'
+            )
+            ->where('status', 'PENDING')
+            ->get();
+        $data['overtimes'] = Overtime::leftJoin('users','users.id','overtimes.created_by')
+            ->select(
+            'users.*',
+            'users.name',
+            'overtimes.*'
+            )
+            ->where('status', 'PENDING')
+            ->get();
 
         return view('employee_request', $data);
     }

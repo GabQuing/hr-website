@@ -222,6 +222,7 @@
                             <th>Time From</th>
                             <th>Time To</th>
                             <th>Purpose</th>   
+                            <th>Requested By</th>   
                             <th>Actions</th>         
                         </tr>
                     </thead>
@@ -237,6 +238,7 @@
                                     <td>{{ $official_business->time_from }}</td>
                                     <td>{{ $official_business->time_to }}</td>
                                     <td>{{ $official_business->reason }}</td>
+                                    <td>{{ $official_business->name }}</td>
                                     <td>
                                         <div class="d-flex;">
                                             <button class="ob-btn u-action-btn u-bg-primary" type="button" ob-id="{{ $official_business->id }}">
@@ -259,6 +261,7 @@
                             <th>Time From</th>
                             <th>Time To</th>
                             <th>Purpose</th>   
+                            <th>Requested By</th>      
                             <th>Actions</th>      
                         </tr>
                     </tfoot>
@@ -298,7 +301,6 @@
                                         $interval = $start->diff($end);
                                         $hours = $interval->h;
                                         $minutes = $interval->i;
-
                                         if ($hours > 0) {
                                             echo $hours . " hr and ";
                                         }
@@ -306,7 +308,7 @@
                                         echo $minutes . " minutes";
                                     ?>
                                 </td>
-                                <td>Patrick Punzalan</td>
+                                <td>{{ $overtime->name }}</td>
                                 <td>
                                     <div class="d-flex;">
                                         <button class="ot-btn u-action-btn u-bg-primary" type="button" ot-id="{{ $overtime->id }}">
