@@ -10,10 +10,10 @@
         }
     </style>
 
-    <div class="modal-center" style="display: none">
+    <div class="modal-center add-leave-form" style="display: none">
         <div class="modal-box">
             <div class="modal-content">
-                <form wire:submit="editUser">
+                <form method="POST" action="{{ route('submitLeave') }}">
                     @csrf
                     <div style="overflow-x: auto; width: 100%;">
                         <table class="custom_normal_table">
@@ -26,29 +26,38 @@
                                 <tr>
                                     <td>
                                         <p>Leave Type:</p>
-                                        <select class="u-input" name="" id="" required>
-                                            <option value="">Sick</option>
-                                            <option value="">Vacation</option>
+                                        <select class="u-input" name="leave_type" id="" required>
+                                            <option value="" selected disabled>None selected</option>
+                                            <option value="BIRTHDAY">BIRTHDAY</option>
+                                            <option value="VACATION">VACATION</option>
+                                        </select>
+                                    </td>        
+                                    <td>
+                                        <p>Duration:</p>
+                                        <select class="u-input" name="duration" id="" required>
+                                            <option value="" selected disabled>None selected</option>
+                                            <option value="WHOLEDAY">WHOLEDAY</option>
+                                            <option value="HALFDAY">HALFDAY</option>
                                         </select>
                                     </td>        
                                 </tr>
                                 <tr>                   
                                     <td>
                                         <p>From:</p>
-                                        <input class="u-input" name="end_date" type="date" required>
+                                        <input class="u-input" name="leave_from" type="date" required>
                                     </td>                           
                                     <td>
                                         <p>To:</p>
-                                        <input class="u-input" name="end_date" type="date" required>
+                                        <input class="u-input" name="leave_to" type="date" required>
                                     </td>                                                 
                                 </tr>
                                 <tr>
                                     <td>
-                                        <p>With Pay No of Days</p>
-                                        <span>0</span>
+                                        <p>Alaska Current Date:</p>
+                                        <span>{{ $serverCurrentDay }}, {{ $serverFormattedDate }}</span>
                                     </td>
                                     <td>
-                                        <p>Without Pay No of Days</p>
+                                        <p>Current Leave Credits:</p>
                                         <span>0</span>
                                     </td>
                                 </tr>
@@ -58,17 +67,6 @@
                                         <input class="u-input-border-boottom" name="reason" type="text" placeholder="Enter Reason" required>
                                     </td>                            
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <p>Date Breakdown:</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p>Biometric Logs</p>
-                                    </td>
-                                </tr>
-                            </tbody>
                         </table>
                     </div>
                     <div class="u-flex-space-between">
@@ -80,6 +78,72 @@
         </div>
     </div>
 
+
+    <div class="modal-center edit-leave-form"  id="edit-leave-form" style="display: none">
+        <div class="modal-box">
+            <div class="modal-content">
+                <form method="POST">
+                    @csrf
+                    <div style="overflow-x: auto; width: 100%;">
+                        <table class="custom_normal_table">
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <h3 class="f-weight-bold"><i class="fa-solid fa-eye"></i> Leave Application Form</h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Leave Type:</p>
+                                        <select class="u-input" name="leave_type" id="edit_leave_type" required>
+                                            <option value="" selected disabled>None selected</option>
+                                            <option value="BIRTHDAY">BIRTHDAY</option>
+                                            <option value="VACATION">VACATION</option>
+                                        </select>
+                                    </td>        
+                                    <td>
+                                        <p>Duration:</p>
+                                        <select class="u-input" name="duration" id="edit_duration" required>
+                                            <option value="" selected disabled>None selected</option>
+                                            <option value="WHOLEDAY">WHOLEDAY</option>
+                                            <option value="HALFDAY">HALFDAY</option>
+                                        </select>
+                                    </td>        
+                                </tr>
+                                <tr>                   
+                                    <td>
+                                        <p>From:</p>
+                                        <input class="u-input" name="leave_from" id="edit_leave_from" type="date" required>
+                                    </td>                           
+                                    <td>
+                                        <p>To:</p>
+                                        <input class="u-input" name="leave_to" id="edit_leave_to" type="date" required>
+                                    </td>                                                 
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Current Leave Credits:</p>
+                                        <span>0</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <p>Reason</p>
+                                        <input class="u-input-border-boottom" name="reason" id="edit_reason" type="text" placeholder="Enter Reason" required>
+                                    </td>                            
+                                </tr>
+                        </table>
+                    </div>
+                    <div class="u-flex-space-between">
+                        <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default" id="btn-close-edit" type="button">Close</button>
+                        <button class="u-t-white u-fw-b u-btn u-bg-accent u-m-10 u-border-1-default" id="btn-edit-submit" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
     <div class="u-box u-box-shadow-medium" style="overflow: hidden">
         <form method="POST" action="{{route('generateTable')}}">
             @csrf
@@ -174,17 +238,40 @@
                         <tr class="f-weight-bold u-t-gray">
                             <td><h5 class="f-weight-bold">Status</h5></td>
                             <td><h5 class="f-weight-bold">Date Filed</h5></td>
-                            <td><h5 class="f-weight-bold">Location</h5></td>
-                            <td><h5 class="f-weight-bold">Date From</h5></td>
-                            <td><h5 class="f-weight-bold">Date To</h5></td>
-                            <td><h5 class="f-weight-bold">Time From</h5></td>
-                            <td><h5 class="f-weight-bold">Time To</h5></td>
+                            <td><h5 class="f-weight-bold">Leave Type</h5></td>
+                            <td><h5 class="f-weight-bold">Leave From</h5></td>
+                            <td><h5 class="f-weight-bold">Leave To</h5></td>
+                            <td><h5 class="f-weight-bold">Duration</h5></td>
                             <td><h5 class="f-weight-bold">Purpose</h5></td>
                             <td><h5 class="f-weight-bold">Actions</h5></td>
                         </tr>
                     </thead>
                     <tbody>
-           
+                        @foreach ($pending_logs as $pending_log)
+                            <tr>
+                                <td><h5>{{ $pending_log->status }}</h5></td>
+                                <td><h5>{{ $pending_log->created_at->format('Y-m-d')}}</h5></td>
+                                <td><h5>{{ $pending_log->leave_type }}</h5></td>
+                                <td><h5>{{ $pending_log->leave_from }}</h5></td>
+                                <td><h5>{{ $pending_log->leave_to }}</h5></td>
+                                <td><h5>{{ $pending_log->duration }}</h5></td>
+                                <td><h5>{{ $pending_log->reason }}</h5></td>
+                                <td>
+                                    <div class="d-flex;">
+                                        <button type="button" class="u-action-btn u-bg-primary btn-edit" data-entry-id="{{ $pending_log->id }}" data-href="{{ route('editLeave', $pending_log->id) }}">
+                                            <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                                edit
+                                            </span>
+                                        </button>
+                                        <button type="button" class="u-action-btn u-bg-danger btn-cancel" data-entry-id="{{ $pending_log->id }}" data-href="{{ route('deleteOT', $pending_log->id) }}" >
+                                            <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                                delete
+                                            </span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -194,17 +281,27 @@
                         <tr class="f-weight-bold u-t-gray">
                             <td><h5 class="f-weight-bold">Status</h5></td>
                             <td><h5 class="f-weight-bold">Date Filed</h5></td>
-                            <td><h5 class="f-weight-bold">Location</h5></td>
-                            <td><h5 class="f-weight-bold">Date From</h5></td>
-                            <td><h5 class="f-weight-bold">Date To</h5></td>
-                            <td><h5 class="f-weight-bold">Time From</h5></td>
-                            <td><h5 class="f-weight-bold">Time To</h5></td>
+                            <td><h5 class="f-weight-bold">Leave Type</h5></td>
+                            <td><h5 class="f-weight-bold">Leave From</h5></td>
+                            <td><h5 class="f-weight-bold">Leave To</h5></td>
+                            <td><h5 class="f-weight-bold">Duration</h5></td>
                             <td><h5 class="f-weight-bold">Purpose</h5></td>
                             <td><h5 class="f-weight-bold">Date Approved</h5></td>
                         </tr>
                     </thead>
                     <tbody>
-             
+                        @foreach ($approved_logs as $approved_log)
+                            <tr>    
+                                <td><h5>{{ $approved_log->status }}</h5></td>
+                                <td><h5>{{ $approved_log->created_at->format('Y-m-d')}}</h5></td>
+                                <td><h5>{{ $approved_log->leave_type }}</h5></td>
+                                <td><h5>{{ $approved_log->leave_from }}</h5></td>
+                                <td><h5>{{ $approved_log->leave_to }}</h5></td>
+                                <td><h5>{{ $approved_log->duration }}</h5></td>
+                                <td><h5>{{ $approved_log->reason }}</h5></td>
+                                <td><h5>{{ $approved_log->approved_at}}</h5></td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -212,62 +309,36 @@
                 <table class="u-responsive-table">
                     <thead>
                         <tr class="f-weight-bold u-t-gray">
-                            <td><h5 class="f-weight-bold">Status</h5></td>
-                            <td><h5 class="f-weight-bold">Date Filed</h5></td>
-                            <td><h5 class="f-weight-bold">Location</h5></td>
-                            <td><h5 class="f-weight-bold">Date From</h5></td>
-                            <td><h5 class="f-weight-bold">Date To</h5></td>
-                            <td><h5 class="f-weight-bold">Time From</h5></td>
-                            <td><h5 class="f-weight-bold">Time To</h5></td>
-                            <td><h5 class="f-weight-bold">Purpose</h5></td>
-                            <td><h5 class="f-weight-bold">Date Rejected/Canceled</h5></td>
+                            <tr class="f-weight-bold u-t-gray">
+                                <td><h5 class="f-weight-bold">Status</h5></td>
+                                <td><h5 class="f-weight-bold">Date Filed</h5></td>
+                                <td><h5 class="f-weight-bold">Leave Type</h5></td>
+                                <td><h5 class="f-weight-bold">Leave From</h5></td>
+                                <td><h5 class="f-weight-bold">Leave To</h5></td>
+                                <td><h5 class="f-weight-bold">Duration</h5></td>
+                                <td><h5 class="f-weight-bold">Purpose</h5></td>
+                                <td><h5 class="f-weight-bold">Date Rejected/Canceled</h5></td>
+                            </tr>
                         </tr>
                     </thead>
                     <tbody>
-       
+                        @foreach ($rejected_canceled_logs as $rejected_canceled_log)
+                            <tr>
+                                <td><h5>{{ $rejected_canceled_log->status }}</h5></td>
+                                <td><h5>{{ $rejected_canceled_log->created_at->format('Y-m-d')}}</h5></td>
+                                <td><h5>{{ $rejected_canceled_log->leave_type }}</h5></td>
+                                <td><h5>{{ $rejected_canceled_log->leave_from }}</h5></td>
+                                <td><h5>{{ $rejected_canceled_log->leave_to }}</h5></td>
+                                <td><h5>{{ $rejected_canceled_log->duration }}</h5></td>
+                                <td><h5>{{ $rejected_canceled_log->reason }}</h5></td>
+                                <td><h5>{{ $rejected_canceled_log->rejected_at}}</h5></td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
         </form>
     </div>
-
-    {{-- <div class="my_leaves_content" style="display: none;">
-        <div class="my_leaves_main_content">
-            <div class="my_official_business_header" >
-                <p class="header_title_h2">My Leaves</p>
-            </div>
-            <div class="current_leave_credit">
-                <div class="current_leave_credit_header">
-                    <span>Current Leave Credits</span>
-                    <button class="u-btn u-bg-accent u-t-white" id="my_official_business_add" type="button">
-                        <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 16px; font-weight: bold; color: white;">
-                            add
-                        </span>
-                        Add
-                    </button>
-                </div>
-                <div class="current_leave_credit_content">
-                    <div class="leave_type">
-                        <label style="font-weight: 600;">Leave Type</label>
-                        <span style="font-weight: 600;">Credits</span>
-                    </div>
-                    <div class="leave_type">
-                        <label>Birthday : Default Birthday leave policy</label>
-                        <span>0</span>
-                    </div>
-                    <div class="leave_type">
-                        <label>Vacation : Default Vacation leave policy</label>
-                        <span>0</span>
-                    </div>
-                </div>
-                <div class="my_official_businesses" style="margin: 20px 0;">
-                    <span class="my_official_businesses_header">Pending/Resubmit for editing</span>
-                    <span class="my_official_businesses_header">Approved</span>
-                    <span class="my_official_businesses_header">Rejected/Cancelled</span>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 
 @section('script_content')
     <script>
@@ -292,12 +363,44 @@
         })
 
         $('#my_official_business_add').on('click', function(){
-            $('.modal-center').show();
+            $('.add-leave-form').show();
         })
 
         $('#btn-close').on('click', function(){
-            $('.modal-center').hide();
+            $('.add-leave-form').hide();
         })
+        $('#btn-close-edit').on('click', function(){
+            $('.edit-leave-form').hide();
+            })
+
+        $('.btn-edit').click(function(e){
+            e.preventDefault();
+            const entryId = $(this).data('entry-id');
+            const url = $(this).attr('href');
+            let editUrl = "{{ route('editLeave', 'entryId') }}";
+            const newUrl = editUrl.replace('entryId', entryId);
+            $.ajax({
+                url: newUrl,   
+                    dataType: 'json',
+                    type: 'GET',
+                    success: function(response) {
+                        $('#edit_leave_type').val(response.leave_type);
+                        $('#edit_duration').val(response.duration);
+                        $('#edit_leave_from').val(response.leave_from);
+                        $('#edit_leave_to').val(response.leave_to);
+                        $('#edit_reason').val(response.reason);
+                        $('.edit-leave-form').show(); 
+                        $('form').attr('action', '/my_leaves/' + response.id + '/update');
+                        console.log(response);
+                    },
+                    error: function(error) {
+                    console.log(error);
+                    }
+            });
+
+
+        });
+
 
         function hideTable(button, title){
             $('.mob-pending-table').hide();

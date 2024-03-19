@@ -3,7 +3,9 @@
 @section('module_name', 'Employee Leaves')
 
 @section('content')
-
+<div class="approve_reg_btn">
+    <a class="user_info_link" href="#useraccounts_add" rel="modal:open">Add Employee Account</a> 
+    </div>
 <div class="user_accounts_table">
     <table id="myTable" class="display" style="width:100%">
         <thead>

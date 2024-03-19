@@ -49,7 +49,11 @@
         .select2-container--default .select2-results__option {
             font-size: 13px;
             text-transform: uppercase;
+        }
 
+        #edit_schedule_button,
+        #create_schedule_button{
+            background-color: #02718A !important;
         }
 
     </style>

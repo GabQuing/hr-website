@@ -153,6 +153,9 @@ Route::get('/my_undertimes', [UndertimesController::class, 'index'])->name('unde
 
 // Leaves
 Route::get('/my_leaves', [LeavesController::class, 'index'])->name('leaves');
+Route::get('/my_leaves/{id}/edit', [LeavesController::class, 'edit'])->name('editLeave');
+Route::post('/my_leaves/{id}/update', [LeavesController::class, 'updateLeave'])->name('update');
+Route::post('/my_leaves/submit', [LeavesController::class, 'createLeave'])->name('submitLeave');
 
 // Payroll
 Route::get('/payroll', [PayrollController::class, 'index'])->name('payroll');

@@ -30,7 +30,7 @@
                             <tr>
                                 <td colspan="2">
                                     <p>Select Users:</p>
-                                    <select class="js-example-basic-single s-single multiple-select" name="users_id[]" id="users_id" multiple="multiple" >
+                                    <select class="js-example-basic-single s-single multiple-select" name="users_id[]" id="users_id" multiple="multiple" required >
                                         @foreach ( $usernames as $username )
                                             <option value="{{ $username->id }}">{{ $username->name }}</option>
                                         @endforeach

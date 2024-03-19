@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('employee_leaves', function (Blueprint $table) {
             $table->id();
             $table->mediumInteger('user_id')->nullable()->unsigned();
-            $table->string('leave_type')->length(50)->nullable();
-            $table->decimal('leave_credit', 10, 2)->unsigned()->nullable();
+            $table->decimal('vacation_credit', 10, 2)->unsigned()->nullable();
+            $table->decimal('sick_credit', 10, 2)->unsigned()->nullable();
             $table->mediumInteger('created_by')->nullable()->unsigned();
             $table->mediumInteger('updated_by')->nullable()->unsigned();
             $table->timestamps();
             $table->softDeletes();
-            $table->unique(['user_id', 'leave_type']);
+            $table->unique('user_id');
         });
     }
 
