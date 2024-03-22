@@ -59,6 +59,7 @@
         <span style="color: green; display:block;">{{ session('success') }}</span>
     @endif
 </div>
+<br>
 <div class="user_accounts_table">
     <table id="myTable" class="display" style="width:100%">
         <thead>
@@ -82,6 +83,7 @@
     </table>
     {{-- @if (!$has_generated) --}}
         {{ $user_logs->links()}}
+        <p>Showing {{ $user_logs->firstItem() ?? 0 }} to {{ $user_logs->lastItem() ?? 0 }} of {{ $user_logs->total() }} items.</p>
     {{-- @endif --}}
 </div>
 
@@ -139,6 +141,7 @@
     responsive: true,
     paging:false,
     info:false,
+    searching: false,
     order: [[0, 'desc']] // Assuming you want to order by the first column (index 0) in descending order
 });
 

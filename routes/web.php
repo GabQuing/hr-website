@@ -132,6 +132,9 @@ Route::post('/employee_request/otForm', [EmployeeRequestController::class, 'otFo
 
 //Employee Leaves
 Route::get('/employee_leave', [EmployeeLeavesController::class, 'index'])->name('employee_leaves');
+Route::post('/employee_leave/add', [EmployeeLeavesController::class, 'add'])->name('employeeLeavesAdd');
+Route::get('/employee_leave/{id}/edit', [EmployeeLeavesController::class, 'edit'])->name('editEmployeeLeave');
+Route::post('/employee_leave/{id}/update', [EmployeeLeavesController::class, 'updateEmployeeLeave'])->name('update');
 
 // Official Business
 Route::post('/my_official_business/{id}/update', [OfficialBusinessController::class, 'updateOB'])->name('update');
@@ -154,6 +157,7 @@ Route::get('/my_undertimes', [UndertimesController::class, 'index'])->name('unde
 // Leaves
 Route::get('/my_leaves', [LeavesController::class, 'index'])->name('leaves');
 Route::get('/my_leaves/{id}/edit', [LeavesController::class, 'edit'])->name('editLeave');
+Route::get('/my_leaves/{id}/delete', [LeavesController::class, 'deleteLeave'])->name('deleteLeave');
 Route::post('/my_leaves/{id}/update', [LeavesController::class, 'updateLeave'])->name('update');
 Route::post('/my_leaves/submit', [LeavesController::class, 'createLeave'])->name('submitLeave');
 
@@ -209,6 +213,8 @@ Route::get('/schedule_profile', [ScheduleProfileController::class, 'index'])->na
 Route::post('/schedule_profile_view', [ScheduleProfileController::class, 'viewSchedule'])->name('viewSchedule');
 Route::post('/schedule_profile_create', [ScheduleProfileController::class, 'createSchedule'])->name('createSchedule');
 Route::post('/schedule_profile_edit', [ScheduleProfileController::class, 'edit'])->name('editSchedule');
+
+
 
 // //Manage Store Address
 // Route::get('/storeAddress', [ManageAddressController::class, 'index'])->name('storeAddress');

@@ -83,4 +83,17 @@ class LeavesController extends Controller
         $request->session()->flash('success', 'Overtime Form Has Been Edited!');
         return redirect()->back();
     }
+
+    public function deleteLeave($id)
+    {
+        $cancelLeave = Leave::find($id);
+        $userId = (auth()->user()->id);
+
+        $cancelLeave->update([
+            'status' => 'CANCELED',
+            'cancelled_by' => $userId,
+            'cancelled_at' => now()
+        ]);
+        return true;
+    }
 }

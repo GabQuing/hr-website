@@ -58,6 +58,6 @@ class User extends Authenticatable
 
     public function getAllActiveUsers()
     {
-        return $this->whereNull('deleted_at');
+        return $this->whereNull('users.deleted_at');
     }
 }

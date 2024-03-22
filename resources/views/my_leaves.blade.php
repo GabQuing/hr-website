@@ -263,7 +263,7 @@
                                                 edit
                                             </span>
                                         </button>
-                                        <button type="button" class="u-action-btn u-bg-danger btn-cancel" data-entry-id="{{ $pending_log->id }}" data-href="{{ route('deleteOT', $pending_log->id) }}" >
+                                        <button type="button" class="u-action-btn u-bg-danger btn-cancel" data-entry-id="{{ $pending_log->id }}" data-href="{{ route('deleteLeave', $pending_log->id) }}" >
                                             <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
                                                 delete
                                             </span>
@@ -331,7 +331,7 @@
                                 <td><h5>{{ $rejected_canceled_log->leave_to }}</h5></td>
                                 <td><h5>{{ $rejected_canceled_log->duration }}</h5></td>
                                 <td><h5>{{ $rejected_canceled_log->reason }}</h5></td>
-                                <td><h5>{{ $rejected_canceled_log->rejected_at}}</h5></td>
+                                <td><h5>{{ $rejected_canceled_log->rejected_at ?? $rejected_canceled_log->cancelled_at}}</h5></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -397,8 +397,47 @@
                     console.log(error);
                     }
             });
+        });
 
 
+        $('.btn-cancel').click(function(e) {
+            e.preventDefault();
+            const entryId = $(this).data('entry-id');
+            const url = $(this).attr('href');
+            let editUrl = "{{ route('deleteLeave', 'entryId') }}";
+            const newUrl = editUrl.replace('entryId', entryId);
+            console.log(newUrl);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                reverseButtons: true,
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Remove It!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: newUrl,   
+                    dataType: 'json',
+                    type: 'GET',
+                        success: function(response) {
+                            Swal.fire(
+                                'Removed!',
+                                'The Leave request has been canceled.',
+                                'success'
+                            )
+                            .then(() => {
+                                location.reload(); // Refresh the browser
+                            });
+                        },
+                        error: function(error) {
+                        console.log(error);
+                        }
+                    });
+                }
+            });
         });
 
 
