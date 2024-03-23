@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmployeeLeaves;
 use Illuminate\Http\Request;
 use App\Models\Leave; 
 
 class LeavesController extends Controller
 {
-    public function index(){
-        
+    public function index()
+    {
         $data=[];
+
         $user_id = auth()->user()->id;
         $server_datetime_today = now();
         $datetime_object = new \DateTime($server_datetime_today);
@@ -32,8 +34,12 @@ class LeavesController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        $data['employee_leaves'] = EmployeeLeaves::where('user_id', $user_id)->first();
+        
         $data['serverCurrentDay'] = $server_day;
+
         $data['serverFormattedDate'] = $formatted_date;
+
         return view('my_leaves', $data);
     }
     public function createLeave(Request $request)
@@ -47,7 +53,6 @@ class LeavesController extends Controller
             'leave_type' => $request->input('leave_type'),
             'duration' => $request->input('duration'),
             'leave_from' => $request->input('leave_from'),
-            'leave_to' => $request->input('leave_to'),
             'reason' => $request->input('reason'),
             'status' => 'PENDING',
             'created_at' => now(),
@@ -58,11 +63,18 @@ class LeavesController extends Controller
         return redirect()->back();
     }
 
-    public function edit ($id){
+    public function edit ($id)
+    {
+        $showLeave = Leave::leftJoin('employee_leaves', 'employee_leaves.user_id', 'leaves.created_by')
+            ->where('leaves.id', $id)
+            ->select(
+                'leaves.*',
+                'employee_leaves.sick_credit',
+                'employee_leaves.vacation_credit',
+            )
+            ->first();
 
-        $showLeave = Leave::where('id',$id)
-        ->first();
-
+        // dd($showLeave);
         return $showLeave;
     }
 
@@ -75,7 +87,6 @@ class LeavesController extends Controller
             'leave_type' => $request->input('leave_type'),
             'duration' => $request->input('duration'),
             'leave_from' => $request->input('leave_from'),
-            'leave_to' => $request->input('leave_to'),
             'reason' => $request->input('reason'),
             'updated_by' => $employee_id,
             'updated_at' => now(),

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\OfficialBusiness;
 use App\Models\Overtime;
+use App\Models\Leave;
 use App\Models\User;
 use App\Models\UserLog;
 use Illuminate\Http\Request;
@@ -30,6 +31,14 @@ class EmployeeRequestController extends Controller
                 'users.*',
                 'users.name',
                 'overtimes.*'
+            )
+            ->where('status', 'PENDING')
+            ->get();
+        $data['leaves'] = Leave::leftJoin('users', 'users.id', 'leaves.created_by')
+            ->select(
+                'users.*',
+                'users.name',
+                'leaves.*'
             )
             ->where('status', 'PENDING')
             ->get();

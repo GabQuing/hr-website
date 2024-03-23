@@ -46,10 +46,6 @@
                                         <p>From:</p>
                                         <input class="u-input" name="leave_from" type="date" required>
                                     </td>                           
-                                    <td>
-                                        <p>To:</p>
-                                        <input class="u-input" name="leave_to" type="date" required>
-                                    </td>                                                 
                                 </tr>
                                 <tr>
                                     <td>
@@ -115,15 +111,15 @@
                                         <p>From:</p>
                                         <input class="u-input" name="leave_from" id="edit_leave_from" type="date" required>
                                     </td>                           
-                                    <td>
-                                        <p>To:</p>
-                                        <input class="u-input" name="leave_to" id="edit_leave_to" type="date" required>
-                                    </td>                                                 
                                 </tr>
                                 <tr>
                                     <td>
-                                        <p>Current Leave Credits:</p>
-                                        <span>0</span>
+                                        <p>Birthday Leave Credits:</p>
+                                        <span id="blc"></span>
+                                    </td>
+                                    <td>
+                                        <p>Vacation Leave Credits:</p>
+                                        <span id="vlc"></span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -202,7 +198,7 @@
                             <h5 class="u-fw-b u-t-gray">Birthday : Default Birthday leave policy</h5>
                         </td>
                         <td>
-                            <h5 class="u-fw-b u-t-gray">0</h5>
+                            <h5 class="u-fw-b u-t-gray">{{ $employee_leaves->sick_credit }}</h5>
                         </td>
                     </tr>
                     <tr>
@@ -210,7 +206,7 @@
                             <h5 class="u-fw-b u-t-gray">Vacation : Default Vacation leave policy</h5>
                         </td>
                         <td>
-                            <h5 class="u-fw-b u-t-gray">0</h5>
+                            <h5 class="u-fw-b u-t-gray">{{ $employee_leaves->vacation_credit }}</h5>
                         </td>
                     </tr>
                 </tbody>
@@ -240,7 +236,6 @@
                             <td><h5 class="f-weight-bold">Date Filed</h5></td>
                             <td><h5 class="f-weight-bold">Leave Type</h5></td>
                             <td><h5 class="f-weight-bold">Leave From</h5></td>
-                            <td><h5 class="f-weight-bold">Leave To</h5></td>
                             <td><h5 class="f-weight-bold">Duration</h5></td>
                             <td><h5 class="f-weight-bold">Purpose</h5></td>
                             <td><h5 class="f-weight-bold">Actions</h5></td>
@@ -253,7 +248,6 @@
                                 <td><h5>{{ $pending_log->created_at->format('Y-m-d')}}</h5></td>
                                 <td><h5>{{ $pending_log->leave_type }}</h5></td>
                                 <td><h5>{{ $pending_log->leave_from }}</h5></td>
-                                <td><h5>{{ $pending_log->leave_to }}</h5></td>
                                 <td><h5>{{ $pending_log->duration }}</h5></td>
                                 <td><h5>{{ $pending_log->reason }}</h5></td>
                                 <td>
@@ -283,7 +277,6 @@
                             <td><h5 class="f-weight-bold">Date Filed</h5></td>
                             <td><h5 class="f-weight-bold">Leave Type</h5></td>
                             <td><h5 class="f-weight-bold">Leave From</h5></td>
-                            <td><h5 class="f-weight-bold">Leave To</h5></td>
                             <td><h5 class="f-weight-bold">Duration</h5></td>
                             <td><h5 class="f-weight-bold">Purpose</h5></td>
                             <td><h5 class="f-weight-bold">Date Approved</h5></td>
@@ -296,7 +289,6 @@
                                 <td><h5>{{ $approved_log->created_at->format('Y-m-d')}}</h5></td>
                                 <td><h5>{{ $approved_log->leave_type }}</h5></td>
                                 <td><h5>{{ $approved_log->leave_from }}</h5></td>
-                                <td><h5>{{ $approved_log->leave_to }}</h5></td>
                                 <td><h5>{{ $approved_log->duration }}</h5></td>
                                 <td><h5>{{ $approved_log->reason }}</h5></td>
                                 <td><h5>{{ $approved_log->approved_at}}</h5></td>
@@ -314,7 +306,6 @@
                                 <td><h5 class="f-weight-bold">Date Filed</h5></td>
                                 <td><h5 class="f-weight-bold">Leave Type</h5></td>
                                 <td><h5 class="f-weight-bold">Leave From</h5></td>
-                                <td><h5 class="f-weight-bold">Leave To</h5></td>
                                 <td><h5 class="f-weight-bold">Duration</h5></td>
                                 <td><h5 class="f-weight-bold">Purpose</h5></td>
                                 <td><h5 class="f-weight-bold">Date Rejected/Canceled</h5></td>
@@ -328,7 +319,6 @@
                                 <td><h5>{{ $rejected_canceled_log->created_at->format('Y-m-d')}}</h5></td>
                                 <td><h5>{{ $rejected_canceled_log->leave_type }}</h5></td>
                                 <td><h5>{{ $rejected_canceled_log->leave_from }}</h5></td>
-                                <td><h5>{{ $rejected_canceled_log->leave_to }}</h5></td>
                                 <td><h5>{{ $rejected_canceled_log->duration }}</h5></td>
                                 <td><h5>{{ $rejected_canceled_log->reason }}</h5></td>
                                 <td><h5>{{ $rejected_canceled_log->rejected_at ?? $rejected_canceled_log->cancelled_at}}</h5></td>
@@ -387,8 +377,9 @@
                         $('#edit_leave_type').val(response.leave_type);
                         $('#edit_duration').val(response.duration);
                         $('#edit_leave_from').val(response.leave_from);
-                        $('#edit_leave_to').val(response.leave_to);
                         $('#edit_reason').val(response.reason);
+                        $('#blc').text(response.sick_credit);
+                        $('#vlc').text(response.vacation_credit);
                         $('.edit-leave-form').show(); 
                         $('form').attr('action', '/my_leaves/' + response.id + '/update');
                         console.log(response);

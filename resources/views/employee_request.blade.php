@@ -190,7 +190,7 @@
             </div>
             <div class="u-mr-16" style="position: relative" id="leaves-btn">
                 <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default" href="">Leaves</button>
-                @if (count([]) > 0)
+                @if (count($leaves) > 0)
                     <div class="u-record u-t-white">
                         <span style="position: relative; top: -1px;">
                             {{ count($leaves) }}
@@ -331,6 +331,57 @@
                             <th>OT Minutes</th>   
                             <th>Requested By</th>   
                             <th>Actions</th>    
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="leaves-table">
+            <div class="u-mt-10">
+                <table class="myTable" class="display" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Date Filed</th>
+                            <th>Leave Type</th>
+                            <th>Leave From</th>
+                            <th>Duration</th>
+                            <th>Purpose</th>   
+                            <th>Actions</th>         
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @if (!empty($leaves))
+                        @foreach ($leaves as $leave)
+                            <tr>
+                                <th>{{ $leave->pending }}</th>
+                                <th>{{ $leave->created_at->format('Y-m-d') }}</th>
+                                <th>{{ $leave->type }}</th>
+                                <th>{{ $leave->leave_from }}</th>
+                                <th>{{ $leave->duration }}</th>
+                                <th>{{ $leave->reason }}</th>  
+                                <td>
+                                    <div class="d-flex;">
+                                        <button class="ot-btn u-action-btn u-bg-primary" type="button" ot-id="{{ $leave->id }}">
+                                            <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                                edit
+                                            </span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                    <tfoot>
+                        <tr>
+                            <th>Status</th>
+                            <th>Date Filed</th>
+                            <th>Leave Type</th>
+                            <th>Leave From</th>
+                            <th>Duration</th>
+                            <th>Purpose</th>   
+                            <th>Actions</th>  
                         </tr>
                     </tfoot>
                 </table>
