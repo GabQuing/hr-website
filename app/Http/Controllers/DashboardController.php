@@ -30,7 +30,7 @@ class DashboardController extends Controller
         $test = $request->all();
         $user_id = $request->get('user_id');
         $user_sched_id = $request->get('user_sched_id');
-        $timestamp = date('Y-m-d H:i:s');
+        $timestamp = date('Y-m-d H:i');
         $action = $request->get('action');
 
         $log_type = (new LogType())->getByDescription($action);
