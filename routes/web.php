@@ -10,26 +10,19 @@ use App\Http\Controllers\OfficialBusinessController;
 use App\Http\Controllers\OvertimesController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SideTopContentController;
 use App\Http\Controllers\UndertimesController;
 use App\Http\Controllers\ApproveAccountsController;
 use App\Http\Controllers\UserAccountsController;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\AttendanceSystemController;
 use App\Http\Controllers\LogUserAccessController;
-use App\Http\Controllers\ExportController;
-use App\Http\Controllers\ManageAddressController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\EmployeeRequestController;
-use App\Http\Controllers\MacAddressController;
 use App\Http\Controllers\ScheduleProfileController;
 use App\Http\Controllers\PolicyProcedureController;
 use App\Http\Controllers\EmployeeLeavesController;
-use App\Models\log_approve;
 
 /*
 |--------------------------------------------------------------------------
@@ -223,7 +216,7 @@ Route::post('/schedule_profile_edit', [ScheduleProfileController::class, 'edit']
 // Route::post('/storeAddress/{id}/update', [ManageAddressController::class, 'update'])->name('updateAddress');
 
 //Policy & Procedure
-Route::get('/policy_procedure', [PolicyProcedureController::Class, 'index'])->name('policy_procedure');
+Route::get('/policy_procedure', [PolicyProcedureController::class, 'index'])->name('policy_procedure');
 
 
 // SideTopContent
