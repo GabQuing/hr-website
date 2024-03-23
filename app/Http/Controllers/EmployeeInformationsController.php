@@ -30,6 +30,7 @@ class EmployeeInformationsController extends Controller
     
             $data = [];
             $data['user'] = DB::table('users')
+                ->whereNull('users.deleted_at')
                 ->whereIn('users.id', $modelIds)
                 ->leftJoin('model_has_roles as model', 'model.model_id', 'users.id')
                 ->leftJoin('roles as privilege', 'privilege.id', 'model.role_id')
