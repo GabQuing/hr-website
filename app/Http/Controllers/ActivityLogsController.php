@@ -1,17 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\loginAttendance;
-use DateTime;
-use DateInterval;
-use DateTimeZone;
+
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Exports\ActivityLogsExport;
 use App\Models\UserLog;
-use App\Models\UserLogView;
-use DB;
-use Storage;
+use Illuminate\Support\Facades\DB;
 
 class ActivityLogsController extends Controller
 {
@@ -21,20 +16,20 @@ class ActivityLogsController extends Controller
     public function index()
     {
         $user_id = auth()->user()->id;
-        $data=[];
+        $data = [];
         $data['user_logs'] = (new UserLog())
             ->getByUserId($user_id)
             ->paginate(10);
 
         // dd(auth()->user()->employee_name);
-        return view ('my_activity_logs', $data);
+        return view('my_activity_logs', $data);
     }
 
 
     public function generateFile(Request $request)
     {
         $user_id = auth()->user()->id;
-        $data=[];
+        $data = [];
         $data['user_logs'] = (new UserLog())
             ->getByUserId($user_id)
             ->paginate(10)
@@ -44,23 +39,24 @@ class ActivityLogsController extends Controller
         $fromDate = $request->input('from_date');
         $toDate = $request->input('to_date');
         $numEntry = DB::table('user_log_view')
-            ->where('user_id',$employeeId)
-            ->whereBetween('log_date',[$fromDate,$toDate])
-            ->select('user_id',
+            ->where('user_id', $employeeId)
+            ->whereBetween('log_date', [$fromDate, $toDate])
+            ->select(
+                'user_id',
                 'log_date',
                 'latest',
-                'log_type_id')
+                'log_type_id'
+            )
             ->get();
 
-        $dataEntry=[];
+        $dataEntry = [];
         $dataEntry['fromDate'] = $fromDate;
         $dataEntry['toDate'] = $toDate;
         $dataEntry['numEntry'] = $numEntry;
         $dataEntry['has_generated'] = true;
-        
-        $request->session()->flash('success', '"Export File" generated successfully!');
-        return view ('my_activity_logs', $dataEntry, $data);
 
+        $request->session()->flash('success', '"Export File" generated successfully!');
+        return view('my_activity_logs', $dataEntry, $data);
     }
 
     public function exportFile(Request $request)
@@ -70,20 +66,21 @@ class ActivityLogsController extends Controller
         $data = [];
         $data['from_date'] = $request->input('from_date');
         $data['to_date'] = $request->input('to_date');
-        
+
         return Excel::download(new ActivityLogsExport($data), "$employeeName-activity-log-summary.xlsx");
     }
 
-    public function myActivityGoogleImages(Request $request)  {
-        $uuids = json_decode($request->get('uuids'));
-        $response = [];
-        foreach ($uuids as $uuid) {
-            if (Storage::disk('google')->exists('attendanceLogs/' . $uuid . '.png')) {
-                $response[$uuid] = Storage::disk('google')->url('attendanceLogs/' . $uuid . '.png');
-            }
-        }
-        return json_encode($response);
-    }
+    // public function myActivityGoogleImages(Request $request)
+    // {
+    //     $uuids = json_decode($request->get('uuids'));
+    //     $response = [];
+    //     foreach ($uuids as $uuid) {
+    //         if (Storage::disk('google')->exists('attendanceLogs/' . $uuid . '.png')) {
+    //             $response[$uuid] = Storage::disk('google')->url('attendanceLogs/' . $uuid . '.png');
+    //         }
+    //     }
+    //     return json_encode($response);
+    // }
 
 
 

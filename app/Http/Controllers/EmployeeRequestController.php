@@ -158,14 +158,14 @@ class EmployeeRequestController extends Controller
                 'user_id' => $user_id,
                 'log_type_id' => 1,
                 'log_date' => $date,
-            ])->first();
+            ])?->first();
             $log_out = UserLog::where([
                 'user_id' => $user_id,
                 'log_type_id' => 2,
                 'log_date' => $date,
             ])->first();
-            $is_login_existing = $log_in->exists();
-            $is_logout_existing = $log_out->exists();
+            $is_login_existing = $log_in?->exists();
+            $is_logout_existing = $log_out?->exists();
             if ($is_login_existing) {
                 $log_in->update([
                     'schedule_types_id' => $user->schedule_types_id,

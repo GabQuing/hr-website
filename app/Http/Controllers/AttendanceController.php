@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\attendanceSummaryExport;
 use App\Models\AttendanceSummary;
+use App\Models\User;
 use App\Models\UserLog;
+use Illuminate\Support\Facades\DB;
 
 // use ExportController;
 
@@ -21,11 +23,28 @@ class AttendanceController extends Controller
 
     public function daysPresent(Request $request)
     {
-        //Compute Number of Present
         $fromDate = $request->input('from_date');
         $toDate = $request->input('to_date');
         $userId = $request->input('employeeId');
+        $data = self::getSummaryData($userId, $fromDate, $toDate);
+        $data['params'] = $request->all();
+        return view('my_attendance', $data);
+    }
 
+    public function export(Request $request)
+    {
+        $fromDate = $request->input('from_date');
+        $toDate = $request->input('to_date');
+        $userId = $request->input('employeeId');
+        $summary_data = self::getSummaryData($userId, $fromDate, $toDate);
+        $log_data = self::getLogData($userId, $fromDate, $toDate);
+
+        return Excel::download(new attendanceSummaryExport($log_data, [$summary_data]), "Attendance-Summary " . date('Y-m-d H.i.s') . ".xlsx");
+    }
+
+    public function getSummaryData($userId, $fromDate, $toDate)
+    {
+        $data = [];
         $DaysPresent = (new UserLog())->countTotalPresent($userId, $fromDate, $toDate);
         $DaysAbsent = (new AttendanceSummary())->countTotalAbsent($userId, $fromDate, $toDate);
         $totalHours = (new AttendanceSummary())->countTotalHours($userId, $fromDate, $toDate);
@@ -41,7 +60,7 @@ class AttendanceController extends Controller
         });
         $totalUndertimes = floor($totalUndertimes / 60);
         $totalLatesUndertimes = $totalLates + $totalUndertimes;
-
+        $data['user'] = User::find($userId)?->name;
         $data['has_generated'] = true;
         $data['days_present'] = $DaysPresent;
         $data['numberOfAbsences'] = $DaysAbsent;
@@ -53,21 +72,22 @@ class AttendanceController extends Controller
         $data['toDate'] = $toDate;
         $data['from'] = $fromDate;
         $data['to'] = $toDate;
-        return view('my_attendance', $data);
+        return $data;
     }
 
-    public function export(Request $request)
+    public function getLogData($userId, $fromDate, $toDate)
     {
-        $employeeName = auth()->user()->employee_name;
-        $count_present = $request->input('count_present');
-        $number_absences = $request->input('number_absences');
-        $data = [];
-        $data['employee_name'] = $employeeName;
-        $data['from_date'] = $request->input('from_date');
-        $data['to_date'] = $request->input('to_date');
-        $data['count_present'] = $count_present;
-        $data['number_absences'] = $number_absences;
-
-        return Excel::download(new attendanceSummaryExport($data), "$employeeName-attendance-summary.xlsx");
+        return DB::table('attendance_summary')
+            ->where('user_id', $userId)
+            ->join('users', 'attendance_summary.user_id', '=', 'users.id')
+            ->selectRaw("
+                users.name,
+                log_date,
+                clock_in,
+                break_start,
+                break_end,
+                clock_out
+            ")
+            ->whereBetween('log_date', [$fromDate, $toDate]);
     }
 }
