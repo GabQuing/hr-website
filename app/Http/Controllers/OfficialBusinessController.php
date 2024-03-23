@@ -1,28 +1,30 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\OfficialBusiness; 
+
+use App\Models\OfficialBusiness;
 use Illuminate\Http\Request;
 
 class OfficialBusinessController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 
         $user_id = auth()->user()->id;
-        $data=[];
-        $data['pending_logs'] = OfficialBusiness::where('created_by',$user_id)
+        $data = [];
+        $data['pending_logs'] = OfficialBusiness::where('created_by', $user_id)
             ->where('status', 'PENDING')
             ->orderBy('created_at', 'desc')
             ->get();
-        $data['approved_logs'] = OfficialBusiness::where('created_by',$user_id)
+        $data['approved_logs'] = OfficialBusiness::where('created_by', $user_id)
             ->where('status', 'APPROVED')
             ->orderBy('created_at', 'desc')
             ->get();
-        $data['rejected_canceled_logs'] = OfficialBusiness::where('created_by',$user_id)
-            ->whereIn('status', ['REJECTED','CANCELED'])
+        $data['rejected_canceled_logs'] = OfficialBusiness::where('created_by', $user_id)
+            ->whereIn('status', ['REJECTED', 'CANCELED'])
             ->orderBy('created_at', 'desc')
             ->get();
-        
+
         return view('my_official_business', $data);
     }
     public function createOB(Request $request)
@@ -41,13 +43,12 @@ class OfficialBusinessController extends Controller
             'created_by' => $employee_id,
             'created_at' => now(),
         ]);
-        $request->session()->flash('success', 'Official Business Generated Successfully!');
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Official Business Generated Successfully!');
     }
 
     public function edit($id)
     {
-        $showOB = OfficialBusiness::where('id',$id)
+        $showOB = OfficialBusiness::where('id', $id)
             ->first();
 
         return $showOB;
@@ -70,8 +71,7 @@ class OfficialBusinessController extends Controller
 
         ]);
 
-        $request->session()->flash('success', 'Official Business Has Been Edited!');
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Official Business Has Been Edited!');
     }
 
     public function deleteOB($id)
