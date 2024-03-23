@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\OfficialBusiness;
 use App\Models\Overtime;
 use App\Models\User;
+use App\Models\UserLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
@@ -16,7 +17,7 @@ class EmployeeRequestController extends Controller
     public function index()
     {
         $data = [];
-        $data['official_businesses'] = OfficialBusiness::leftJoin('users','users.id','official_businesses.created_by')
+        $data['official_businesses'] = OfficialBusiness::leftJoin('users', 'users.id', 'official_businesses.created_by')
             ->select(
                 'users.*',
                 'users.name',
@@ -24,11 +25,11 @@ class EmployeeRequestController extends Controller
             )
             ->where('status', 'PENDING')
             ->get();
-        $data['overtimes'] = Overtime::leftJoin('users','users.id','overtimes.created_by')
+        $data['overtimes'] = Overtime::leftJoin('users', 'users.id', 'overtimes.created_by')
             ->select(
-            'users.*',
-            'users.name',
-            'overtimes.*'
+                'users.*',
+                'users.name',
+                'overtimes.*'
             )
             ->where('status', 'PENDING')
             ->get();
@@ -36,53 +37,6 @@ class EmployeeRequestController extends Controller
         return view('employee_request', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 
     public function officialBusinessData(Request $request, string $id)
     {
@@ -98,21 +52,23 @@ class EmployeeRequestController extends Controller
     {
         $user_input = $request->all();
         $ob = OfficialBusiness::find($user_input['ob_id']);
-        
-        if ($user_input['ob_form_btn'] == 'approve'){
-            $ob->update([
-                'status' => 'APPROVED',
-                'approved_at' => date('Y-m-d H:i:s'),
-                'approved_by' => auth()->user()->id
-            ]);
-        }else {
+
+        if ($user_input['ob_form_btn'] == 'approve') {
+            $is_adjusted = self::adjustUserLog('ob', $ob);
+            if ($is_adjusted) {
+                $ob->update([
+                    'status' => 'APPROVED',
+                    'approved_at' => date('Y-m-d H:i:s'),
+                    'approved_by' => auth()->user()->id
+                ]);
+            }
+        } else {
             $ob->update([
                 'status' => 'REJECTED',
                 'rejected_at' => date('Y-m-d H:i:s'),
                 'rejected_by' => auth()->user()->id
             ]);
         }
-
         return redirect()->back()->with('ob-success', 'The request has been updated.');
     }
 
@@ -120,14 +76,14 @@ class EmployeeRequestController extends Controller
     {
         $user_input = $request->all();
         $ob = Overtime::find($user_input['ot_id']);
-        
-        if ($user_input['ot_form_btn'] == 'approve'){
+
+        if ($user_input['ot_form_btn'] == 'approve') {
             $ob->update([
                 'status' => 'APPROVED',
                 'approved_at' => date('Y-m-d H:i:s'),
                 'approved_by' => auth()->user()->id
             ]);
-        }else {
+        } else {
             $ob->update([
                 'status' => 'REJECTED',
                 'rejected_at' => date('Y-m-d H:i:s'),
@@ -135,5 +91,62 @@ class EmployeeRequestController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('ot-success', 'The request has been updated.');    }
+        return redirect()->back()->with('ot-success', 'The request has been updated.');
+    }
+
+    public function adjustUserLog($request_type, $request_item)
+    {
+        if ($request_type === 'ob') {
+            $date = $request_item->date_from;
+            $user_id = $request_item->created_by;
+            $user = User::find($user_id);
+            $log_in_time = $request_item->time_from;
+            $log_out_time = $request_item->time_to;
+            $log_in = UserLog::where([
+                'user_id' => $user_id,
+                'log_type_id' => 1,
+                'log_date' => $date,
+            ])->first();
+            $log_out = UserLog::where([
+                'user_id' => $user_id,
+                'log_type_id' => 2,
+                'log_date' => $date,
+            ])->first();
+            $is_login_existing = $log_in->exists();
+            $is_logout_existing = $log_out->exists();
+            if ($is_login_existing) {
+                $log_in->update([
+                    'schedule_types_id' => $user->schedule_types_id,
+                    'log_at' => "$date $log_in_time",
+                ]);
+            } else {
+                UserLog::create([
+                    'user_id' => $user_id,
+                    'log_type_id' => 1,
+                    'schedule_types_id' => $user->schedule_types_id,
+                    'log_at' => "$date $log_in_time",
+                ]);
+            }
+            if ($is_logout_existing) {
+                $log_out->update([
+                    'schedule_types_id' => $user->schedule_types_id,
+                    'log_at' => "$date $log_out_time",
+                ]);
+            } else {
+                UserLog::create([
+                    'user_id' => $user_id,
+                    'log_type_id' => 2,
+                    'schedule_types_id' => $user->schedule_types_id,
+                    'log_at' => "$date $log_out_time",
+                ]);
+            }
+            return true;
+        } else if ($request_type === 'leave') {
+            // TODO: LEAVE REQUEST APPROVAL
+            // $date = $request_item->leave_from;
+            // $duration = $request_item->duration;
+            // if ($duration === 'WHOLEDAY') {
+            // }
+        }
+    }
 }
