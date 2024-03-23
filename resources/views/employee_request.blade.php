@@ -32,10 +32,6 @@
                                             <input class="u-input" name="ob_date_from" type="date" readonly>
                                         </td>
                                         <td>
-                                            <p>Date To:</p>
-                                            <input class="u-input" name="ob_date_to" type="date" readonly>
-                                        </td>                            
-                                        <td>
                                             <p>Time From:</p>
                                             <input class="u-input" name="ob_time_from" type="time" readonly>
                                         </td>                            
@@ -164,6 +160,75 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal-center" id="leave-modal" style="display: none;">
+            <div class="modal-box">
+                <div class="modal-content">
+                    <form method="POST" action="{{ route('leaveForm') }}">
+                        @csrf
+                        <input type="hidden" name="leave_id">
+                        <input type="hidden" name="leave_form_btn"> 
+                        <div style="overflow-x: auto; width: 100%;">
+                        <table class="custom_normal_table">
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <h3 class="f-weight-bold"><i class="fa-solid fa-eye"></i> Leave Application Form</h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Leave Type:</p>
+                                        <select class="u-input" name="leave_type" id="" disabled>
+                                            <option value="" selected disabled>None selected</option>
+                                            <option value="BIRTHDAY">BIRTHDAY</option>
+                                            <option value="VACATION">VACATION</option>
+                                        </select>
+                                    </td>        
+                                    <td>
+                                        <p>Duration:</p>
+                                        <select class="u-input" name="leave_duration" id="" disabled>
+                                            <option value="" selected disabled>None selected</option>
+                                            <option value="WHOLEDAY">WHOLEDAY</option>
+                                            <option value="HALFDAY">HALFDAY</option>
+                                        </select>
+                                    </td>        
+                                </tr>
+                                <tr>                   
+                                    <td>
+                                        <p>From:</p>
+                                        <input class="u-input" name="leave_from" type="date" disabled>
+                                    </td>                           
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Birthday : Default Birthday leave policy</p>
+                                        <span id="blc"></span>
+                                    </td>
+                                    <td>
+                                        <p>Vacation : Default Vacation leave policy</p>
+                                        <span id="vlc"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <p>Reason</p>
+                                        <input class="u-input-border-boottom" name="leave_reason" type="text" placeholder="Enter Reason" disabled>
+                                    </td>                            
+                                </tr>
+                        </table>
+                        </div>
+                        <div class="u-flex-space-between">
+                            <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" id="ot-btn-close" type="button">Close</button>
+                            <div class="u-flex-space-between">
+                                <button class="ot-btns u-t-white u-fw-b u-btn u-bg-danger u-m-5 u-border-1-default"  type="ot-btns submit">Rejected</button>
+                                <button class="ot-btns u-t-white u-fw-b u-btn u-bg-accent u-m-5 u-border-1-default"  type="submit">Approve</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         
 
         <div class="u-flex">
@@ -218,7 +283,6 @@
                             <th>Date Filed</th>
                             <th>Location</th>
                             <th>Date From</th>
-                            <th>Date To</th>
                             <th>Time From</th>
                             <th>Time To</th>
                             <th>Purpose</th>   
@@ -234,7 +298,6 @@
                                     <td>{{ $official_business->created_at }}</td>
                                     <td>{{ $official_business->location }}</td>
                                     <td>{{ $official_business->date_from }}</td>
-                                    <td>{{ $official_business->date_to }}</td>
                                     <td>{{ $official_business->time_from }}</td>
                                     <td>{{ $official_business->time_to }}</td>
                                     <td>{{ $official_business->reason }}</td>
@@ -257,7 +320,6 @@
                             <th>Date Filed</th>
                             <th>Location</th>
                             <th>Date From</th>
-                            <th>Date To</th>
                             <th>Time From</th>
                             <th>Time To</th>
                             <th>Purpose</th>   
@@ -337,7 +399,7 @@
             </div>
         </div>
 
-        <div class="leaves-table">
+        <div class="leaves-table" style="display: none;">
             <div class="u-mt-10">
                 <table class="myTable" class="display" style="width:100%;">
                     <thead>
@@ -345,8 +407,8 @@
                             <th>Status</th>
                             <th>Date Filed</th>
                             <th>Leave Type</th>
-                            <th>Leave From</th>
                             <th>Duration</th>
+                            <th>Leave From</th>
                             <th>Purpose</th>   
                             <th>Actions</th>         
                         </tr>
@@ -355,15 +417,15 @@
                     @if (!empty($leaves))
                         @foreach ($leaves as $leave)
                             <tr>
-                                <th>{{ $leave->pending }}</th>
-                                <th>{{ $leave->created_at->format('Y-m-d') }}</th>
-                                <th>{{ $leave->type }}</th>
-                                <th>{{ $leave->leave_from }}</th>
-                                <th>{{ $leave->duration }}</th>
-                                <th>{{ $leave->reason }}</th>  
+                                <td class="u-t-warning u-fw-b">{{ $leave->status }}</td>
+                                <td>{{ $leave->created_at->format('Y-m-d') }}</td>
+                                <td>{{ $leave->leave_type}}</td>
+                                <td>{{ $leave->duration }}</td>
+                                <td>{{ $leave->leave_from }}</td>
+                                <td>{{ $leave->reason }}</td>  
                                 <td>
                                     <div class="d-flex;">
-                                        <button class="ot-btn u-action-btn u-bg-primary" type="button" ot-id="{{ $leave->id }}">
+                                        <button class="leave-btn u-action-btn u-bg-primary" type="button" leave-id="{{ $leave->id }}">
                                             <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
                                                 edit
                                             </span>
@@ -417,6 +479,7 @@
             removeBtnClassActive();
             hideTables();
             $(this).find('button').addClass('u-btn-active');
+            $('.leaves-table').fadeIn('slow');
         })
 
 
@@ -439,6 +502,35 @@
                     $('input[name="ob_time_to"]').val(response.time_to);
                     $('input[name="ob_location"]').val(response.location);
                     $('input[name="ob_reason"]').val(response.reason);
+                },
+                error: function(error){
+                    console.log(error)
+                }
+            })
+        })
+
+        $('.leave-btn').on('click', function(){
+            $('#leave-modal').show();
+            
+            let leaveId = $(this).attr('leave-id');
+            let url = "{{ route('leaved', ':leaveId') }}";
+            url = url.replace(':leaveId', leaveId);
+
+            console.log(url);
+            
+            $.ajax({
+                url: url, 
+                dataType: 'json',
+                type: 'GET',
+                success: function(response){
+                    console.log(response);
+                    $('input[name="leave_id"]').val(response.id);
+                    $('select[name="leave_type"]').val(response.leave_type);
+                    $('select[name="leave_duration"]').val(response.duration);
+                    $('input[name="leave_from"]').val(response.leave_from);
+                    $('input[name="leave_reason"]').val(response.reason);
+                    $('#blc').text(response.sick_credit);
+                    $('#vlc').text(response.vacation_credit);
                 },
                 error: function(error){
                     console.log(error)
@@ -482,6 +574,10 @@
             $('input[name="ot_form_btn"]').val($(event.target).text().toLowerCase());
         });
 
+        $('.ot-btns').on('click', (event) => {
+            $('input[name="leave_form_btn"]').val($(event.target).text().toLowerCase());
+        });
+
         // session success
         if ("{{ session('ob-success') }}"){
             $('.official-business-table').fadeIn('slow');
@@ -497,6 +593,7 @@
         function hideTables(){
             $('.official-business-table').hide();
             $('.overtimes-table').hide();
+            $('.leaves-table').hide();
         }
         
     });

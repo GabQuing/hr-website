@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\UserLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use App\Models\EmployeeLeaves;
 
 class EmployeeRequestController extends Controller
 {
@@ -57,6 +58,18 @@ class EmployeeRequestController extends Controller
         return Overtime::find($id);
     }
 
+    public function leaveData(Request $request, string $id)
+    {
+        return Leave::leftJoin('employee_leaves', 'employee_leaves.user_id', 'leaves.created_by')
+            ->where('leaves.id', $id)
+            ->select(
+                'leaves.*',
+                'employee_leaves.sick_credit',
+                'employee_leaves.vacation_credit',
+            )
+            ->first();
+    }
+
     public function obForm(Request $request)
     {
         $user_input = $request->all();
@@ -84,16 +97,46 @@ class EmployeeRequestController extends Controller
     public function otForm(Request $request)
     {
         $user_input = $request->all();
-        $ob = Overtime::find($user_input['ot_id']);
+        $ot = Overtime::find($user_input['ot_id']);
 
         if ($user_input['ot_form_btn'] == 'approve') {
-            $ob->update([
+            $ot->update([
                 'status' => 'APPROVED',
                 'approved_at' => date('Y-m-d H:i:s'),
                 'approved_by' => auth()->user()->id
             ]);
         } else {
-            $ob->update([
+            $ot->update([
+                'status' => 'REJECTED',
+                'rejected_at' => date('Y-m-d H:i:s'),
+                'rejected_by' => auth()->user()->id
+            ]);
+        }
+
+        return redirect()->back()->with('ot-success', 'The request has been updated.');
+    }
+
+    public function leaveForm(Request $request)
+    {
+        $user_input = $request->all();
+        $leave = Leave::find($user_input['leave_id']);
+        $employee_request = EmployeeLeaves::where('user_id', $leave->created_by)->first();
+
+        if ($user_input['leave_form_btn'] == 'approve') {
+
+            if ($leave->leave_type == 'BIRTHDAY' && $employee_request->sick_credit > 0) {
+                $employee_request->decrement('sick_credit'); // Decrementing 'sick_credit' column by 1
+            } elseif ($leave->leave_type == 'VACATION' && $employee_request->vacation_credit > 0) {
+                $employee_request->decrement('vacation_credit'); // Decrementing 'vacation_credit' column by 1
+            }
+
+            $leave->update([
+                'status' => 'APPROVED',
+                'approved_at' => now(),
+                'approved_by' => auth()->user()->id
+            ]);
+        } else {
+            $leave->update([
                 'status' => 'REJECTED',
                 'rejected_at' => date('Y-m-d H:i:s'),
                 'rejected_by' => auth()->user()->id

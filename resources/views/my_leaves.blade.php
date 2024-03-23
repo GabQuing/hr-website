@@ -227,6 +227,12 @@
                                     <h5 class="u-fw-b" style="color: green; display:block;">{{ session('success') }}</h5>
                                 </td>
                             </tr>
+                            @elseif (session('failed'))
+                            <tr>
+                                <td>
+                                    <h5 class="u-fw-b u-t-danger" style="display:block;">{{ session('failed') }}</h5>
+                                </td>
+                            </tr>
                         @endif
                         <tr class="">
                             <td><h5 class="u-fw-b">My Request - Pending</h5></td>

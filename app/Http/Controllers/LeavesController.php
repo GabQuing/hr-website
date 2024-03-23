@@ -48,6 +48,13 @@ class LeavesController extends Controller
         $employee_name = auth()->user()->name;
         $user_sched_id = auth()->user()->schedule_types_id;
 
+        $employee_leaves = EmployeeLeaves::where('user_id', $employee_id)->first();
+
+        if (($request->input('leave_type') == 'BIRTHDAY' && $employee_leaves->sick_credit == 0) || ($request->input('leave_type') == 'VACATION' && $employee_leaves->vacation_credit == 0)){
+            $request->session()->flash('failed', 'No more credits!');
+            return redirect()->back();
+        }
+
         Leave::insert([
             'schedule_types_id' => $user_sched_id,
             'leave_type' => $request->input('leave_type'),
@@ -59,6 +66,7 @@ class LeavesController extends Controller
             'created_by' => $employee_id,
             
         ]);
+
         $request->session()->flash('success', 'Leave Generated Successfully!');
         return redirect()->back();
     }
