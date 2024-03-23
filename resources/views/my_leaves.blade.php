@@ -49,12 +49,18 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <p>Alaska Current Date:</p>
-                                        <span>{{ $serverCurrentDay }}, {{ $serverFormattedDate }}</span>
+                                        <p>Birthday : Default Birthday leave policy</p>
+                                        <span>{{ $employee_leaves->sick_credit ?? 0}}</span>
                                     </td>
                                     <td>
-                                        <p>Current Leave Credits:</p>
-                                        <span>0</span>
+                                        <p>Vacation : Default Vacation leave policy</p>
+                                        <span>{{ $employee_leaves->vacation_credit ?? 0 }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Alaska Current Date:</p>
+                                        <span>{{ $serverCurrentDay }}, {{ $serverFormattedDate }}</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -198,7 +204,7 @@
                             <h5 class="u-fw-b u-t-gray">Birthday : Default Birthday leave policy</h5>
                         </td>
                         <td>
-                            <h5 class="u-fw-b u-t-gray">{{ $employee_leaves->sick_credit }}</h5>
+                            <h5 class="u-fw-b u-t-gray">{{ $employee_leaves->sick_credit ?? 0}}</h5>
                         </td>
                     </tr>
                     <tr>
@@ -206,7 +212,7 @@
                             <h5 class="u-fw-b u-t-gray">Vacation : Default Vacation leave policy</h5>
                         </td>
                         <td>
-                            <h5 class="u-fw-b u-t-gray">{{ $employee_leaves->vacation_credit }}</h5>
+                            <h5 class="u-fw-b u-t-gray">{{ $employee_leaves->vacation_credit ?? 0 }}</h5>
                         </td>
                     </tr>
                 </tbody>
