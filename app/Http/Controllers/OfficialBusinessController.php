@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\OfficialBusiness; 
 use Illuminate\Http\Request;
+use App\Models\schedule_type; 
 
 class OfficialBusinessController extends Controller
 {
@@ -29,10 +30,12 @@ class OfficialBusinessController extends Controller
     {
         $employee_id = auth()->user()->id;
         $employee_name = auth()->user()->name;
+        $user_sched_id = auth()->user()->schedule_types_id;
+
 
         OfficialBusiness::insert([
+            'schedule_types_id' => $user_sched_id,
             'date_from' => $request->input('date_from'),
-            'date_to' => $request->input('date_to'),
             'time_from' => $request->input('time_from'),
             'time_to' => $request->input('time_to'),
             'location' => $request->input('location'),
@@ -60,7 +63,6 @@ class OfficialBusinessController extends Controller
 
         $updateOb->update([
             'date_from' => $request->input('date_from'),
-            'date_to' => $request->input('date_to'),
             'time_from' => $request->input('time_from'),
             'time_to' => $request->input('time_to'),
             'location' => $request->input('location'),

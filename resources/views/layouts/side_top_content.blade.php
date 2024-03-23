@@ -47,8 +47,28 @@
             <div style="padding: 0 20px;">
                 <div class="top_navbar">
                     @if ( Request::segment(1) == 'dashboard')
-                        <p class="header_title_h1" id="typing_text"></p>
-                        <p class="header_title_child">@yield('module_name')</p>
+                        <div>
+                            <p class="header_title_h1" id="typing_text"></p>
+                            <p class="header_title_child">@yield('module_name')</p>
+                        </div>
+                        {{-- <div class="message_div">
+                            <header>
+                                <h2>Announcement</h2>
+                            </header>
+                            <ul class="message_box">
+                                <li class="chat incoming"> 
+                                    <span class="material-symbols-outlined">smart_toy</span>
+                                    <p>Hello there </p>
+                                </li>
+                                <li class="chat outgoing"> 
+                                    <p> hi there </p>
+                                </li>
+                            </ul>
+                            <div class="message_input">
+                                <textarea placeholder="enter a message" name="" id=""></textarea>
+                                <span class="material-symbols-outlined " style="color: black">send</span>
+                            </div>
+                        </div> --}}
                     @else
                         <p class="header_title_h1">Lurtsema Communications Human Resource Portal</p>
                         <p class="header_title_child">@yield('module_name')</p>

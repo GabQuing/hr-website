@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('official_businesses', function (Blueprint $table) {
             $table->id();
+            $table->smallInteger('schedule_types_id')->unsigned()->nullable();
             $table->date('date_from')->nullable();
-            $table->date('date_to')->nullable();
             $table->time('time_from')->nullable();
             $table->time('time_to')->nullable();
             $table->text('location')->nullable();
