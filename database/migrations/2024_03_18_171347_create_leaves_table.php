@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('leave_type')->nullable();
             $table->string('duration')->nullable();
             $table->date('leave_from')->nullable();
-            $table->date('leave_to')->nullable();
             $table->text('reason')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
