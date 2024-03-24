@@ -36,10 +36,11 @@ class AttendanceController extends Controller
         $fromDate = $request->input('from_date');
         $toDate = $request->input('to_date');
         $userId = $request->input('employeeId');
-        $summary_data = self::getSummaryData($userId, $fromDate, $toDate);
         $log_data = self::getLogData($userId, $fromDate, $toDate);
+        $overtime_data = self::getOvertimeData($userId, $fromDate, $toDate);
+        $summary_data = self::getSummaryData($userId, $fromDate, $toDate);
 
-        return Excel::download(new attendanceSummaryExport($log_data, [$summary_data]), "Attendance-Summary " . date('Y-m-d H.i.s') . ".xlsx");
+        return Excel::download(new attendanceSummaryExport($log_data, $overtime_data, [$summary_data]), "Attendance-Summary " . date('Y-m-d H.i.s') . ".xlsx");
     }
 
     public function getSummaryData($userId, $fromDate, $toDate)
@@ -77,8 +78,8 @@ class AttendanceController extends Controller
 
     public function getLogData($userId, $fromDate, $toDate)
     {
+        $userId = is_array($userId) ? $userId : [$userId];
         return DB::table('attendance_summary')
-            ->where('user_id', $userId)
             ->join('users', 'attendance_summary.user_id', '=', 'users.id')
             ->selectRaw("
                 users.name,
@@ -88,6 +89,23 @@ class AttendanceController extends Controller
                 break_end,
                 clock_out
             ")
-            ->whereBetween('log_date', [$fromDate, $toDate]);
+            ->whereBetween('log_date', [$fromDate, $toDate])
+            ->whereIn('user_id', $userId);
+    }
+
+    public function getOvertimeData($userId, $fromDate, $toDate)
+    {
+        $userId = is_array($userId) ? $userId : [$userId];
+        return DB::table('overtimes')
+            ->join('users as requestor', 'overtimes.created_by', '=', 'requestor.id')
+            ->leftJoin('users as approver', 'overtimes.approved_by', '=', 'approver.id')
+            ->select(
+                'requestor.name as requestor_name',
+                'approver.name as approver_name',
+                'overtimes.*'
+            )
+            ->where('status', 'APPROVED')
+            ->whereBetween('shift_date', [$fromDate, $toDate])
+            ->whereIn('created_by', $userId);
     }
 }

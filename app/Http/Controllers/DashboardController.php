@@ -27,7 +27,6 @@ class DashboardController extends Controller
 
     public function log_action(Request $request)
     {
-        $test = $request->all();
         $user_id = $request->get('user_id');
         $user_sched_id = $request->get('user_sched_id');
         $timestamp = date('Y-m-d H:i');
@@ -37,6 +36,16 @@ class DashboardController extends Controller
 
         if (!$log_type) {
             abort(404, 'The request action type does not exist in the database.');
+        }
+
+        $is_existing = UserLog::where([
+            'log_type_id' => $log_type->id,
+            'user_id' => $user_id,
+            'log_date' => date('Y-m-d')
+        ])->exists();
+
+        if ($is_existing) {
+            abort(404, "Log of type $action already exists.");
         }
 
         $user_log = UserLog::create([
