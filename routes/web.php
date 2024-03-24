@@ -100,7 +100,7 @@ Route::post('/profile/{id}/newPassword', [ChangePasswordController::class, 'newP
 Route::get('/logout', [LoginAuthController::class, 'logout'])->name('logout');
 
 // Dashboard
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard1', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
 
 //Clock in, Clock Out, Break Start, Break End
