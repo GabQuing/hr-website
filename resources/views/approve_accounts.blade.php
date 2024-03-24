@@ -130,8 +130,8 @@
 
         <!-- Link to open the modal -->
     <div class="approve_reg_btn">
-    <a class="user_info_link" href="#useraccounts_add" rel="modal:open">Add Account</a> 
-    <a class="user_info_link" href="#useraccounts_import" rel="modal:open">Import Accounts</a>
+    <a class="u-btn u-bg-primary u-t-white" href="#useraccounts_add" rel="modal:open">Add Account</a> 
+    <a class="u-btn u-bg-default" href="#useraccounts_import" rel="modal:open">Import Accounts</a>
     </div>
     @if (session('errors'))
     <div class="add_user_success"> 

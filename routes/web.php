@@ -175,7 +175,7 @@ Route::get('/user_accounts/{id}/delete', [UserAccountsController::class, 'destro
 Route::get('/user_accounts/{id}/activate', [UserAccountsController::class, 'activate'])->name('activate');
 Route::get('/user_accounts/{id}/edit', [UserAccountsController::class, 'edit'])->name('edit');
 Route::get('/user_accounts/{id}/retakePhoto', [UserAccountsController::class, 'retakePhoto'])->name('retake');
-Route::post('/user_accounts/{id}/update', [UserAccountsController::class, 'update'])->name('update');
+Route::post('/user_accounts/{id}/update', [UserAccountsController::class, 'update'])->name('ua_update');
 
 
 

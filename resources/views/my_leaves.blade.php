@@ -35,9 +35,9 @@
                                     <td>
                                         <p>Duration:</p>
                                         <select class="u-input" name="duration" id="" required>
-                                            <option value="" selected disabled>None selected</option>
+                                            {{-- <option value="" selected disabled>None selected</option> --}}
                                             <option value="WHOLEDAY">WHOLEDAY</option>
-                                            <option value="HALFDAY">HALFDAY</option>
+                                            {{-- <option value="HALFDAY">HALFDAY</option> --}}
                                         </select>
                                     </td>        
                                 </tr>
@@ -106,9 +106,9 @@
                                     <td>
                                         <p>Duration:</p>
                                         <select class="u-input" name="duration" id="edit_duration" required>
-                                            <option value="" selected disabled>None selected</option>
+                                            {{-- <option value="" selected disabled>None selected</option> --}}
                                             <option value="WHOLEDAY">WHOLEDAY</option>
-                                            <option value="HALFDAY">HALFDAY</option>
+                                            {{-- <option value="HALFDAY">HALFDAY</option> --}}
                                         </select>
                                     </td>        
                                 </tr>

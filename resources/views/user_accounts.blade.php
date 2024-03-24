@@ -30,97 +30,95 @@
         </div>
     </div>
 
-    <div id="useraccounts_edit" class="modal">
-        <form method="POST">
-            @csrf
-            <div class="useraccounts_add_header">
-                <p>Update Account</p>
-            </div>
+    <div class="modal-center" id="useraccounts_edit" style="display: none;">
+        <div class="modal-box u-p-15">
             <div>
-                <div class="label_input">
-                    <label for="">First Name: </label>
-                    <input type="text" name="first_name" id="edit_first_name" value="" required>
-                    @if ($errors->has('first_name'))
+                <h4 class="u-fw-b">Update Account</h4>
+            </div>
+            <form id="ua-form" method="POST">
+                @csrf
+                <table class="custom_normal_table u-mt-10">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p>First Name</p>
+                                <input class="u-input" type="text" name="first_name" id="edit_first_name" value="" required>
+                            </td>
+                            <td>
+                                <p>Last Name</p>
+                                <input class="u-input" type="text" name="last_name" id="edit_last_name" value="" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Wmail</p>
+                                <input class="u-input" type="text" name="email" id="edit_email" value="">
+                            </td>
+                            <td>
+                                <p>Privilege</p>
+                                <select class="js-example-basic-single" name="privilege_role" id="user_privilege_edit" style="text-align: center;">
+                                    @foreach ($privilege_roles as $role)
+                                        <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                        </tr>
+                        <td colspan="2">
+                            <p>Password</p>
+                            <input class="u-input" type="password" name="password" id="edit_password">
+                        </td>
+                    </tbody>
+                </table>
+                @if ($errors->has('first_name'))
+                    <div class="u-m-10 u-bg-danger" style="padding: 10px;">
                         <span class="text-danger">{{ $errors->first('first_name') }}</span>
-                    @endif
-                </div>
-                <div class="label_input">
-                    <label for="">Last Name: </label>
-                    <input type="text" name="last_name" id="edit_last_name" value="" required>
-                    @if ($errors->has('last_name'))
+                    </div>
+                @endif
+                @if ($errors->has('last_name'))
+                    <div class="u-m-10 u-bg-danger" style="padding: 10px;">
                         <span class="text-danger">{{ $errors->first('last_name') }}</span>
-                    @endif
-                </div>
-                <div class="label_input">
-                    <label for="">Email Name: </label>
-                    <input type="text" name="email" id="edit_email" value="">
-                    @if ($errors->has('email'))
+                    </div>
+                @endif
+                @if ($errors->has('email'))
+                    <div class="u-m-10 u-bg-danger" style="padding: 10px;">
                         <span class="text-danger">{{ $errors->first('email') }}</span>
-                    @endif
+                    </div>
+                @endif
+                @if ($errors->has('password'))
+                    <div class="u-m-10 u-bg-danger" style="padding: 10px;">
+                        <span class="text-danger">{{ $errors->first('email') }}</span>
+                    </div>
+                @endif
+                <div class="u-ml-10 u-flex-end" style="padding: 10px;">
+                    <button class="u-btn u-mr-10" type="button" id="btn-close">Close</button>
+                    <button class="u-btn u-bg-primary u-t-white" type="submit">Submit</button>
                 </div>
-                <div class="label_input">
-                    <label for="">Privilege</label>
-                    <select class="js-example-basic-single s-add" name="privilege_role" id="user_privilege_edit" style="text-align: center;">
-                        @foreach ($privilege_roles as $role)
-                            <option value="{{ $role->name }}">{{ $role->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="label_input">
-                    <label for="">Password: </label>
-                    <input type="password" name="password" id="edit_password">
-                    @if ($errors->has('password'))
-                        <span class="text-danger">{{ $errors->first('password') }}</span>
-                    @endif
-                </div>
-            </div>
-
-            <div class="useraccounts_edit_btns">
-                <a class="addaccount_close" href="#" rel="modal:close" id="clsaccount_btn">Close</a>
-                <button class="addaccount_btn">Update</button>
-                {{-- <a class="retake_photo_btn" href="" id="retake_btn">Re-take Photos</a> --}}
-            </div>
-
-
-        </form>
-    </div>
-
-    <div id="pop_img" class="pop_img_hide">
-        <div id="close_modal_btn">×</div>
-        <div class="user_img" style="display: flex">
-            <div class="user_img_content1 user_img_content">
-                <img id="user_face_recog_img1" src="" alt="Photo" loading="lazy" style="width: 100%">
-                <p>Photo 1</p>
-            </div>
-            <div class="user_img_content2 user_img_content">
-                <img id="user_face_recog_img2" src="" alt="Photo" loading="lazy" style="width: 100%">
-                <p>Photo 2</p>
-            </div>
+            </form>
         </div>
     </div>
     
     <!-- Link to open the modal -->
     {{-- <p><a class="user_info_link" href="#useraccounts_add" rel="modal:open">Add Account</a> <a class="user_info_link" href="#useraccounts_import" rel="modal:open">Import Accounts</a></p> --}}
     @if (session('errors'))
-    <div class="add_user_success"> 
-        @foreach (session('errors')->getBag('default')->all() as $error)
-        <span style="color: red; display:block;">{{ $error }}</span>
-        @endforeach
-    </div>
+        <div class="add_user_success"> 
+            @foreach (session('errors')->getBag('default')->all() as $error)
+            <span class="u-fw-b" style="color: red; display:block;">{{ $error }}</span>
+            @endforeach
+        </div>
     @endif
     @if (session('success'))
         <div class="add_user_success"> 
-            <span>{{ session('success') }}</span>
+            <span class="u-fw-b">{{ session('success') }}</span>
         </div>
     @endif
     @if (session('deactivate'))
         <div class="add_user_delete"> 
-            <span>{{ session('deactivate') }}</span>
+            <span class="u-fw-b">{{ session('deactivate') }}</span>
         </div>
     @endif
     @if (session('activate'))
         <div class="add_user_success"> 
-            <span>{{ session('activate') }}</span>
+            <span class="u-fw-b">{{ session('activate') }}</span>
         </div>
     @endif
 </div>
@@ -163,11 +161,11 @@
                     </td>
                     <td>
                         <div class="useraccounts_action_btn">
-                            <a class="useraccount_edit" href="{{ route('edit', $user_data->id) }}" data-user-id="{{ $user_data->id }}">Edit</a>
+                            <button class="u-btn u-mr-5 edit-btn u-t-gray" href="{{ route('edit', $user_data->id) }}" data-user-id="{{ $user_data->id }}">Edit</button>
                             @if (is_null($user_data->deleted_at))
-                                <a class="useraccount_delete" href="{{ route('delete', $user_data->id) }}">Deactivate</a>
+                                <a class="u-btn u-bg-danger deactivate_btn u-t-deco-none u-t-white" href="{{ route('delete', $user_data->id) }}">Deactivate</a>
                                 @else
-                                <a class="useraccount_activate" href="{{ route('activate', $user_data->id) }}" style="background-color: #ff5733;">Activate</a>
+                                <a class="u-btn u-bg-success active-btn u-t-deco-none u-t-white" href="{{ route('activate', $user_data->id) }}">Activate</a>
                             @endif
                         </div>
                     </td> 
@@ -207,14 +205,10 @@
     $('.user_accounts_table').fadeIn('slow');
 
     // Edit Data
-    $('.useraccount_edit').click(function(e) {
+    $('.edit-btn').click(function(e) {
         e.preventDefault();
-        var userId = $(this).data('user-id');
-        var url = $(this).attr('href');
-        let retakeUrl = "{{ route('retake', 'userId') }}";
-        console.log(retakeUrl);
-        const retakeId = retakeUrl.replace('userId', userId);
-        $('#retake_btn').attr('href', retakeId);
+        const userId = $(this).data('user-id');
+        const url = $(this).attr('href');
 
         $.ajax({
             url: url,   
@@ -222,9 +216,7 @@
             type: 'GET',
             success: function(response) {
                 console.log(response);
-                $('#useraccounts_edit .modal-content').html(response);
-                $('#useraccounts_edit').modal('show');
-                // $('#useraccounts_edit').modal();
+                $('#useraccounts_edit').show();
                 $('#edit_first_name').val(response.user.first_name);
                 $('#edit_last_name').val(response.user.last_name);
                 $('#edit_email').val(response.user.email);
@@ -240,48 +232,18 @@
         });
     });
 
-    // View Data
-    $('.useraccount_view_img').click(function(e) {
-        $('body').css('overflow', 'hidden');
-        // $('*').css('background-color', 'black');
-        $('.sk-chase-position').show();
-        e.preventDefault();
-        var userId = $(this).data('user-id');
-        console.log(userId);
-        var url = $(this).attr('href');
-        console.log(url);
-        $.ajax({
-            url: url,   
-            data: {
-                userId : userId
-            },
-            dataType: 'json',
-            type: 'GET',
-            success: function(response) {
-                console.log(response);
-                $('.sk-chase-position').hide();
-                $('#user_face_recog_img1').attr('src', `${response.photo}`);
-                $('#user_face_recog_img2').attr('src', `${response.photo2}`);
-                $('#pop_img').removeClass('pop_img_hide');
-                $('#pop_img').addClass('pop_img_show');
-            },
-            error: function(error) {
-                console.log(error);
-                $('.sk-chase-position').hide();
-                alert('No Images Retrieved');
+    $('#ua-form').on('submit', function(event){
+        event.preventDefault();
 
+        const userId = $('.edit-btn').data('user-id');
+        const update = "{{ route('ua_update', 'userId') }}".replace('userId', userId);
 
-            }
-        });
-    });
+        $('#ua-form').attr('action', update);
 
-    // close modal
-    $(document).on('click', '#close_modal_btn', function() {
-        $('body').css('overflow', 'auto');
-        $('#pop_img').removeClass('pop_img_show');
-        $('#pop_img').addClass('pop_img_hide');
-    });
+        this.submit();
 
+    })
+    
     // DataTable 
     $('#myTable').DataTable({
         responsive: true
@@ -302,14 +264,15 @@
         }
     });
 
-    // Add Account
-    $('#clsaccount_btn').click(function(){
+    // Close Modal
+    $('#btn-close').on('click', function(){
+        $('.modal-center').hide();
         var inputs = $('#useraccounts_add').find('input');
         inputs.val('');
-    })
+    });
 
     // Delete swal alert
-    $('.useraccount_delete').click(function(e){
+    $('.deactivate_btn').click(function(e){
         e.preventDefault();
         var deleteLink = $(this).attr('href');
         Swal.fire({
@@ -334,35 +297,7 @@
         });
     });
 
-    //retake photo
-    // $('#retake_btn').click(function(e){
-    //     e.preventDefault();
-    //     const retakeLink = $(this).attr('href');
-    //     Swal.fire({
-    //         title: 'Are you sure?',
-    //         text: "You won't be able to revert this!",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Yes, Re-take Photos!'
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
-    //         Swal.fire(
-    //             'Success!',
-    //             'The user will need to re-take photos when logging into their account.',
-    //             'success'
-    //         )
-    //         .then(() => {
-    //             window.location.href = retakeLink;
-    //         });
-    //         }
-    //     });
-        
-    // });
-
-
-    $('.useraccount_activate').click(function(e){
+    $('.active-btn').click(function(e){
         e.preventDefault();
         var deleteLink = $(this).attr('href');
         Swal.fire({
