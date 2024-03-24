@@ -293,6 +293,10 @@ h6 {
     }
 }
 
+.u-t-deco-none {
+    text-decoration: none !important;
+}
+
 .u-input {
     height: 2.5rem;
     width: 100%;
@@ -304,6 +308,10 @@ h6 {
     outline: none;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     border: 1px solid #b3b9c2;
+}
+
+.u-input:focus {
+    border: 2px solid #16abbc;
 }
 
 .u-input-border-boottom {
@@ -765,31 +773,30 @@ h6 {
 .top_navbar {
     border-bottom: 1px solid #959090;
     position: relative;
-    margin-top: 20px;    
+    margin-top: 20px;
 }
 
-
-.message_input{
+.message_input {
     /* display: flex; */
-
 }
-.message_div{
+.message_div {
     position: fixed;
     right: 10px;
     top: 10px;
     width: 420px;
-    background: #F7FAFC;
+    background: #f7fafc;
     border-radius: 15px;
-    box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1), 0 32px 64px -48px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
+        0 32px 64px -48px rgba(0, 0, 0, 0.5);
     overflow: hidden;
 }
 
-.message_div header{
+.message_div header {
     background: #036886;
     text-align: center;
     padding: 16px 0;
 }
-.message_div header h2{
+.message_div header h2 {
     color: #fff;
     font-size: 1.4rem;
 }
@@ -798,22 +805,21 @@ h6 {
     font-weight: 500;
 }
 
-.message_div .message_box{
+.message_div .message_box {
     height: 125px;
     overflow-y: auto;
     padding: 30px 20px 70px;
     z-index: 99;
 }
 
-.message_box .chat{
+.message_box .chat {
     display: flex;
-    
 }
-.message_box .incoming span{
+.message_box .incoming span {
     height: 32px;
     width: 32px;
     color: #fff;
-    background:#036886 ;
+    background: #036886;
     align-self: flex-end;
     text-align: center;
     line-height: 32px;
@@ -821,7 +827,7 @@ h6 {
     margin: 0 10px 7px 0;
 }
 
-.message_box .outgoing{
+.message_box .outgoing {
     margin: 20px 0;
     justify-content: flex-end;
 }
@@ -831,16 +837,16 @@ h6 {
     font-size: 0.96rem;
     padding: 12px 16px;
     border-radius: 10px 10px 0 10px;
-    background:#036886;
+    background: #036886;
 }
 
-.message_box .incoming p{
+.message_box .incoming p {
     color: #000;
     background: #f2f2f2;
     border-radius: 10px 10px 10px 0;
 }
 
-.message_box .message_input{
+.message_box .message_input {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -850,7 +856,7 @@ h6 {
     display: flex;
 }
 
-.message_input textarea{
+.message_input textarea {
     height: 55px;
     width: 100%;
     border: none;
@@ -860,7 +866,7 @@ h6 {
     padding: 16px 15px 16px 0;
 }
 
-.message_input span{
+.message_input span {
     color: #036886;
     font-size: 1.35rem;
 }
@@ -1503,6 +1509,63 @@ h6 {
 }
 
 /* Select2 Add User */
+.select2-selection {
+    height: 2.5rem !important;
+    border-radius: 5px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 8px 30px 8px 10px !important;
+    position: relative;
+    border: none !important;
+    border: 1px solid #b3b9c2 !important;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
+    font-size: 1rem !important;
+}
+
+/* Style for search field */
+.select2-search__field {
+    padding: 0.5rem !important;
+    font-size: 1rem !important;
+}
+
+/* Style for arrow */
+.select2-selection__arrow {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+}
+
+/* Style for open state */
+.select2-container--open .select2-selection {
+    border: 2px solid #16abbc !important;
+}
+
+/* Style for focus state - single selection */
+.select2-container--focus .select2-selection {
+    border: 1px solid #ddd !important;
+}
+
+/* Style for focus state - multiple selection */
+.select2-container--focus .select2-selection--multiple {
+    border: 2px solid #16abbc !important;
+}
+
+/* Style for choice in multiple selection */
+.select2-container--default
+    .select2-selection--multiple
+    .select2-selection__choice {
+    margin-left: 0 !important;
+    margin-right: 5px !important;
+    margin-top: 0 !important;
+}
+
+.select2-selection__choice {
+    background-color: transparent !important; /* Change to your desired background color */
+    color: #797979 !important; /* Change to your desired text color */
+    border: 1px solid #16abbc !important; /* Change to your desired border color */
+    border-radius: 3px !important;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
+}
 
 .add_user_success {
     margin-top: 14px;
@@ -1524,39 +1587,81 @@ table.dataTable {
     max-width: 100%;
     margin: 0 auto;
     clear: both;
-    border: 1px solid #ddd;
     color: #333;
     font-size: 14px;
     font-weight: normal;
+    background-color: #fff !important;
+}
+
+table.dataTable thead {
+    box-shadow: 0 5px 10px rgba(109, 109, 109, 0.349);
 }
 
 table.dataTable thead th {
     font-weight: bold;
-    background-color: var(--primary-color);
-    color: #ffffff;
-    border: 1px solid #ddd;
-    padding: 8px;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    color: #6e6e6e;
     text-align: left;
+    border-bottom: none !important;
 }
 
 table.dataTable tbody td {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-table.dataTable tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
 }
 
 table.dataTable tfoot th {
     font-weight: bold;
-    background-color: #f2f2f2;
     color: #333;
-    border: 1px solid #ddd;
+    border: none !important;
     padding: 8px;
     text-align: left;
 }
 
+table.dataTable.display > tbody > tr.odd > .sorting_1,
+table.dataTable.order-column.stripe > tbody > tr.odd > .sorting_1,
+table.dataTable.stripe > tbody > tr.odd > *,
+table.dataTable.display > tbody > tr.odd > * ,
+table.dataTable.order-column>tbody tr>.sorting_1, table.dataTable.order-column>tbody tr>.sorting_2, table.dataTable.order-column>tbody tr>.sorting_3, table.dataTable.display>tbody tr>.sorting_1, table.dataTable.display>tbody tr>.sorting_2, table.dataTable.display>tbody tr>.sorting_3{
+    box-shadow: none !important;
+}
+
+table.dataTable.row-border tbody tr:first-child th,
+table.dataTable.row-border tbody tr:first-child td,
+table.dataTable.display tbody tr:first-child th,
+table.dataTable.display tbody tr:first-child td {
+    border-top: 1px solid #fff !important;
+}
+
+.dataTables_length {
+    margin-top: 5px;
+}
+
+.dataTables_filter {
+    margin-bottom: 15px;
+}
+
+.dataTables_length select {
+    height: 2.3rem;
+    padding: 0 1rem;
+    border-radius: 5px;
+    border: none;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.dataTables_filter input {
+    height: 2.3rem;
+    border: 1px solid transparent;
+    padding: 0 10px;
+    border-radius: 5px;
+    color: #3c3b3b;
+    font-size: 1rem;
+    outline: none;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border: 1px solid #b3b9c2;
+}
 /* End of User Accounts */
 
 /* Editing */
@@ -2305,6 +2410,5 @@ td {
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
     border: 1px solid #ddd !important;
 }
-
 
 /* End of My Leaves */

@@ -128,12 +128,14 @@ class EmployeeRequestController extends Controller
 
         if ($user_input['leave_form_btn'] == 'approve') {
 
-            $is_updated = self::adjustUserLog('leave', $leave);
+            // $is_updated = self::adjustUserLog('leave', $leave);
             if ($is_updated) {
                 if ($leave->leave_type == 'BIRTHDAY' && $employee_request->sick_credit > 0) {
                     $employee_request->decrement('sick_credit');
                 } elseif ($leave->leave_type == 'VACATION' && $employee_request->vacation_credit > 0) {
                     $employee_request->decrement('vacation_credit');
+                }else {
+                    return redirect()->back()->with('ot-failed', 'No more credit for his/her account');
                 }
 
                 $leave->update([
