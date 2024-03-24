@@ -10,6 +10,7 @@ use App\Models\UserLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use App\Models\EmployeeLeaves;
+use App\Models\WorkSchedule;
 
 class EmployeeRequestController extends Controller
 {
@@ -100,11 +101,14 @@ class EmployeeRequestController extends Controller
         $ot = Overtime::find($user_input['ot_id']);
 
         if ($user_input['ot_form_btn'] == 'approve') {
-            $ot->update([
-                'status' => 'APPROVED',
-                'approved_at' => date('Y-m-d H:i:s'),
-                'approved_by' => auth()->user()->id
-            ]);
+            $is_adjusted = self::adjustUserLog('ot', $ot);
+            if ($is_adjusted) {
+                $ot->update([
+                    'status' => 'APPROVED',
+                    'approved_at' => date('Y-m-d H:i:s'),
+                    'approved_by' => auth()->user()->id
+                ]);
+            }
         } else {
             $ot->update([
                 'status' => 'REJECTED',
@@ -124,17 +128,20 @@ class EmployeeRequestController extends Controller
 
         if ($user_input['leave_form_btn'] == 'approve') {
 
-            if ($leave->leave_type == 'BIRTHDAY' && $employee_request->sick_credit > 0) {
-                $employee_request->decrement('sick_credit'); // Decrementing 'sick_credit' column by 1
-            } elseif ($leave->leave_type == 'VACATION' && $employee_request->vacation_credit > 0) {
-                $employee_request->decrement('vacation_credit'); // Decrementing 'vacation_credit' column by 1
-            }
+            $is_updated = self::adjustUserLog('leave', $leave);
+            if ($is_updated) {
+                if ($leave->leave_type == 'BIRTHDAY' && $employee_request->sick_credit > 0) {
+                    $employee_request->decrement('sick_credit');
+                } elseif ($leave->leave_type == 'VACATION' && $employee_request->vacation_credit > 0) {
+                    $employee_request->decrement('vacation_credit');
+                }
 
-            $leave->update([
-                'status' => 'APPROVED',
-                'approved_at' => now(),
-                'approved_by' => auth()->user()->id
-            ]);
+                $leave->update([
+                    'status' => 'APPROVED',
+                    'approved_at' => now(),
+                    'approved_by' => auth()->user()->id
+                ]);
+            }
         } else {
             $leave->update([
                 'status' => 'REJECTED',
@@ -151,7 +158,6 @@ class EmployeeRequestController extends Controller
         if ($request_type === 'ob') {
             $date = $request_item->date_from;
             $user_id = $request_item->created_by;
-            $user = User::find($user_id);
             $log_in_time = $request_item->time_from;
             $log_out_time = $request_item->time_to;
             $log_in = UserLog::where([
@@ -168,37 +174,108 @@ class EmployeeRequestController extends Controller
             $is_logout_existing = $log_out?->exists();
             if ($is_login_existing) {
                 $log_in->update([
-                    'schedule_types_id' => $user->schedule_types_id,
+                    'schedule_types_id' => $request_item->schedule_types_id,
                     'log_at' => "$date $log_in_time",
                 ]);
             } else {
                 UserLog::create([
                     'user_id' => $user_id,
                     'log_type_id' => 1,
-                    'schedule_types_id' => $user->schedule_types_id,
+                    'schedule_types_id' => $request_item->schedule_types_id,
                     'log_at' => "$date $log_in_time",
                 ]);
             }
             if ($is_logout_existing) {
                 $log_out->update([
-                    'schedule_types_id' => $user->schedule_types_id,
+                    'schedule_types_id' => $request_item->schedule_types_id,
                     'log_at' => "$date $log_out_time",
                 ]);
             } else {
                 UserLog::create([
                     'user_id' => $user_id,
                     'log_type_id' => 2,
-                    'schedule_types_id' => $user->schedule_types_id,
+                    'schedule_types_id' => $request_item->schedule_types_id,
                     'log_at' => "$date $log_out_time",
                 ]);
             }
             return true;
+        } else if ($request_type === 'ot') {
+            $date = $request_item->shift_date;
+            $user_id = $request_item->created_by;
+            $time_out = $request_item->time_end;
+
+            $log_out = UserLog::where([
+                'user_id' => $user_id,
+                'log_type_id' => 2,
+                'log_date' => $date,
+            ]);
+
+            if ($log_out?->exists()) {
+                $log_out->update([
+                    'schedule_types_id' => $request_item->schedule_types_id,
+                    'log_at' => "$date $time_out",
+                ]);
+            } else {
+                UserLog::create([
+                    'user_id' => $user_id,
+                    'log_type_id' => 2,
+                    'schedule_types_id' => $request_item->schedule_types_id,
+                    'log_at' => "$date $time_out",
+                ]);
+            }
+
+            return true;
         } else if ($request_type === 'leave') {
-            // TODO: LEAVE REQUEST APPROVAL
-            // $date = $request_item->leave_from;
-            // $duration = $request_item->duration;
-            // if ($duration === 'WHOLEDAY') {
-            // }
+            if ($request_item->duration === 'WHOLEDAY') {
+                $date = $request_item->leave_from;
+                $user_id = $request_item->created_by;
+                $schedule_types_id = $request_item->schedule_types_id;
+                $dayname = date("l", strtotime($date));
+                $schedule = WorkSchedule::where([
+                    'schedule_types_id' => $schedule_types_id,
+                    'work_day' => $dayname
+                ])->first();
+
+                $log_in = UserLog::where([
+                    'user_id' => $user_id,
+                    'log_type_id' => 1,
+                    'log_date' => $date,
+                ])?->first();
+                $log_out = UserLog::where([
+                    'user_id' => $user_id,
+                    'log_type_id' => 2,
+                    'log_date' => $date,
+                ])->first();
+                $is_login_existing = $log_in?->exists();
+                $is_logout_existing = $log_out?->exists();
+                if ($is_login_existing) {
+                    $log_in->update([
+                        'schedule_types_id' => $schedule_types_id,
+                        'log_at' => "$date $schedule->work_from",
+                    ]);
+                } else {
+                    UserLog::create([
+                        'user_id' => $user_id,
+                        'log_type_id' => 1,
+                        'schedule_types_id' => $schedule_types_id,
+                        'log_at' => "$date $schedule->work_from",
+                    ]);
+                }
+                if ($is_logout_existing) {
+                    $log_out->update([
+                        'schedule_types_id' => $schedule_types_id,
+                        'log_at' => "$date $schedule->work_to",
+                    ]);
+                } else {
+                    UserLog::create([
+                        'user_id' => $user_id,
+                        'log_type_id' => 2,
+                        'schedule_types_id' => $schedule_types_id,
+                        'log_at' => "$date $schedule->work_to",
+                    ]);
+                }
+            }
+            return true;
         }
     }
 }

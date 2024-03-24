@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\schedule_type; 
-use App\Models\Overtime; 
-use App\Models\WorkSchedule; 
+use App\Models\schedule_type;
+use App\Models\Overtime;
+use App\Models\WorkSchedule;
 use Carbon\Carbon;
 
 class OvertimesController extends Controller
 {
-    
+
     public function index(Request $request)
     {
-        $data=[];
+        $data = [];
         $user_id = auth()->user()->id;
         $server_datetime_today = now();
         $server_day = $server_datetime_today->format('l');
@@ -33,18 +33,18 @@ class OvertimesController extends Controller
             ->pluck('work_to')
             ->first();
 
-        $data['pending_logs'] = Overtime::where('created_by',$user_id)
-                ->where('status', 'PENDING')
-                ->orderBy('created_at', 'desc')
-                ->get();
-        $data['approved_logs'] = Overtime::where('created_by',$user_id)
-                ->where('status', 'APPROVED')
-                ->orderBy('created_at', 'desc')
-                ->get();
-        $data['rejected_canceled_logs'] = Overtime::where('created_by',$user_id)
-                ->whereIn('status', ['REJECTED','CANCELED'])
-                ->orderBy('created_at', 'desc')
-                ->get();
+        $data['pending_logs'] = Overtime::where('created_by', $user_id)
+            ->where('status', 'PENDING')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $data['approved_logs'] = Overtime::where('created_by', $user_id)
+            ->where('status', 'APPROVED')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $data['rejected_canceled_logs'] = Overtime::where('created_by', $user_id)
+            ->whereIn('status', ['REJECTED', 'CANCELED'])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         $data['shift_from'] = $user_shift_from;
         $data['shift_to'] = $user_shift_to;
@@ -52,7 +52,7 @@ class OvertimesController extends Controller
         $data['serverDateTime'] = $server_datetime_today;
         $data['employee_schedule'] = $user_sched;
 
-        return view('my_overtimes' , $data);
+        return view('my_overtimes', $data);
     }
 
     public function createOT(Request $request)
@@ -60,7 +60,7 @@ class OvertimesController extends Controller
         $employee_id = auth()->user()->id;
         $employee_name = auth()->user()->name;
         $user_sched_id = auth()->user()->schedule_types_id;
-        
+
         Overtime::insert([
             'schedule_types_id' => $user_sched_id,
             'shift_date' => $request->input('shift_date'),
@@ -74,17 +74,17 @@ class OvertimesController extends Controller
             'created_at' => now(),
             'created_by' => $employee_id,
 
-            
+
         ]);
 
-        $request->session()->flash('success', 'Overtime Generated Successfully!');
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Overtime Generated Successfully!');
     }
 
-    public function edit ($id){
+    public function edit($id)
+    {
 
-        $showOt = Overtime::where('id',$id)
-        ->first();
+        $showOt = Overtime::where('id', $id)
+            ->first();
 
         return $showOt;
     }
@@ -100,8 +100,8 @@ class OvertimesController extends Controller
             'updated_by' => $employee_id,
             'updated_at' => now(),
         ]);
-        $request->session()->flash('success', 'Overtime Form Has Been Edited!');
-        return redirect()->back();
+
+        return redirect()->back()->with('success', 'Overtime Form Has Been Edited!');
     }
 
     public function deleteOT($id)
