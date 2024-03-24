@@ -31,7 +31,6 @@ class UserAccountsController extends Controller
     
             $data = [];
             $data['user'] = DB::table('users')
-                ->whereIn('users.id', $modelIds)
                 ->where('approval_status', 'APPROVED')
                 ->leftJoin('model_has_roles as model', 'model.model_id', 'users.id')
                 ->leftJoin('roles as privilege', 'privilege.id', 'model.role_id')

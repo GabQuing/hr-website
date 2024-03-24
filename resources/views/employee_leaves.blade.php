@@ -4,6 +4,8 @@
 
 @section('content')
 
+</style>
+
 <div class="modal-center add-leaves" style="display: none;">
     <div class="modal-box u-p-15">
         <form method="POST" action="{{ route('employeeLeavesAdd') }}">
@@ -16,7 +18,7 @@
                     <tr>
                         <td colspan="2">
                             <p>Select Employee:</p>
-                            <select class="js-example-basic-single s-single" name="users_id" id="users_id" required >
+                            <select class="js-example-basic-single" name="users_id" id="users_id" required >
                                 <option value="" selected disabled>None selected</option>
                                 @foreach ( $usernames as $username )
                                     <option value="{{ $username->id }}"
@@ -40,7 +42,7 @@
                     </tr>
                 </tbody>                
             </table>
-            <div class="u-ml-10">
+            <div class="u-ml-10" style="padding: 10px;">
                 <button class="u-btn u-mr-10" type="button" id="btn-close">Close</button>
                 <button class="u-btn u-bg-primary u-t-white" type="submit">Submit</button>
             </div>
@@ -59,7 +61,7 @@
                     <tr>
                         <td colspan="2">
                             <p>Select Employee:</p>
-                            <select class="js-example-basic-single s-single" name="users_id" id="edit_users_id" disabled >
+                            <select class="js-example-basic-single u-input" name="users_id" id="edit_users_id" disabled >
                                 <option value="" selected disabled>None selected</option>
                                 @foreach ( $usernames as $username )
                                     <option value="{{ $username->id }}"
@@ -83,7 +85,7 @@
                     </tr>
                 </tbody>                
             </table>
-            <div class="u-ml-10">
+            <div class="u-ml-10" style="padding: 10px;">
                 <button class="u-btn u-mr-10" type="button" id="edit-btn-close">Close</button>
                 <button class="u-btn u-bg-primary u-t-white" type="submit">Submit</button>
             </div>
@@ -164,7 +166,7 @@
     });
 
     $('.js-example-basic-single').select2({
-            width: '99%',
+            width: '100%',
     });
 
     $('.edit-modal').click(function(e){

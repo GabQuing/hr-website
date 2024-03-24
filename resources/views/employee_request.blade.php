@@ -152,7 +152,7 @@
                         <div class="u-flex-space-between">
                             <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" id="ot-btn-close" type="button">Close</button>
                             <div class="u-flex-space-between">
-                                <button class="ot-btns u-t-white u-fw-b u-btn u-bg-danger u-m-5 u-border-1-default"  type="ot-btns submit">Rejected</button>
+                                <button class="ot-btns u-t-white u-fw-b u-btn u-bg-danger u-m-5 u-border-1-default"  type="ot-btns submit">Reject</button>
                                 <button class="ot-btns u-t-white u-fw-b u-btn u-bg-accent u-m-5 u-border-1-default"  type="submit">Approve</button>
                             </div>
                         </div>
@@ -271,6 +271,9 @@
             @endif
             @if(session('ot-success'))
                 <h5>{{ session('ot-success') }}</h5>
+            @endif
+            @if(session('ot-failed'))
+                <h5>{{ session('ot-failed') }}</h5>
             @endif
         </div>
 
@@ -410,6 +413,7 @@
                             <th>Duration</th>
                             <th>Leave From</th>
                             <th>Purpose</th>   
+                            <th>Requested By</th>   
                             <th>Actions</th>         
                         </tr>
                     </thead>
@@ -423,6 +427,7 @@
                                 <td>{{ $leave->duration }}</td>
                                 <td>{{ $leave->leave_from }}</td>
                                 <td>{{ $leave->reason }}</td>  
+                                <td>{{ $leave->name }}</td>  
                                 <td>
                                     <div class="d-flex;">
                                         <button class="leave-btn u-action-btn u-bg-primary" type="button" leave-id="{{ $leave->id }}">
@@ -443,6 +448,7 @@
                             <th>Leave From</th>
                             <th>Duration</th>
                             <th>Purpose</th>   
+                            <th>Requested By</th>   
                             <th>Actions</th>  
                         </tr>
                     </tfoot>

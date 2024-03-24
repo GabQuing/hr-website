@@ -46,7 +46,7 @@
         <div class="main_content">
             <div style="padding: 0 20px;">
                 <div class="top_navbar">
-                    @if ( Request::segment(1) == 'dashboard')
+                    @if ( Request::segment(1) == 'dashboard1')
                         <div>
                             <p class="header_title_h1" id="typing_text"></p>
                             <p class="header_title_child">@yield('module_name')</p>
@@ -116,7 +116,7 @@
                 </div>
                 <div class="sidenav_links">
                     <ul>
-                        @if ( Request::segment(1)  == 'dashboard')
+                        @if ( Request::segment(1)  == 'dashboard1')
                             <li class="active" id="current_link">
                             @else
                             <li class="active">
