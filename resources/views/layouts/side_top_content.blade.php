@@ -224,6 +224,15 @@
                                     <img src="{{ asset('img/icon-img/document.png') }}" alt="">
                                     <a href="{{ route('log_user_access') }}">Employee Activity Logs</a>
                                 </li>
+                            @if ( Request::segment(1)  == 'employee_attendance')
+                                <li class="active" id="current_link">
+                                @else
+                                <li class="active">
+                            @endif                        
+                                    {{-- <span class="material-symbols-outlined">calendar_month</span> --}}
+                                <img src="{{ asset('img/icon-img/calendar.png') }}" alt="">
+                                    <a href="{{ route('employee_attendance') }}">Employee Attendances</a>
+                                </li>
                             @if ( Request::segment(1)  == 'employee_request')
                                 <li class="active" id="current_link">
                                 @else
@@ -231,7 +240,7 @@
                             @endif
                                     {{-- <span class="material-symbols-outlined">list_alt</span> --}}
                                     <img src="{{ asset('img/icon-img/document.png') }}" alt="">
-                                    <a href="{{ route('employee_request') }}">Employee Request</a>
+                                    <a href="{{ route('employee_request') }}">Employee Requests</a>
                                 </li> 
                             @if ( Request::segment(1)  == 'employee_leave')
                                 <li class="active" id="current_link">

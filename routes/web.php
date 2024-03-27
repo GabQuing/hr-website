@@ -23,6 +23,7 @@ use App\Http\Controllers\EmployeeRequestController;
 use App\Http\Controllers\ScheduleProfileController;
 use App\Http\Controllers\PolicyProcedureController;
 use App\Http\Controllers\EmployeeLeavesController;
+use App\Http\Controllers\EmployeeAttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,6 +111,13 @@ Route::post('/dashboard/log-action', [DashboardController::class, 'log_action'])
 Route::get('/my_attendance', [AttendanceController::class, 'index'])->name('attendance');
 Route::post('/my_attendance/show', [AttendanceController::class, 'daysPresent'])->name('generateTable');
 Route::get('/export', [AttendanceController::class, 'export'])->name('export');
+
+//Employee Attendance
+Route::get('/employee_attendance', [EmployeeAttendanceController::class, 'index'])->name('employee_attendance');
+Route::post('/employee_attendance/show', [EmployeeAttendanceController::class, 'employeeDaysPresent'])->name('employeeGenerateTable');
+
+
+
 
 // Activity Logs
 Route::get('/my_activity_logs', [ActivityLogsController::class, 'index'])->name('activitylogs');
