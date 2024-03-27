@@ -128,7 +128,7 @@ class EmployeeRequestController extends Controller
 
         if ($user_input['leave_form_btn'] == 'approve') {
 
-            // $is_updated = self::adjustUserLog('leave', $leave);
+            $is_updated = self::adjustUserLog('leave', $leave);
             if ($is_updated) {
                 if ($leave->leave_type == 'BIRTHDAY' && $employee_request->sick_credit > 0) {
                     $employee_request->decrement('sick_credit');
