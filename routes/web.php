@@ -24,6 +24,7 @@ use App\Http\Controllers\ScheduleProfileController;
 use App\Http\Controllers\PolicyProcedureController;
 use App\Http\Controllers\EmployeeLeavesController;
 use App\Http\Controllers\EmployeeAttendanceController;
+use App\Http\Controllers\EmployeePayrollController;
 
 /*
 |--------------------------------------------------------------------------
@@ -138,6 +139,10 @@ Route::get('/employee_leave', [EmployeeLeavesController::class, 'index'])->name(
 Route::post('/employee_leave/add', [EmployeeLeavesController::class, 'add'])->name('employeeLeavesAdd');
 Route::get('/employee_leave/{id}/edit', [EmployeeLeavesController::class, 'edit'])->name('editEmployeeLeave');
 Route::post('/employee_leave/{id}/update', [EmployeeLeavesController::class, 'updateEmployeeLeave'])->name('update');
+
+//Employee Payroll
+Route::get('/employee_payroll', [EmployeePayrollController::class, 'index'])->name('employee_payroll');
+Route::post('/employee_payroll/store', [EmployeePayrollController::class, 'add'])->name('employee_payroll_add');
 
 // Official Business
 Route::post('/my_official_business/{id}/update', [OfficialBusinessController::class, 'updateOB'])->name('update');
