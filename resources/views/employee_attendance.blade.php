@@ -34,7 +34,7 @@
                                 @endforeach
                             </select>
                             <br>
-                            <span style="color:#02718A">Note: More users, more waiting time.</span>
+                            <span style="color:#02718A">Note: More users or larger date range, more waiting time.</span>
                         </td>
                     </tr>
                 </tbody>
