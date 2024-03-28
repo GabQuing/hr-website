@@ -16,6 +16,7 @@ return new class extends Migration
             $table->mediumInteger('user_id')->unsigned()->nullable();
             $table->date('from_date')->nullable();
             $table->date('to_date')->nullable();
+            $table->string('file_name')->nullable();
             $table->string('file_path')->nullable();
             $table->mediumInteger('created_by')->unsigned()->nullable();
             $table->mediumInteger('updated_by')->unsigned()->nullable();

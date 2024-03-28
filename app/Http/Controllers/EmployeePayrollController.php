@@ -7,13 +7,24 @@ use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\UserLog;
 use App\Models\EmployeePayroll;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 
 class EmployeePayrollController extends Controller
 {
+    
     public function index()
     {
         $data = [];
-        $data['employees'] = (new User())->getAllActiveUsers()->get();
+        $data['employees'] = (new User())->getActiveEmployees()->get();
+        $data['payrolls'] = EmployeePayroll::leftJoin('users as employee', 'employee.id', 'employee_payrolls.user_id')
+            ->leftJoin('users as head', 'head.id', 'employee_payrolls.created_by')
+            ->select('employee_payrolls.*',
+                'employee.name as name',    
+                'head.name as created_by_head'    
+            )
+            ->orderBy('id', 'desc')
+            ->get();
         
         return view('employee_payroll', $data);
     }
@@ -33,10 +44,67 @@ class EmployeePayrollController extends Controller
             'user_id' => $return_input['pr_employee_id'],
             'from_date' => $date_from,
             'to_date' => $date_to,
-            'file_path' => storage_path('app/payroll')."/$file_name"
+            'file_name' => $file_name,
+            'file_path' => storage_path('app/payroll')."/$file_name",
+            'created_by' => auth()->user()->id,
         ]);
 
         return redirect()->back()->with('success', 'Payroll successfully added.');
+    }
 
+    public function update(Request $request, $id)
+    {
+        $return_input = $request->all();
+        $date_from = $return_input['pr_date_from'];
+        $date_to = $return_input['pr_date_to'];
+        $hasFile = $request->hasFile('pr_pdf');
+        
+        $employee_payroll = EmployeePayroll::find($id);
+        $employee_id = $employee_payroll->user_id;
+        
+        $employee_payroll->update([
+                'from_date' => $date_from,
+                'to_date' => $date_to,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+        if($hasFile){
+            $file = $return_input['pr_pdf'];
+            $file_name = "$date_from to $date_to-$employee_id.".$file->getClientOriginalExtension();
+            $file->storeAs('payroll', $file_name);
+
+            $employee_payroll->update([
+                'file_name' => $file_name,
+                'file_path' => storage_path('app/payroll')."/$file_name",
+            ]);
+        }
+        
+        return redirect()->back()->with('success', 'Payroll edited successfully.');
+    }
+
+    public function edit($id)
+    {
+        $data = [];
+        $data['employees'] = (new User())->getActiveEmployees()->get();
+        $data['payroll'] = EmployeePayroll::find($id);
+        $file_name = $data['payroll']->file_name;
+
+        return view('employee_payroll_edit', $data);
+    }
+
+    public function saveEdit(Request $request){
+        $return_input = $request->all();
+        dd($return_input);
+    }
+
+    public function showPDF($file_name)
+    {
+    $pathToFile = storage_path("app/payroll/$file_name");
+    $fileContents = Storage::get("payroll/$file_name");
+    
+    return Response::make($fileContents, 200, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => 'inline; filename="'.$file_name.'"'
+    ]);
     }
 }

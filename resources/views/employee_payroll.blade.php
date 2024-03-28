@@ -10,7 +10,7 @@
     }
 </style>
 
-<div class="modal-center" id="official-business-modal">
+<div class="modal-center" id="official-business-modal" style="display: none;">
     <div class="modal-box">
         <div class="modal-content">
             <form method="POST" action="{{ route('employee_payroll_add') }}" enctype="multipart/form-data">
@@ -59,10 +59,16 @@
 </div>
 
 <div class="u-flex">
-    <div class="u-mr-16" style="position: relative" id="payroll-btn">
+    <div class="u-mr-16" style="position: relative" id="add-payroll-btn">
         <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default" href="">Add Payroll</button>
     </div>
 </div>
+
+@if (session('success'))
+    <div class="u-mt-10">
+        <span class="u-t-success">{{ session('success') }}</span>
+    </div>
+@endif
 
 <div class="u-mt-10">
     <table class="myTable" class="display" style="width:100%;">
@@ -72,27 +78,29 @@
                 <th>From Date</th>
                 <th>To Date</th>
                 <th>Created By</th>
+                <th>Created At</th>
                 <th>Updated By</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <div class="d-flex;">
-                        <button class="ot-btn u-action-btn u-bg-primary" type="button">
-                            <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+            @foreach ($payrolls as $payroll)
+                <tr>
+                    <td>{{ $payroll->name }}</td>
+                    <td>{{ $payroll->from_date }}</td>
+                    <td>{{ $payroll->to_date }}</td>
+                    <td>{{ $payroll->created_by_head }}</td>
+                    <td>{{ $payroll->created_at }}</td>
+                    <td>{{ $payroll->name }}</td>
+                    <td>
+                        <div class="d-flex;">
+                            <a href="{{ route('employee_payroll_edit', $payroll->id) }}" class="material-symbols-outlined u-action-btn u-bg-primary" style="vertical-align: bottom; font-size: 20px; font-weight: bold; color: white; text-decoration: none;">
                                 edit
-                            </span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                            </a>
+                        </div>
+                    </td>
+                </tr>   
+            @endforeach
         </tbody>
         <tfoot>
             <tr>
@@ -100,6 +108,7 @@
                 <th>From Date</th>
                 <th>To Date</th>
                 <th>Created By</th>
+                <th>Created At</th>
                 <th>Updated By</th>
                 <th>Action</th>
             </tr>
@@ -124,6 +133,16 @@
         $('.js-example-basic-single').select2({
                 width: '100%',
         });
+
+        // Close Modal
+        $('#modal-btn-close').on('click', function(){
+            $('.modal-center').hide();
+        })
+
+        // Open add payroll
+        $('#add-payroll-btn').on('click', function(){
+            $('.modal-center').show();
+        })
     </script>
 @endsection
 @endsection

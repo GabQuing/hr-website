@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\BasicInformation;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use DB;
 
 class User extends Authenticatable
 {
@@ -59,5 +59,11 @@ class User extends Authenticatable
     public function getAllActiveUsers()
     {
         return $this->whereNull('users.deleted_at');
+    }
+
+    public function getActiveEmployees()
+    {
+        $user_id = DB::table('model_has_roles')->where('role_id', 2)->pluck('model_id');
+        return $this->whereNull('users.deleted_at')->whereIn('id', $user_id);
     }
 }

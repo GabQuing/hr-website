@@ -142,7 +142,11 @@ Route::post('/employee_leave/{id}/update', [EmployeeLeavesController::class, 'up
 
 //Employee Payroll
 Route::get('/employee_payroll', [EmployeePayrollController::class, 'index'])->name('employee_payroll');
+Route::get('/employee_payroll/edit/{id}', [EmployeePayrollController::class, 'edit'])->name('employee_payroll_edit');
 Route::post('/employee_payroll/store', [EmployeePayrollController::class, 'add'])->name('employee_payroll_add');
+Route::post('/employee_payroll/update/{id}', [EmployeePayrollController::class, 'update'])->name('employee_payroll_update');
+Route::get('/employee_payroll/pdfShow/{file_name}', [EmployeePayrollController::class, 'showPDF'])->name('showPDF');
+
 
 // Official Business
 Route::post('/my_official_business/{id}/update', [OfficialBusinessController::class, 'updateOB'])->name('update');

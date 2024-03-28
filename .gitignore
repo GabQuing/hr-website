@@ -22,3 +22,4 @@ yarn-error.log
 /.vscode
 /public/profile_picture/img
 .htaccess
+/storage/app/payroll
