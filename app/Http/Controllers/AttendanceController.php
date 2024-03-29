@@ -26,8 +26,9 @@ class AttendanceController extends Controller
         $fromDate = $request->input('from_date');
         $toDate = $request->input('to_date');
         $userId = $request->input('employeeId');
-        $data = self::getSummaryData($userId, $fromDate, $toDate);
+        $summary_data = self::getSummaryData($userId, $fromDate, $toDate);
         $data['params'] = $request->all();
+        $data['summary_data'] = [$summary_data];
         return view('my_attendance', $data);
     }
 
@@ -35,12 +36,15 @@ class AttendanceController extends Controller
     {
         $fromDate = $request->input('from_date');
         $toDate = $request->input('to_date');
-        $userId = $request->input('employeeId');
+        $userId = $request->input('employeeId') ?: $request->input('users_id');
         $log_data = self::getLogData($userId, $fromDate, $toDate);
         $overtime_data = self::getOvertimeData($userId, $fromDate, $toDate);
-        $summary_data = self::getSummaryData($userId, $fromDate, $toDate);
-
-        return Excel::download(new attendanceSummaryExport($log_data, $overtime_data, [$summary_data]), "Attendance-Summary " . date('Y-m-d H.i.s') . ".xlsx");
+        $summary_data = [];
+        if (!is_array($userId)) $userId = [$userId];
+        foreach ($userId as $id) {
+            $summary_data[] = self::getSummaryData($id, $fromDate, $toDate);
+        }
+        return Excel::download(new attendanceSummaryExport($log_data, $overtime_data, $summary_data), "Attendance-Summary " . date('Y-m-d H.i.s') . ".xlsx");
     }
 
     public function getSummaryData($userId, $fromDate, $toDate)
@@ -62,7 +66,6 @@ class AttendanceController extends Controller
         $totalUndertimes = floor($totalUndertimes / 60);
         $totalLatesUndertimes = $totalLates + $totalUndertimes;
         $data['user'] = User::find($userId)?->name;
-        $data['has_generated'] = true;
         $data['days_present'] = $DaysPresent;
         $data['numberOfAbsences'] = $DaysAbsent;
         $data['total_hours'] = $totalHours;
