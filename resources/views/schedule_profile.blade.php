@@ -64,8 +64,8 @@
 
         <div class="m-auto-p">
             <div class="view_create_schedule">
-                <a class="sched_action_btn user_info_link btn-act" id="edit_schedule_button">View Schedules</a>
-                <a class="sched_action_btn user_info_link" id="create_schedule_button">Create Schedule</a> 
+                <button class="u-btn u-t-white btn-act u-mr-5" id="edit_schedule_button">View Schedules</buton>
+                <button class="u-btn u-t-white" id="create_schedule_button">Create Schedule</button> 
             </div>
             <br>
             @if(session('success'))

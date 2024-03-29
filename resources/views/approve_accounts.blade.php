@@ -20,37 +20,93 @@
     
 </style>
 
-<div class ="black_wallpaper" style="display: none;"></div>
-<div class="sk-chase-position" style="display: none;">
-    <div class="sk-chase">
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    </div>
-    <div class="sk-chase-text">
-    <p>Retrieving Images . . . Please Wait</p>
+<div class="modal-center" id="add-account-modal" style="display: none;">
+    <div class="modal-box u-p-10">
+        <form action="{{ route('add_user') }}" method="POST" autocomplete="off">
+            @csrf
+            <div>
+                <h4 class="u-t-gray u-fw-b">Add Account</h4>
+            </div>
+            <table class="custom_normal_table">
+                <tbody>
+                    <tr>
+                        <td>
+                            <p>Email Address:</p>
+                            <input class="u-input" type="text" name="email"  required>
+                        </td>
+                        <td>
+                            <p>First Name:</p>
+                            <input class="u-input" type="text" name="first_name" onchange="removeExcessSpaces(this)" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Last Name"</p>
+                            <input class="u-input" type="text" name="last_name" required>
+                        </td>
+                        <td>
+                            <p>Mobile Number:</p>
+                            <input class="u-input" type="text" name="mobile_number" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p for="">Privilege</p>
+                            <select class="js-example-basic-single s-add u-input" name="privilege_role" id="user_privilege" style="text-align: center;">
+                                @foreach ($privilege_roles as $role)
+                                    <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td style="position: relative">
+                            <p for="">Temporary Password: </p>
+                            <input class="u-input" type="password" name="password" value="qwerty123" placeholder="qwerty123" readonly>
+                            <p style="position: absolute; font-size: 12px; color: rgb(69, 110, 159) !important; "> Temporary password = qwerty123</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="u-ml-10 u-mt-10 u-flex-space-between" style="padding: 10px;">
+                <button class="u-btn u-mr-10" type="button" id="modal-btn-close">Close</button>
+                <button class="u-btn u-bg-primary u-t-white" type="submit">Submit</button>
+            </div>
+        </form>
     </div>
 </div>
 
-<div id="pop_img" class="pop_img_hide">
-    <div id="close_modal_btn">×</div>
-    <div class="user_img" style="display: flex">
-        <div class="user_img_content1 user_img_content">
-            <img id="user_face_recog_img1" src="" alt="Photo" loading="lazy">
-            <p>Photo 1</p>
-        </div>
-        <div class="user_img_content2 user_img_content">
-            <img id="user_face_recog_img2" src="" alt="Photo" loading="lazy">
-            <p>Photo 2</p>
-        </div>
+<div class="modal-center" id="modal-import" style="display: none;">
+    <div class="modal-box u-p-10">
+        <form action="{{ route('importUser') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
+            @csrf
+            <div>
+                <h4 class="u-t-gray u-fw-b">Import Excel File</h4>
+            </div>
+            <table class="custom_normal_table">
+                <tbody>
+                    <tr>
+                        <td>
+                            <p>Attach File:</p>
+                            <input class="u-input" type="file" name="import_accounts"  required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Download Template:</p>
+                            <a class="u-input" style="padding-top: 7px; padding-bottom: 7px; text-decoration: none;" href="{{ route('downloadNewEmployeeTemplate') }}" >Add-New-Employee-Template</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="u-ml-10 u-mt-10 u-flex-space-between" style="padding: 10px;">
+                <button class="u-btn u-mr-10" type="button" id="modal-import-btn-close">Close</button>
+                <button class="u-btn u-bg-primary u-t-white" type="submit">Submit</button>
+            </div>
+        </form>
     </div>
 </div>
 
 <div class="mg-bottom">
-    <div id="useraccounts_add" class="modal">
+    {{-- <div id="useraccounts_add" class="modal">
         <form action="{{ route('add_user') }}" method="POST" autocomplete="off">
             @csrf
             <div class="useraccounts_add_header">
@@ -102,7 +158,7 @@
             <a class="addaccount_close" href="#" rel="modal:close" id="clsaccount_btn">Close</a>
             <button class="addaccount_btn">Submit</button>
         </form>
-    </div>
+    </div> --}}
 
     <div id="useraccounts_import" class="modal">
         <form action="{{ route('importUser') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
@@ -130,8 +186,8 @@
 
         <!-- Link to open the modal -->
     <div class="approve_reg_btn">
-    <a class="u-btn u-bg-primary u-t-white" href="#useraccounts_add" rel="modal:open">Add Account</a> 
-    <a class="u-btn u-bg-default" href="#useraccounts_import" rel="modal:open">Import Accounts</a>
+    <button class="u-btn u-bg-primary u-t-white" id="add-acc-btn">Add Account</button> 
+    <button class="u-btn u-bg-default" id="import-acc-btn">Import Accounts</button>
     </div>
     @if (session('errors'))
     <div class="add_user_success"> 
@@ -290,6 +346,22 @@
             }
         });
     });
+
+    $('#modal-btn-close').on('click', function(){
+        $('.modal-center').hide();
+    })
+
+    $('#add-acc-btn').on('click', function(){
+        $('#add-account-modal').show();
+    })
+
+    $('#import-acc-btn').on('click', function(){
+        $('#modal-import').show();
+    })
+
+    $('#modal-import-btn-close').on('click', function(){
+        $('#modal-import').hide();
+    })
 
     // Approved swal alert
 

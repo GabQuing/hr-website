@@ -3,66 +3,65 @@
 @section('module_name', 'Payroll')
 
 @section('content')
-    <div class="user_accounts_table">
-        <table id="myTable" class="display" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Pay Period</th>
-                    <th>Basic</th>
-                    <th>Pay Date</th>
-                    <th>OT</th>
-                    <th>Reimbursements</th>
-                    <th>Incentives</th>
-                    <th>Bonus</th>
-                    <th>Commissions</th>
-                    <th>PTO Conversions</th>            
-                    <th>Month Pay</th>            
-                    <th>Deductions</th>  
-                    <th>Non-taxable Pay</th>  
-                    <th>Non-Taxable Earning</th>  
-                    <th></th>        
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <a class="useraccount_view" href="">View</a>
-                    </td> 
-                </tr>     
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>Pay Period</th>
-                    <th>Basic</th>
-                    <th>Pay Date</th>
-                    <th>OT</th>
-                    <th>Reimbursements</th>
-                    <th>Incentives</th>
-                    <th>Bonus</th>
-                    <th>Commissions</th>
-                    <th>PTO Conversions</th>            
-                    <th>Month Pay</th>            
-                    <th>Deductions</th>  
-                    <th>Non-taxable Pay</th>  
-                    <th>Non-Taxable Earning</th>  
-                    <th></th>              
-                </tr>
-            </tfoot>
-        </table>
+
+<style>
+    .modal-box{
+        max-width: 75rem !important;
+    }
+</style>
+
+<div class="modal-center" style="display: none;">
+    <div class="modal-box">
+        <div class="modal-content">
+            <div class="u-m-10">
+                <embed src="" id="pdfShow" width="100%" height="700px"></embed>
+            </div>
+            <div>
+                <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" id="modal-btn-close" type="button">Close</button>
+            </div>
+        </div>
     </div>
+</div>
+    
+<div class="u-mt-10">
+    <table class="myTable" class="display" style="width:100%;">
+        <thead>
+            <tr>
+                <th>From Date</th>
+                <th>To Date</th>
+                <th>Created By</th>
+                <th>Created At</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($payrolls as $payroll)
+                <tr>
+                    <td>{{ $payroll->from_date }}</td>
+                    <td>{{ $payroll->to_date }}</td>
+                    <td>{{ $payroll->created_by_head }}</td>
+                    <td>{{ $payroll->created_at }}</td>
+                    <td>
+                        <div class="d-flex;">
+                            <button class="material-symbols-outlined u-action-btn u-bg-primary" id="payroll-view" data-payroll-name="{{ $payroll->file_name }}" style="vertical-align: bottom; font-size: 20px; font-weight: bold; color: white; text-decoration: none;">
+                                visibility
+                            </a>
+                        </div>
+                    </td>
+                </tr>   
+            @endforeach
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>From Date</th>
+                <th>To Date</th>
+                <th>Created By</th>
+                <th>Created At</th>
+                <th>Action</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
 
 
 @endsection
@@ -70,12 +69,25 @@
 @section('script_content')
 
 <script>
-    $('.user_accounts_table').fadeIn('slow');
-
-    $('#myTable').DataTable({
+    $('.myTable').DataTable({
         responsive: true
     });
 
+    $('#payroll-view').on('click', function(){
+        const payrollName = $(this).data('payroll-name');
+        const route = "{{ route('showPDF', ':payrollName') }}".replace(':payrollName', payrollName)
+        
+        $('#pdfShow').attr('src', route);
+        $('.modal-center').show();
+    })
+
+    $('#modal-btn-close').on('click', function(){
+        $('.modal-center').hide();
+        $('#pdfShow').attr('src', '');
+    })
+
+    
+    // {{ route('showPDF', $payroll->file_name) }}
 </script>
 
 @endsection

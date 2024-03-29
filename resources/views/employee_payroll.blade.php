@@ -10,7 +10,7 @@
     }
 </style>
 
-<div class="modal-center" id="official-business-modal" style="display: none;">
+<div class="modal-center" style="display: none;">
     <div class="modal-box">
         <div class="modal-content">
             <form method="POST" action="{{ route('employee_payroll_add') }}" enctype="multipart/form-data">

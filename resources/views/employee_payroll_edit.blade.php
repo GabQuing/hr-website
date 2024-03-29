@@ -67,7 +67,7 @@
         </div>
     </div>
 
-
+    <br>
 
 @section('script_content')
     <script>
