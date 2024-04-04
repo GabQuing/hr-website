@@ -105,9 +105,9 @@
                             <label>No of hours to work including break hours:</label>
                                 <input type="text"  id = "input_sched_hour" name="input_sched_hour" value="" readonly>
                         </div>
-                        <div class="pic_buttons">
+                        {{-- <div class="pic_buttons">
                             <button  type="button" class="user_info_link cursor-p" id="sched_pre_edit_btn" style="display: none;">Edit Profile</button> 
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="schedule_lower_content" id="sched_edit_table" style="display: none">
                         <hr>

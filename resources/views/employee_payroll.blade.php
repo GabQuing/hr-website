@@ -34,7 +34,7 @@
                             </td>
                             <td>
                                 <p>Upload PDF</p>
-                                <input class="u-input" name="pr_pdf" type="file" required>
+                                <input class="u-input" id="pdfInput" name="pr_pdf" type="file" accept=".pdf" required>
                             </td>
                         </tr>
                         <tr>
@@ -143,6 +143,17 @@
         $('#add-payroll-btn').on('click', function(){
             $('.modal-center').show();
         })
+
+        $(document).ready(function() {
+            $('#pdfInput').on('change', function() {
+                var file = this.files[0];
+                var fileType = file.type;
+                if (fileType !== 'application/pdf') {
+                    alert('Please select a PDF file.');
+                    $(this).val(''); 
+                }
+                }); 
+        });
     </script>
 @endsection
 @endsection

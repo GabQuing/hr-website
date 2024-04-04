@@ -39,7 +39,7 @@
                             </td>
                             <td>
                                 <p>Upload PDF</p>
-                                <input class="u-input" name="pr_pdf" type="file">
+                                <input class="u-input" id="pdfInput" name="pr_pdf" type="file" accept=".pdf">
                             </td>
                         </tr>
                         <tr>
@@ -83,6 +83,18 @@
         $('.js-example-basic-single').select2({
                 width: '100%',
         });
+
+        $(document).ready(function() {
+            $('#pdfInput').on('change', function() {
+                var file = this.files[0];
+                var fileType = file.type;
+                if (fileType !== 'application/pdf') {
+                    alert('Please select a PDF file.');
+                    $(this).val(''); 
+                }
+                }); 
+        });
+
     </script>
 @endsection
 @endsection

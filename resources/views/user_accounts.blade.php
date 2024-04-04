@@ -37,7 +37,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <p>Wmail</p>
+                                <p>Email</p>
                                 <input class="u-input" type="text" name="email" id="edit_email" value="">
                             </td>
                             <td>
