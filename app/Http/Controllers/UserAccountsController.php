@@ -104,14 +104,25 @@ class UserAccountsController extends Controller
     public function update(Request $request, string $id)
     {
         if(!is_null(User::find($id))){
-
+            
             $user = User::find($id);
+            if(!($user->email == $request->input('email'))){
+
+                $request->validate([
+                    'email' => ['required', 'email', 'unique:users,email'],
+                ]);
+
+                $user->update([
+                    'email' => $request->input('email')
+                ]);
+                
+            }
+
             // Update user account basic credentials
             $user->update([
                 'first_name' => $request->input('first_name'),
                 'last_name' => $request->input('last_name'),
                 'name' => $request->input('first_name').' '.$request->input('last_name'),
-                'email' => $request->input('email'),
                 'employee_name' => $request->input('last_name').'_'.$request->input('first_name'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
@@ -132,6 +143,9 @@ class UserAccountsController extends Controller
         }else{
             return back()->with('deactivate', "Account is currently deactivated. Updating is not allowed until reactivation.");
         }
+        
+
+
 
     }
 

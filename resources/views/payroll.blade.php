@@ -87,7 +87,6 @@
     })
 
     
-    // {{ route('showPDF', $payroll->file_name) }}
 </script>
 
 @endsection

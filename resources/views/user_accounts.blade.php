@@ -16,20 +16,6 @@
 </style>
 <div class="mg-bottom">
 
-    <div class="sk-chase-position" style="display: none;">
-        <div class="sk-chase">
-        <div class="sk-chase-dot"></div>
-        <div class="sk-chase-dot"></div>
-        <div class="sk-chase-dot"></div>
-        <div class="sk-chase-dot"></div>
-        <div class="sk-chase-dot"></div>
-        <div class="sk-chase-dot"></div>
-        </div>
-        <div class="sk-chase-text">
-        <p>Retrieving Images . . . Please Wait</p>
-        </div>
-    </div>
-
     <div class="modal-center" id="useraccounts_edit" style="display: none;">
         <div class="modal-box u-p-15">
             <div>
@@ -71,22 +57,22 @@
                 </table>
                 @if ($errors->has('first_name'))
                     <div class="u-m-10 u-bg-danger" style="padding: 10px;">
-                        <span class="text-danger">{{ $errors->first('first_name') }}</span>
+                        <span class="u-t-white">{{ $errors->first('first_name') }}</span>
                     </div>
                 @endif
                 @if ($errors->has('last_name'))
                     <div class="u-m-10 u-bg-danger" style="padding: 10px;">
-                        <span class="text-danger">{{ $errors->first('last_name') }}</span>
+                        <span class="u-t-white">{{ $errors->first('last_name') }}</span>
                     </div>
                 @endif
                 @if ($errors->has('email'))
                     <div class="u-m-10 u-bg-danger" style="padding: 10px;">
-                        <span class="text-danger">{{ $errors->first('email') }}</span>
+                        <span class="u-t-white">{{ $errors->first('email') }}</span>
                     </div>
                 @endif
                 @if ($errors->has('password'))
                     <div class="u-m-10 u-bg-danger" style="padding: 10px;">
-                        <span class="text-danger">{{ $errors->first('email') }}</span>
+                        <span class="u-t-white">{{ $errors->first('email') }}</span>
                     </div>
                 @endif
                 <div class="u-ml-10 u-flex-end" style="padding: 10px;">
@@ -102,7 +88,7 @@
     @if (session('errors'))
         <div class="add_user_success"> 
             @foreach (session('errors')->getBag('default')->all() as $error)
-            <span class="u-fw-b" style="color: red; display:block;">{{ $error }}</span>
+            <span class="u-fw-b u-t-danger" style="display:block;">{{ $error }}</span>
             @endforeach
         </div>
     @endif
@@ -194,7 +180,7 @@
 
 @section('script_content')
 <script>
-
+    let btnId;
     //Remove Excess Space
     function removeExcessSpaces(input) {
         var firstName = input.value.replace(/\s{2,}/g,' ').trim();
@@ -209,6 +195,7 @@
         e.preventDefault();
         const userId = $(this).data('user-id');
         const url = $(this).attr('href');
+        btnId = userId;
 
         $.ajax({
             url: url,   
@@ -235,13 +222,14 @@
     $('#ua-form').on('submit', function(event){
         event.preventDefault();
 
-        const userId = $('.edit-btn').data('user-id');
+        const userId = btnId;
         const update = "{{ route('ua_update', 'userId') }}".replace('userId', userId);
 
         $('#ua-form').attr('action', update);
 
-        this.submit();
+        console.log(update);
 
+        this.submit();
     })
     
     // DataTable 
