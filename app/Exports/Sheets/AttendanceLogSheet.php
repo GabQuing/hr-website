@@ -40,6 +40,7 @@ class AttendanceLogSheet implements FromQuery, WithTitle, WithHeadings
 			'Break Start',
 			'Break End',
 			'Clock Out',
+			'Total Hours',
 		];
 	}
 }

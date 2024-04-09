@@ -84,14 +84,16 @@ class AttendanceController extends Controller
         $userId = is_array($userId) ? $userId : [$userId];
         return DB::table('attendance_summary')
             ->join('users', 'attendance_summary.user_id', '=', 'users.id')
-            ->selectRaw("
-                users.name,
-                log_date,
-                clock_in,
-                break_start,
-                break_end,
-                clock_out
-            ")
+            ->select(
+                'users.name',
+                'attendance_summary.log_date',
+                'attendance_summary.clock_in',
+                'attendance_summary.break_start',
+                'attendance_summary.break_end',
+                'attendance_summary.clock_out',
+                DB::raw('(TIME_TO_SEC(attendance_summary.clock_out) - TIME_TO_SEC(attendance_summary.clock_in)) / 60 / 60 as total_hours')
+            )
+
             ->whereBetween('log_date', [$fromDate, $toDate])
             ->whereIn('user_id', $userId);
     }

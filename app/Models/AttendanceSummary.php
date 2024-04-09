@@ -66,10 +66,11 @@ class AttendanceSummary extends Model
     {
         return $this
             ->select(
-                DB::raw("TIME_TO_SEC(clock_out) - TIME_TO_SEC(clock_in) as total_hours"),
+                DB::raw("SUM(TIME_TO_SEC(clock_out) - TIME_TO_SEC(clock_in)) as total_hours"),
             )
             ->where('user_id', $user_id)
             ->whereBetween('log_date', [$from_date, $to_date])
+            ->groupBy('user_id')
             ->pluck('total_hours')
             ->first();
     }
