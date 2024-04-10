@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 
 class DatabaseBackup extends Command
 {
@@ -25,6 +26,12 @@ class DatabaseBackup extends Command
      */
     public function handle()
     {
+        $this->backUpDatabase();
+        $this->deleteOldBackUps();
+    }
+
+    public function backUpDatabase()
+    {
         $ds = DIRECTORY_SEPARATOR;
 
         $host = env('DB_HOST');
@@ -43,5 +50,18 @@ class DatabaseBackup extends Command
         }
 
         exec($command);
+    }
+
+    public function deleteOldBackUps()
+    {
+        $oldBackupDate = now()->subDays(30);
+        $oldBackupPath = storage_path('backups/' . $oldBackupDate->format('Y/m/d'));
+
+        if (File::exists($oldBackupPath)) {
+            File::deleteDirectory($oldBackupPath);
+            $this->info('Old backup files deleted successfully.');
+        } else {
+            $this->info('No old backup files found.');
+        }
     }
 }
