@@ -147,6 +147,7 @@ Route::post('/employee_payroll/store', [EmployeePayrollController::class, 'add']
 Route::post('/employee_payroll/update/{id}', [EmployeePayrollController::class, 'update'])->name('employee_payroll_update');
 Route::get('/employee_payroll/pdfShow/{file_name}', [EmployeePayrollController::class, 'showPDF'])->name('showPDF');
 Route::get('/employee_payroll/delete', [EmployeePayrollController::class, 'deletePayroll'])->name('employee_payroll_delete');
+Route::get('/employee_payroll/download', [EmployeePayrollController::class, 'downloadPDF'])->name('employee_payroll_download');
 
 
 // Official Business

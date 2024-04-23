@@ -116,4 +116,10 @@ class EmployeePayrollController extends Controller
         EmployeePayroll::find($request->id)->update(['deleted_at' => now()]);
         return redirect()->back()->with('success', 'Payroll deleted successfully.');
     }
+
+    public function downloadPDF(Request $request)
+    {
+        $path = storage_path("app/payroll/$request->payroll_name");
+        return Response::download($path);
+    }
 }

@@ -13,12 +13,14 @@ class PayrollController extends Controller
 
         $data = [];
         $data['payrolls'] = EmployeePayroll::leftJoin('users as head', 'head.id', 'employee_payrolls.created_by')
-            ->select('employee_payrolls.*',
-                'head.name as created_by_head'    
+            ->select(
+                'employee_payrolls.*',
+                'head.name as created_by_head'
             )
             ->where('user_id', $user_id)
+            ->whereNull('employee_payrolls.deleted_at')
             ->get();
-        
+
         return view('payroll', $data);
     }
 }
