@@ -93,10 +93,13 @@
                     <td>{{ $payroll->created_at }}</td>
                     <td>{{ $payroll->name }}</td>
                     <td>
-                        <div class="d-flex;">
+                        <div class="d-flex" style="gap:3px">
                             <a href="{{ route('employee_payroll_edit', $payroll->id) }}" class="material-symbols-outlined u-action-btn u-bg-primary" style="vertical-align: bottom; font-size: 20px; font-weight: bold; color: white; text-decoration: none;">
                                 edit
                             </a>
+                            <button type="button" class="material-symbols-outlined u-action-btn u-bg-danger delete-payroll" style="vertical-align: bottom; font-size: 20px; font-weight: bold; color: white; text-decoration: none;" payroll-id="{{ $payroll->id }}">
+                                delete
+                            </button>
                         </div>
                     </td>
                 </tr>   
@@ -143,6 +146,24 @@
         $('#add-payroll-btn').on('click', function(){
             $('.modal-center').show();
         })
+
+        // Delete Payroll
+        $(document).on('click', '.delete-payroll', function() {
+            const payrollId = $(this).attr('payroll-id');
+            Swal.fire({
+                title: 'Are you sure?',
+                html: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+            }).then(result => {
+                if (result.isConfirmed) {
+                    location.assign(`{{ route('employee_payroll_delete') }}?id=${payrollId}`);
+                }
+            })
+        });
 
         $(document).ready(function() {
             $('#pdfInput').on('change', function() {
