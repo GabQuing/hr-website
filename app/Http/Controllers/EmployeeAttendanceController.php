@@ -19,6 +19,7 @@ class EmployeeAttendanceController extends Controller
                 'users.id',
                 'users.name',
             )
+            ->orderBy('users.name', 'asc')
             ->get();
 
         return view('employee_attendance', $data);
