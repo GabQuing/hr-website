@@ -80,7 +80,7 @@
 <div class="modal-center edit-benefits" style="display: none;">
     <div class="modal-box">
         <div class="modal-content">
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                 @csrf
                 <table class="custom_normal_table">
                     <tbody>
@@ -107,6 +107,16 @@
                             <td>
                                 <p>Pregnancy And Maternity Care:</p>
                                 <input class="u-input" name="pregnancy" id="edit_pregnancy" type="number" min="0" step="0.01" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Upload Receipt / Image:</p>
+                                <input class="u-input " name="file" id="edit_file" type="file" accept=".jpg,.jpeg,.png" />
+                            </td>
+                            <td>
+                                <p>Notes:</p>
+                                <input class="u-input" name="note" id="edit_note" type="text" />
                             </td>
                         </tr>
                     </tbody>
@@ -162,6 +172,11 @@
                     <td>{{$user->employee_benefits_updated_at}}</td>
                     <td>
                         <div class="d-flex;">
+                            <button class="ob-btn u-action-btn u-bg-primary view-benefit-btn"  data-entry-id="{{ $user->id }}" data-href="{{ route('employee_benefit.view', $user->id) }}">
+                                <span class="material-symbols-outlined"  style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                    visibility
+                                </span>
+                            </button>
                             <button class="ob-btn u-action-btn u-bg-primary edit-modal" type="button"  data-entry-id="{{ $user->id }}" data-href="{{ route('editEmployeeBenefit', $user->id) }}">
                                 <span class="material-symbols-outlined"  style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
                                     edit
@@ -220,6 +235,11 @@
         $('.edit-modal').on('click', function(){
             $('.edit-benefits').show();
         });
+
+        $('.view-benefit-btn').on('click', function() {
+            const href = $(this).attr('data-href');
+            location.assign(href);;
+        })
 
         $(document).ready(function() {
             $('#pdfInput').on('change', function() {

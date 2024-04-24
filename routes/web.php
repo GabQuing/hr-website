@@ -155,7 +155,8 @@ Route::get('/employee_benefit', [EmployeeBenefitController::class, 'index'])->na
 Route::post('/employee_benefit/add', [EmployeeBenefitController::class, 'add'])->name('employeeBenefitAdd');
 Route::get('/employee_benefit/{id}/edit', [EmployeeBenefitController::class, 'edit'])->name('editEmployeeBenefit');
 Route::post('/employee_benefit/{id}/update', [EmployeeBenefitController::class, 'updateEmployeeBenefit'])->name('update');
-
+Route::get('/employee_benefit/{id}/view', [EmployeeBenefitController::class, 'viewEmployeeBenefit'])->name('employee_benefit.view');
+Route::get('employee_benefit/download-receipt/{history_id}', [EmployeeBenefitController::class, 'downloadReceipt'])->name('employee_benefit.download-receipt');
 
 
 
