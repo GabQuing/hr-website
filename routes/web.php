@@ -153,6 +153,10 @@ Route::get('/employee_payroll/download', [EmployeePayrollController::class, 'dow
 //Employee Benefit
 Route::get('/employee_benefit', [EmployeeBenefitController::class, 'index'])->name('employee_benefit');
 Route::post('/employee_benefit/add', [EmployeeBenefitController::class, 'add'])->name('employeeBenefitAdd');
+Route::get('/employee_benefit/{id}/edit', [EmployeeBenefitController::class, 'edit'])->name('editEmployeeBenefit');
+Route::post('/employee_benefit/{id}/update', [EmployeeBenefitController::class, 'updateEmployeeBenefit'])->name('update');
+
+
 
 
 // Official Business

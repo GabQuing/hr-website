@@ -64,6 +64,30 @@ class EmployeeBenefitController extends Controller
 
     }
 
+    public function edit ($id){
+
+        $employeeBenefit = EmployeeBenefit::where('id',$id)
+        ->first();
+
+        return $employeeBenefit;
+    }
+
+    public function updateEmployeeBenefit(Request $request, $id)
+    {
+        $employee_id = auth()->user()->id;
+        $updateEmployeeBenefit = EmployeeBenefit::find($id);
+
+        $updateEmployeeBenefit->update([
+            'health_care' => $request->input('health_care'),
+            'vision' => $request->input('vision'),
+            'dental' => $request->input('dental'),
+            'pregnancy' => $request->input('pregnancy'),
+            'updated_by' => $employee_id,
+            'updated_at' => now(),
+        ]);
+        return redirect()->back()->with('success', 'Employee Benefit Profile Been Edited!');
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -83,10 +107,7 @@ class EmployeeBenefitController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.

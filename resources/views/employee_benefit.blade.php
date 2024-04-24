@@ -20,7 +20,7 @@
     }
 </style>
 
-<div class="modal-center" style="display: none;">
+<div class="modal-center add-benefits" style="display: none;">
     <div class="modal-box">
         <div class="modal-content">
             <form method="POST" action="{{ route('employeeBenefitAdd') }}" enctype="multipart/form-data">
@@ -54,24 +54,66 @@
                             </td>
                             <td>
                                 <p>Vision Benefit:</p>
-                                <input class="u-input" name="vision" type="number" required>
+                                <input class="u-input" name="vision" type="number" min="0" step="0.01" required>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <p>Dental Benefit:</p>
-                                <input class="u-input " name="dental" type="number" required>
+                                <input class="u-input " name="dental" type="number" min="0" step="0.01" required>
                             </td>
                             <td>
                                 <p>Pregnancy And Maternity Care:</p>
-                                <input class="u-input" name="pregnancy" type="number" required>
+                                <input class="u-input" name="pregnancy" type="number" min="0" step="0.01" required>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="u-ml-10" style="padding: 10px;">
+                    <button class="u-btn u-mr-10 btn-close" type="button">Close</button>
+                    <button class="u-btn u-bg-primary u-t-white" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal-center edit-benefits" style="display: none;">
+    <div class="modal-box">
+        <div class="modal-content">
+            <form method="POST">
+                @csrf
+                <table class="custom_normal_table">
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                                <h3 class="f-weight-bold">Edit Benefit</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Healthcare Benefit:</p>
+                                <input class="u-input" name="health_care" id="edit_health_care" type="number" min="0" step="0.01" required>
+                            </td>
+                            <td>
+                                <p>Vision Benefit:</p>
+                                <input class="u-input" name="vision" id="edit_vision"type="number" min="0" step="0.01" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Dental Benefit:</p>
+                                <input class="u-input " name="dental" id="edit_dental" type="number" min="0" step="0.01" required>
+                            </td>
+                            <td>
+                                <p>Pregnancy And Maternity Care:</p>
+                                <input class="u-input" name="pregnancy" id="edit_pregnancy" type="number" min="0" step="0.01" required>
                             </td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="u-flex-space-between u-flex-wrap">
-                    <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" id="modal-btn-close" type="button">Close</button>
-                    <button class="u-t-white u-fw-b u-btn u-bg-primary u-m-10 u-border-1-default btn-close" id="modal-btn-submit" type="submit">Submit</button>
+                    <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" id="edit-btn-close" type="button">Close</button>
+                    <button class="u-t-white u-fw-b u-btn u-bg-primary u-m-10 u-border-1-default btn-close" id="edit-btn-submit" type="submit">Submit</button>
                 </div>
             </form>
         </div>
@@ -80,7 +122,7 @@
 
 <div class="u-flex">
     <div class="u-mr-16" style="position: relative" id="add-payroll-btn">
-        <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default" href="">Add Benefit</button>
+        <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default"  href="">Add Benefit</button>
     </div>
 </div>
 
@@ -120,9 +162,11 @@
                     <td>{{$user->employee_benefits_updated_at}}</td>
                     <td>
                         <div class="d-flex;">
-                            <a href="" class="material-symbols-outlined u-action-btn u-bg-primary" style="vertical-align: bottom; font-size: 20px; font-weight: bold; color: white; text-decoration: none;">
-                                edit
-                            </a>
+                            <button class="ob-btn u-action-btn u-bg-primary edit-modal" type="button"  data-entry-id="{{ $user->id }}" data-href="{{ route('editEmployeeBenefit', $user->id) }}">
+                                <span class="material-symbols-outlined"  style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                    edit
+                                </span>
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -164,14 +208,18 @@
         });
 
         // Close Modal
-        $('#modal-btn-close').on('click', function(){
+        $('.btn-close').on('click', function(){
             $('.modal-center').hide();
         })
-
+        
         // Open add payroll
         $('#add-payroll-btn').on('click', function(){
-            $('.modal-center').show();
+            $('.add-benefits').show();
         })
+
+        $('.edit-modal').on('click', function(){
+            $('.edit-benefits').show();
+        });
 
         $(document).ready(function() {
             $('#pdfInput').on('change', function() {
@@ -182,6 +230,30 @@
                     $(this).val(''); 
                 }
                 }); 
+
+            $('.edit-modal').click(function(e){
+                const entryId = $(this).data('entry-id');
+                const url = $(this).attr('href');
+                let editUrl = "{{ route('editEmployeeBenefit', 'entryId') }}";
+                const newUrl = editUrl.replace('entryId', entryId);
+                $.ajax({
+                        url: newUrl,   
+                            dataType: 'json',
+                            type: 'GET',
+                            success: function(response) {
+                                console.log(response);
+                                $('#edit_users_id').val(response.user_id).trigger('change');
+                                $('#edit_health_care').val(response.health_care);
+                                $('#edit_vision').val(response.vision);
+                                $('#edit_dental').val(response.dental);
+                                $('#edit_pregnancy').val(response.pregnancy);
+                                $('form').attr('action', '/employee_benefit/' + response.id + '/update');
+                            },
+                            error: function(error) {
+                                console.log(error);
+                            }
+                    });
+            });
         });
     </script>
 @endsection

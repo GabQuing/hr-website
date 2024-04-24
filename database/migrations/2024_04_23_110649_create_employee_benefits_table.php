@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('employee_benefits', function (Blueprint $table) {
             $table->id();
             $table->mediumInteger('user_id')->unsigned()->nullable();
-            $table->decimal('health_care')->unsigned()->length(18, 2)->nullable();
-            $table->decimal('vision')->unsigned()->length(18, 2)->nullable();
-            $table->decimal('dental')->unsigned()->length(18, 2)->nullable();
-            $table->decimal('pregnancy')->unsigned()->length(18, 2)->nullable();
+            $table->decimal('health_care', 10, 2)->unsigned()->nullable();
+            $table->decimal('vision', 10, 2)->unsigned()->nullable();
+            $table->decimal('dental', 10, 2)->unsigned()->nullable();
+            $table->decimal('pregnancy', 10, 2)->unsigned()->nullable();
             $table->mediumInteger('created_by')->unsigned()->nullable();
             $table->mediumInteger('updated_by')->unsigned()->nullable();
             $table->timestamps();
