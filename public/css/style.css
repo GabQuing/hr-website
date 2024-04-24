@@ -614,7 +614,7 @@ input::file-selector-button {
     scrollbar-width: thin; /* Set the scrollbar width for modern browsers */
     scrollbar-color: #02718a transparent; /* Set the scrollbar color for modern browsers */
     -ms-overflow-style: none; /* Hide the scrollbar in Internet Explorer/Edge */
-    padding-right: 25px;
+    padding-right: 15px;
 }
 
 /* For WebKit browsers (Chrome, Safari) */
