@@ -234,10 +234,10 @@
         <div class="u-flex">
             <div class="u-mr-16" style="position: relative" id="official_business-btn">
                 <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default" href="">Official Business</button>
-                @if (count($official_businesses) > 0)
+                @if ($pending_ob)
                     <div class="u-record u-t-white">
                         <span style="position: relative; top: -1px;">
-                            {{ count($official_businesses) }}
+                            {{ $pending_ob }}
                         </span>
                     </div>
                 @endif
@@ -245,20 +245,20 @@
             
             <div class="u-mr-16" style="position: relative" id="overtimes-btn">
                 <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default" href="">Overtimes</button>
-                @if (count($overtimes) > 0)
+                @if ($pending_ot)
                     <div class="u-record u-t-white">
                         <span style="position: relative; top: -1px;">
-                            {{ count($overtimes) }}
+                            {{ $pending_ot }}
                         </span>
                     </div>
                 @endif
             </div>
             <div class="u-mr-16" style="position: relative" id="leaves-btn">
                 <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default" href="">Leaves</button>
-                @if (count($leaves) > 0)
+                @if ($pending_leaves)
                     <div class="u-record u-t-white">
                         <span style="position: relative; top: -1px;">
-                            {{ count($leaves) }}
+                            {{ $pending_leaves }}
                         </span>
                     </div>
                 @endif
@@ -296,8 +296,14 @@
                     <tbody>
                         @if (!empty($official_businesses))
                             @foreach ($official_businesses as $official_business)
+                                @php
+                                    if ($official_business->status == 'PENDING') $status_class = 'u-t-warning';
+                                    else if ($official_business->status == 'APPROVED') $status_class = 'u-t-success';
+                                    else if ($official_business->status == 'REJECTED') $status_class = 'u-t-danger';
+                                    else if ($official_business->status == 'CANCELLED') $status_class = 'u-t-danger';
+                                @endphp
                                 <tr>
-                                    <td class="u-t-warning u-fw-b">{{ $official_business->status }}</td>
+                                    <td class="{{ $status_class }} u-fw-b">{{ $official_business->status }}</td>
                                     <td>{{ $official_business->created_at }}</td>
                                     <td>{{ $official_business->location }}</td>
                                     <td>{{ $official_business->date_from }}</td>
@@ -306,6 +312,7 @@
                                     <td>{{ $official_business->reason }}</td>
                                     <td>{{ $official_business->name }}</td>
                                     <td>
+                                        @if ($official_business->status == 'PENDING')
                                         <div class="d-flex;">
                                             <button class="ob-btn u-action-btn u-bg-primary" type="button" ob-id="{{ $official_business->id }}">
                                                 <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
@@ -313,6 +320,7 @@
                                                 </span>
                                             </button>
                                         </div>
+                                        @endif
                                     </td>
                             @endforeach
                         @endif
@@ -352,8 +360,14 @@
                     <tbody>
                     @if (!empty($overtimes))
                         @foreach ($overtimes as $overtime)
+                            @php
+                                if ($overtime->status == 'PENDING') $status_class = 'u-t-warning';
+                                else if ($overtime->status == 'APPROVED') $status_class = 'u-t-success';
+                                else if ($overtime->status == 'REJECTED') $status_class = 'u-t-danger';
+                                else if ($overtime->status == 'CANCELLED') $status_class = 'u-t-danger';
+                            @endphp
                             <tr>
-                                <td class="u-t-warning u-fw-b">{{ $overtime->status }}</td>
+                                <td class="{{ $status_class }} u-fw-b">{{ $overtime->status }}</td>
                                 <td>{{ $overtime->created_at }}</td>
                                 <td>{{ date('l', strtotime($overtime->shift_date)) }}</td>
                                 <td>{{ $overtime->time_start }}</td>
@@ -375,6 +389,7 @@
                                 </td>
                                 <td>{{ $overtime->name }}</td>
                                 <td>
+                                    @if ($overtime->status == 'PENDING')
                                     <div class="d-flex;">
                                         <button class="ot-btn u-action-btn u-bg-primary" type="button" ot-id="{{ $overtime->id }}">
                                             <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
@@ -382,6 +397,7 @@
                                             </span>
                                         </button>
                                     </div>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -420,15 +436,22 @@
                     <tbody>
                     @if (!empty($leaves))
                         @foreach ($leaves as $leave)
+                        @php
+                            if ($leave->status == 'PENDING') $status_class = 'u-t-warning';
+                            else if ($leave->status == 'APPROVED') $status_class = 'u-t-success';
+                            else if ($leave->status == 'REJECTED') $status_class = 'u-t-danger';
+                            else if ($leave->status == 'CANCELLED') $status_class = 'u-t-danger';
+                        @endphp
                             <tr>
-                                <td class="u-t-warning u-fw-b">{{ $leave->status }}</td>
+                                <td class="{{ $status_class }} u-fw-b">{{ $leave->status }}</td>
                                 <td>{{ $leave->created_at->format('Y-m-d') }}</td>
                                 <td>{{ $leave->leave_type}}</td>
                                 <td>{{ $leave->duration }}</td>
                                 <td>{{ $leave->leave_from }}</td>
                                 <td>{{ $leave->reason }}</td>  
-                                <td>{{ $leave->name }}</td>  
+                                <td>{{ $leave->name }}</td>
                                 <td>
+                                    @if ($leave->status == 'PENDING')
                                     <div class="d-flex;">
                                         <button class="leave-btn u-action-btn u-bg-primary" type="button" leave-id="{{ $leave->id }}">
                                             <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
@@ -436,6 +459,7 @@
                                             </span>
                                         </button>
                                     </div>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -601,12 +625,14 @@
             $('.overtimes-table').hide();
             $('.leaves-table').hide();
         }
+        $('#official_business-btn').click();
         
     });
 
     // DataTable 
     $('.myTable').DataTable({
         responsive: true,
+        order: [],
         "columnDefs": [
             { "className": "dt-center", "targets": "_all" }
         ]

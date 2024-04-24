@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use App\Models\EmployeeLeaves;
 use App\Models\WorkSchedule;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeRequestController extends Controller
 {
@@ -27,14 +28,16 @@ class EmployeeRequestController extends Controller
                 'official_businesses.*'
             )
             ->where('status', 'PENDING')
+            ->orderBy(DB::raw('status = "PENDING"'), 'desc')
             ->get();
+
         $data['overtimes'] = Overtime::leftJoin('users', 'users.id', 'overtimes.created_by')
             ->select(
                 'users.*',
                 'users.name',
                 'overtimes.*'
             )
-            ->where('status', 'PENDING')
+            ->orderBy(DB::raw('status = "PENDING"'), 'desc')
             ->get();
         $data['leaves'] = Leave::leftJoin('users', 'users.id', 'leaves.created_by')
             ->select(
@@ -42,8 +45,11 @@ class EmployeeRequestController extends Controller
                 'users.name',
                 'leaves.*'
             )
-            ->where('status', 'PENDING')
+            ->orderBy(DB::raw('status = "PENDING"'), 'desc')
             ->get();
+        $data['pending_ob'] = OfficialBusiness::where('status', 'PENDING')->count();
+        $data['pending_ot'] = Overtime::where('status', 'PENDING')->count();
+        $data['pending_leaves'] = Leave::where('status', 'PENDING')->count();
 
         return view('employee_request', $data);
     }
@@ -134,7 +140,7 @@ class EmployeeRequestController extends Controller
                     $employee_request->decrement('sick_credit');
                 } elseif ($leave->leave_type == 'VACATION' && $employee_request->vacation_credit > 0) {
                     $employee_request->decrement('vacation_credit');
-                }else {
+                } else {
                     return redirect()->back()->with('ot-failed', 'No more credit for his/her account');
                 }
 
