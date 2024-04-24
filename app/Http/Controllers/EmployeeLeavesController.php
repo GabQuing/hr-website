@@ -49,8 +49,7 @@ class EmployeeLeavesController extends Controller
             'created_by' => $accountId,
             'created_at' => now(),
         ]);
-        $request->session()->flash('success', 'Leave Profile Generated Successfully!');
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Leave Profile Generated Successfully!');
     }
 
     public function edit ($id){
@@ -72,7 +71,6 @@ class EmployeeLeavesController extends Controller
             'updated_by' => $employee_id,
             'updated_at' => now(),
         ]);
-        $request->session()->flash('success', 'Employee Leave Profile Been Edited!');
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Employee Leave Profile Been Edited!');
     }
 }

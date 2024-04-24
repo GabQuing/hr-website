@@ -25,6 +25,7 @@ use App\Http\Controllers\PolicyProcedureController;
 use App\Http\Controllers\EmployeeLeavesController;
 use App\Http\Controllers\EmployeeAttendanceController;
 use App\Http\Controllers\EmployeePayrollController;
+use App\Http\Controllers\EmployeeBenefitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -148,6 +149,10 @@ Route::post('/employee_payroll/update/{id}', [EmployeePayrollController::class, 
 Route::get('/employee_payroll/pdfShow/{file_name}', [EmployeePayrollController::class, 'showPDF'])->name('showPDF');
 Route::get('/employee_payroll/delete', [EmployeePayrollController::class, 'deletePayroll'])->name('employee_payroll_delete');
 Route::get('/employee_payroll/download', [EmployeePayrollController::class, 'downloadPDF'])->name('employee_payroll_download');
+
+//Employee Benefit
+Route::get('/employee_benefit', [EmployeeBenefitController::class, 'index'])->name('employee_benefit');
+Route::post('/employee_benefit/add', [EmployeeBenefitController::class, 'add'])->name('employeeBenefitAdd');
 
 
 // Official Business

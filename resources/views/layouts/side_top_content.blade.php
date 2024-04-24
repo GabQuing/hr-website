@@ -247,7 +247,7 @@
                                 @else
                                 <li class="active">
                             @endif
-                                    <img src="{{ asset('img/icon-img/document.png') }}" alt="">
+                                    <img src="{{ asset('img/icon-img/leaves.png') }}" alt="">
                                     <a href="{{ route('employee_leaves') }}">Employee Leaves</a>
                                 </li> 
                             @if ( Request::segment(1)  == 'employee_payroll')
@@ -258,6 +258,15 @@
                                     {{-- <span class="material-symbols-outlined">payments</span> --}}
                                     <img src="{{ asset('img/icon-img/cash.png') }}" alt="">
                                     <a href="{{ route('employee_payroll') }}">Employee Payroll</a>
+                                </li>
+                            @if ( Request::segment(1)  == 'employee_benefit')
+                                <li class="active" id="current_link">
+                                @else
+                                <li class="active">
+                            @endif
+                                    {{-- <span class="material-symbols-outlined">payments</span> --}}
+                                    <img src="{{ asset('img/icon-img/benefit.png') }}" alt="">
+                                    <a href="{{ route('employee_benefit') }}">Employee Benefit</a>
                                 </li>
                             @if ( Request::segment(1)  == 'schedule_profile')
                                 <li class="active" id="current_link">
