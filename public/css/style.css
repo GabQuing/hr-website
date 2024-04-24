@@ -1375,6 +1375,10 @@ input::file-selector-button {
     overflow-x: auto;
     display: none;
 }
+.user_accounts_table2 {
+    width: 100%;
+    overflow-x: auto;
+}
 .dashboard_table {
     width: 100%;
     overflow-x: auto;
