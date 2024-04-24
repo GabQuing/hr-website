@@ -16,7 +16,10 @@ class EmployeePayrollController extends Controller
     public function index()
     {
         $data = [];
-        $data['employees'] = (new User())->getActiveEmployees()->get();
+        $data['employees'] = (new User())
+            ->getActiveEmployees()
+            ->orderBy('users.name', 'asc')
+            ->get();
         $data['payrolls'] = EmployeePayroll::leftJoin('users as employee', 'employee.id', 'employee_payrolls.user_id')
             ->leftJoin('users as head', 'head.id', 'employee_payrolls.created_by')
             ->select(
