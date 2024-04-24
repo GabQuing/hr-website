@@ -127,12 +127,14 @@
     <script>
 
         // DataTable 
-        $('.myTable')..DataTable({
+        $('.myTable').DataTable({
             responsive: true,
             paging:false,
             info:false,
             searching: false,
-            order: [[0, 'desc']] // Assuming you want to order by the first column (index 0) in descending order
+            "columnDefs": [
+                { "className": "dt-center", "targets": "_all" }
+            ]
         });
 
         // Select2
