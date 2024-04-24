@@ -70,7 +70,7 @@
     </div>
 @endif
 
-<div class="u-mt-10">
+<div class="u-mt-10 user_accounts_table2">
     <table class="myTable" class="display" style="width:100%;">
         <thead>
             <tr>

@@ -93,7 +93,7 @@
     </div>
 </div>
 <div class="approve_reg_btn">
-    <a class="user_info_link open-modal">New Employee Leaves</a> 
+    <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default open-modal">New Employee Leaves</button> 
 </div>
 <div>
     <br>
