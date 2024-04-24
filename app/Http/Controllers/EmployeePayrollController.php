@@ -29,7 +29,7 @@ class EmployeePayrollController extends Controller
             )
             ->orderBy('id', 'desc')
             ->whereNull('employee_payrolls.deleted_at')
-            ->get();
+            ->paginate(10);
 
         return view('employee_payroll', $data);
     }

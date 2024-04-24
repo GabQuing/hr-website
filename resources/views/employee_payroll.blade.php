@@ -117,6 +117,8 @@
             </tr>
         </tfoot>
     </table>
+    {{ $payrolls->links()}}
+    <p>Showing {{ $payrolls->firstItem() ?? 0 }} to {{ $payrolls->lastItem() ?? 0 }} of {{ $payrolls->total() }} items.</p>
 </div>
 
 
@@ -125,11 +127,12 @@
     <script>
 
         // DataTable 
-        $('.myTable').DataTable({
+        $('.myTable')..DataTable({
             responsive: true,
-            "columnDefs": [
-                { "className": "dt-center", "targets": "_all" }
-            ]
+            paging:false,
+            info:false,
+            searching: false,
+            order: [[0, 'desc']] // Assuming you want to order by the first column (index 0) in descending order
         });
 
         // Select2
