@@ -269,7 +269,7 @@
                                 $('#edit_vision').val(response.vision);
                                 $('#edit_dental').val(response.dental);
                                 $('#edit_pregnancy').val(response.pregnancy);
-                                $('form').attr('action', '/employee_benefit/' + response.id + '/update');
+                                $('form').attr('action', submitUrl);
                             },
                             error: function(error) {
                                 console.log(error);
