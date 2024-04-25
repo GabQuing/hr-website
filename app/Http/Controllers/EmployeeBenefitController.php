@@ -122,7 +122,7 @@ class EmployeeBenefitController extends Controller
             'updated_by' => $employee_id,
             'updated_at' => now(),
         ]);
-        return redirect()->back()->with('success', 'Employee Benefit Profile Been Edited!');
+        return redirect()->back()->with('success', 'Employee Benefit has been edited!');
     }
 
     public function viewEmployeeBenefit($id)
