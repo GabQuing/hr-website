@@ -129,7 +129,7 @@
                       <td class="u-t-center">{{ $history->note }}</td>
                       <td class="u-align-items-center">
                         @if ($history->file_path)
-                          <a href="{{ route('employee_benefit.download-receipt', $history->id) }}" target="_blank" history-id="{{ $history->id }}" class="" type="button">Download Receipt</a>
+                          <a href="{{ route('employee_benefit.download-receipt', $history->id) }}" target="_blank" history-id="{{ $history->id }}" class="u-btn u-bg-primary u-t-deco-none u-t-white u-flex-center-column" type="button">Download Receipt</a>
                         @endif
                       </td>
                     </tr>

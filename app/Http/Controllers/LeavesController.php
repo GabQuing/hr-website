@@ -51,8 +51,7 @@ class LeavesController extends Controller
         $employee_leaves = EmployeeLeaves::where('user_id', $employee_id)->first();
 
         if (($request->input('leave_type') == 'BIRTHDAY' && $employee_leaves->sick_credit == 0) || ($request->input('leave_type') == 'VACATION' && $employee_leaves->vacation_credit == 0)){
-            $request->session()->flash('failed', 'No more credits!');
-            return redirect()->back();
+            return redirect()->back()->with('failed', 'No more credits!');
         }
 
         Leave::insert([
@@ -67,8 +66,7 @@ class LeavesController extends Controller
             
         ]);
 
-        $request->session()->flash('success', 'Leave Generated Successfully!');
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Leave Generated Successfully!');
     }
 
     public function edit ($id)
@@ -99,8 +97,7 @@ class LeavesController extends Controller
             'updated_by' => $employee_id,
             'updated_at' => now(),
         ]);
-        $request->session()->flash('success', 'Overtime Form Has Been Edited!');
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Overtime Form Has Been Edited!');
     }
 
     public function deleteLeave($id)
