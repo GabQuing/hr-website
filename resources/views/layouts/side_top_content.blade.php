@@ -174,7 +174,7 @@
                                 <li class="active">
                             @endif
                                     {{-- <span class="material-symbols-outlined">edit_location_alt</span> --}}
-                                    <img src="{{ asset('img/icon-img/location_edit.png') }}" alt="">
+                                    <img src="{{ asset('img/icon-img/leaves.png') }}" alt="">
                                     <a href="{{ route('leaves') }}">My Leaves</a>
                                 </li>
                             @if ( Request::segment(1)  == 'payroll')
@@ -184,7 +184,16 @@
                             @endif
                                     {{-- <span class="material-symbols-outlined">payments</span> --}}
                                     <img src="{{ asset('img/icon-img/cash.png') }}" alt="">
-                                    <a href="{{ route('payroll') }}">Payroll</a>
+                                    <a href="{{ route('payroll') }}">My Payroll</a>
+                                </li>
+                            @if ( Request::segment(1)  == 'my_benefits')
+                                <li class="active" id="current_link">
+                                @else
+                                <li class="active">
+                            @endif
+                                    {{-- <span class="material-symbols-outlined">payments</span> --}}
+                                    <img src="{{ asset('img/icon-img/benefit.png') }}" alt="">
+                                    <a href="{{ route('benefits') }}">My Benefits</a>
                                 </li>
                         @endrole
                         @role('admin||hr')

@@ -5,6 +5,7 @@ use App\Http\Controllers\ActivityLogsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeInformationsController;
 use App\Http\Controllers\LeavesController;
+use App\Http\Controllers\BenefitController;
 use App\Http\Controllers\LoginAuthController;
 use App\Http\Controllers\OfficialBusinessController;
 use App\Http\Controllers\OvertimesController;
@@ -184,6 +185,12 @@ Route::get('/my_leaves/{id}/edit', [LeavesController::class, 'edit'])->name('edi
 Route::get('/my_leaves/{id}/delete', [LeavesController::class, 'deleteLeave'])->name('deleteLeave');
 Route::post('/my_leaves/{id}/update', [LeavesController::class, 'updateLeave'])->name('update');
 Route::post('/my_leaves/submit', [LeavesController::class, 'createLeave'])->name('submitLeave');
+
+
+
+// Benefit
+Route::get('/my_benefits', [BenefitController::class, 'index'])->name('benefits');
+
 
 // Payroll
 Route::get('/payroll', [PayrollController::class, 'index'])->name('payroll');
