@@ -262,6 +262,8 @@
                             type: 'GET',
                             success: function(response) {
                                 console.log(response);
+                                let submitUrl = "{{ route('employee_benefit.update', 'entryId') }}";
+                                submitUrl = submitUrl.replace('entryId', response.id);
                                 $('#edit_users_id').val(response.user_id).trigger('change');
                                 $('#edit_health_care').val(response.health_care);
                                 $('#edit_vision').val(response.vision);
