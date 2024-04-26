@@ -162,10 +162,10 @@
             @foreach ($users as $user)
                 <tr>
                     <td>{{$user->employee_name}}</td>
-                    <td>{{$user->health_care}}</td>
-                    <td>{{$user->vision}}</td>
-                    <td>{{$user->dental}}</td>
-                    <td>{{$user->pregnancy}}</td>
+                    <td>₱{{number_format($user->health_care, 2)}}</td>
+                    <td>₱{{number_format($user->vision, 2)}}</td>
+                    <td>₱{{number_format($user->dental, 2)}}</td>
+                    <td>₱{{number_format($user->pregnancy, 2)}}</td>
                     <td>{{$user->employee_benefits_created_by}}</td>
                     <td>{{$user->employee_benefits_created_at}}</td>
                     <td>{{$user->employee_benefits_updated_by}}</td>

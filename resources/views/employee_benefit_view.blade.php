@@ -48,7 +48,7 @@
                       <h5 class="u-fw-b u-t-gray">Health Care</h5>
                   </td>
                   <td>
-                      <h5 class="u-fw-b u-t-gray">{{ $benefit->health_care }}</h5>
+                      <h5 class="u-fw-b u-t-gray">₱{{ number_format($benefit->health_care, 2) }}</h5>
                   </td>
               </tr>
               <tr>
@@ -56,7 +56,7 @@
                       <h5 class="u-fw-b u-t-gray">Vision</h5>
                   </td>
                   <td>
-                      <h5 class="u-fw-b u-t-gray">{{ $benefit->vision }}</h5>
+                      <h5 class="u-fw-b u-t-gray">₱{{ number_format($benefit->vision, 2) }}</h5>
                   </td>
               </tr>
               <tr>
@@ -64,7 +64,7 @@
                       <h5 class="u-fw-b u-t-gray">Dental</h5>
                   </td>
                   <td>
-                      <h5 class="u-fw-b u-t-gray">{{ $benefit->dental }}</h5>
+                      <h5 class="u-fw-b u-t-gray">₱{{ number_format($benefit->dental, 2) }}</h5>
                   </td>
               </tr>
               <tr>
@@ -72,7 +72,7 @@
                       <h5 class="u-fw-b u-t-gray">Pregnancy and Maternity Care</h5>
                   </td>
                   <td>
-                      <h5 class="u-fw-b u-t-gray">{{ $benefit->pregnancy }}</h5>
+                      <h5 class="u-fw-b u-t-gray">₱{{ number_format($benefit->pregnancy, 2) }}</h5>
                   </td>
               </tr>
           </tbody>
@@ -117,14 +117,14 @@
                   @foreach ($histories as $history)
                     <tr>
                       <td class="u-t-center">{{ $history->created_at }}</td>
-                      <td class="u-t-center">{{ $history->before_health_care }}</td>
-                      <td class="u-t-center">{{ $history->after_health_care }}</td>
-                      <td class="u-t-center">{{ $history->before_vision }}</td>
-                      <td class="u-t-center">{{ $history->after_vision }}</td>
-                      <td class="u-t-center">{{ $history->before_dental }}</td>
-                      <td class="u-t-center">{{ $history->after_dental }}</td>
-                      <td class="u-t-center">{{ $history->before_pregnancy }}</td>
-                      <td class="u-t-center">{{ $history->after_pregnancy }}</td>
+                      <td class="u-t-center">₱{{ number_format($history->before_health_care, 2) }}</td>
+                      <td class="u-t-center">₱{{ number_format($history->after_health_care, 2) }}</td>
+                      <td class="u-t-center">₱{{ number_format($history->before_vision, 2) }}</td>
+                      <td class="u-t-center">₱{{ number_format($history->after_vision, 2) }}</td>
+                      <td class="u-t-center">₱{{ number_format($history->before_dental, 2) }}</td>
+                      <td class="u-t-center">₱{{ number_format($history->after_dental, 2) }}</td>
+                      <td class="u-t-center">₱{{ number_format($history->before_pregnancy, 2) }}</td>
+                      <td class="u-t-center">₱{{ number_format($history->after_pregnancy, 2) }}</td>
                       <td class="u-t-center">{{ $history->creator_name }}</td>
                       <td class="u-t-center">{{ $history->note }}</td>
                       <td class="u-align-items-center">
