@@ -53,7 +53,7 @@
                             <h5 class="u-fw-b u-t-gray">Healthcare Benefits:</h5>
                         </td>
                         <td>
-                            <h5 class="u-fw-b u-t-gray">{{ number_format($employee_benefits->health_care, 2) }}</h5>
+                            <h5 class="u-fw-b u-t-gray">{{ number_format($employee_benefits?->health_care, 2) }}</h5>
                         </td>
                     </tr>
                     <tr>
@@ -61,7 +61,7 @@
                             <h5 class="u-fw-b u-t-gray">Vision Benefits:</h5>
                         </td>
                         <td>
-                            <h5 class="u-fw-b u-t-gray">{{ number_format($employee_benefits->vision, 2) }}</h5>
+                            <h5 class="u-fw-b u-t-gray">{{ number_format($employee_benefits?->vision, 2) }}</h5>
                         </td>
                     </tr>
                     <tr>
@@ -69,7 +69,7 @@
                             <h5 class="u-fw-b u-t-gray">Dental Benefits:</h5>
                         </td>
                         <td>
-                            <h5 class="u-fw-b u-t-gray">{{ number_format($employee_benefits->dental, 2) }}</h5>
+                            <h5 class="u-fw-b u-t-gray">{{ number_format($employee_benefits?->dental, 2) }}</h5>
                         </td>
                     </tr>
                     <tr>
@@ -77,7 +77,7 @@
                             <h5 class="u-fw-b u-t-gray">Pregnancy and Maternity Care	:</h5>
                         </td>
                         <td>
-                            <h5 class="u-fw-b u-t-gray">{{ number_format($employee_benefits->pregnancy, 2) }}</h5>
+                            <h5 class="u-fw-b u-t-gray">{{ number_format($employee_benefits?->pregnancy, 2) }}</h5>
                         </td>
                     </tr>
                 </tbody>
