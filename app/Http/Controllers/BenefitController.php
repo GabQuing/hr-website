@@ -25,11 +25,12 @@ class BenefitController extends Controller
                 'employee_benefit_histories.*',
                 'creator.name as creator_name',
             )
+            ->where('employee_benefits.user_id', $user_id)
             ->orderBy('employee_benefit_histories.created_at', 'DESC')
             ->paginate(10);
 
 
-        return view ('my_benefits', $data);
+        return view('my_benefits', $data);
     }
 
     /**
