@@ -201,9 +201,9 @@
                                         <p>Strikes per Day:</p>
                                         <div class="policy_bullet_sm">
                                             <ul>
-                                                <li>First Strike: Ten minutes (2) of unresponsiveness</li>
-                                                <li>Second Strike: Twenty minutes (4) of unresponsiveness</li>
-                                                <li>Third Strike: One hour (6) of unresponsiveness</li>
+                                                <li>First Strike: Ten minutes (10) of unresponsiveness</li>
+                                                <li>Second Strike: Twenty minutes (20) of unresponsiveness</li>
+                                                <li>Third Strike: One hour (60) of unresponsiveness</li>
                                             </ul>
                                         </div>
                                         <br>
