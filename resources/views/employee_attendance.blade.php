@@ -16,13 +16,13 @@
                     <tr>
                         <td>
                             <p>From:</p>
-                            <input class="u-input" type="date" name="from_date" id="from_date" value="{{ $from ?? '' }}" required>
+                            <input class="u-input" type="date" name="from_date" id="from_date" value="{{ $params['from_date'] ?? '' }}" required>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <p>To:</p>
-                            <input class="u-input" type="date" name="to_date" id="to_date" value="{{ $to ?? '' }}" required>
+                            <input class="u-input" type="date" name="to_date" id="to_date" value="{{ $params['to_date'] ?? '' }}" required>
                         </td>
                     </tr>
                     <tr>
@@ -30,7 +30,7 @@
                             <p>Select Users:</p> 
                             <select class="js-example-basic-single s-single multiple-select" name="users_id[]" id="users_id" multiple="multiple" required>
                                 @foreach ( $usernames as $username )
-                                    <option value="{{ $username->id }}">{{ $username->name }}</option>
+                                    <option value="{{ $username->id }}" {{ in_array($username->id, $params['users_id'] ?? []) ? "selected" : '' }}>{{ $username->name }}</option>
                                 @endforeach
                             </select>
                             <br>
@@ -44,7 +44,7 @@
             </div>
         </div>   
     </form>
-    @if ($has_generated ?? false)
+    @if ($summary_data ?? false)
         <div class="u-mt-10" style="overflow-x: auto;">
             <table class="u-responsive-table">
                 <thead>
@@ -54,20 +54,22 @@
                         <td scope="col">Days Absent</td>
                         <td scope="col">Late Minutes</td>
                         <td scope="col">Undertime Minutes</td>
-                        <td scope="col">Total Lates Min</td>
+                        <td scope="col">Total Late/Undertime Mins</td>
                         <td scope="col">Total Hours</td>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($summary_data as $summary)
                         <tr id="table_content">
-                            <td>{{ auth()->user()->name }}</td>
-                            <td> {{ $days_present ?? 0}}</td>
-                            <td>{{ $numberOfAbsences ?? 0}}</td>
-                            <td>{{ $total_lates }}</td>
-                            <td>{{ $total_undertimes }}</td>
-                            <td>{{ $total_lates_undertimes }}</td>
-                            <td>{{ $total_hours }}</td>
-                        </tr>                        
+                            <td>{{ $summary['user'] }}</td>
+                            <td> {{ $summary['days_present'] ?? 0}}</td>
+                            <td>{{ $summary['numberOfAbsences'] ?? 0}}</td>
+                            <td>{{ $summary['total_lates'] }}</td>
+                            <td>{{ $summary['total_undertimes'] }}</td>
+                            <td>{{ $summary['total_lates_undertimes'] }}</td>
+                            <td>{{ $summary['total_hours'] }}</td>
+                        </tr>  
+                    @endforeach                      
                 </tbody>
             </table>
         </div>
