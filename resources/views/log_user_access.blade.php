@@ -49,8 +49,8 @@
     </div>
 </div>
 
-<button class="u-btn u-bg-primary u-t-white open-modal" >Generate Table</button>
-@if ($has_generated ?? false)
+<button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default open-modal" >Generate Table</button>
+@if ($has_generated ?? true)
     <a href="{{ route('export_user_activity_log') }}?{{ $query_params }}" id="export_excel">Export File</a>
 @endif
 <div>

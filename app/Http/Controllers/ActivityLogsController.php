@@ -29,33 +29,23 @@ class ActivityLogsController extends Controller
     public function generateFile(Request $request)
     {
         $user_id = auth()->user()->id;
+        $fromDate = $request->input('from_date');
+        $toDate = $request->input('to_date');
         $data = [];
         $data['user_logs'] = (new UserLog())
             ->getByUserId($user_id)
+            ->whereBetween('log_date',[$fromDate,$toDate])
             ->paginate(10)
             ->appends($request->all());
 
-        $employeeId = auth()->user()->id;
-        $fromDate = $request->input('from_date');
-        $toDate = $request->input('to_date');
-        $numEntry = DB::table('user_log_view')
-            ->where('user_id', $employeeId)
-            ->whereBetween('log_date', [$fromDate, $toDate])
-            ->select(
-                'user_id',
-                'log_date',
-                'latest',
-                'log_type_id'
-            )
-            ->get();
 
         $dataEntry = [];
         $dataEntry['fromDate'] = $fromDate;
         $dataEntry['toDate'] = $toDate;
-        $dataEntry['numEntry'] = $numEntry;
         $dataEntry['has_generated'] = true;
+        
+        $data['success'] = '"Export File" generated successfully!';
 
-        $request->session()->flash('success', '"Export File" generated successfully!');
         return view('my_activity_logs', $dataEntry, $data);
     }
 

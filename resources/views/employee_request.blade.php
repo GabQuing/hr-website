@@ -304,11 +304,11 @@
                                 @endphp
                                 <tr>
                                     <td class="{{ $status_class }} u-fw-b">{{ $official_business->status }}</td>
-                                    <td>{{ $official_business->created_at }}</td>
+                                    <td>{{ date('M d Y h:i a', strtotime($official_business->created_at)) }}</td>
                                     <td>{{ $official_business->location }}</td>
-                                    <td>{{ $official_business->date_from }}</td>
-                                    <td>{{ $official_business->time_from }}</td>
-                                    <td>{{ $official_business->time_to }}</td>
+                                    <td>{{ date('F d Y', strtotime($official_business->date_from)) }}</td>
+                                    <td>{{ date('g:ia', strtotime($official_business->time_from))}}</td>
+                                    <td>{{ date('g:ia', strtotime($official_business->time_to))}}</td>
                                     <td>{{ $official_business->reason }}</td>
                                     <td>{{ $official_business->name }}</td>
                                     <td>
@@ -368,10 +368,10 @@
                             @endphp
                             <tr>
                                 <td class="{{ $status_class }} u-fw-b">{{ $overtime->status }}</td>
-                                <td>{{ $overtime->created_at }}</td>
+                                <td>{{ date('M d Y h:i a', strtotime($overtime->created_at)) }}</td>
                                 <td>{{ date('l', strtotime($overtime->shift_date)) }}</td>
-                                <td>{{ $overtime->time_start }}</td>
-                                <td>{{ $overtime->time_end }}</td>
+                                <td>{{ date('g:ia', strtotime($overtime->time_start)) }}</td>
+                                <td>{{ date('g:ia', strtotime($overtime->time_end)) }}</td>
                                 <td>
                                     <?php
                                         // Calculate the time difference
@@ -444,10 +444,10 @@
                         @endphp
                             <tr>
                                 <td class="{{ $status_class }} u-fw-b">{{ $leave->status }}</td>
-                                <td>{{ $leave->created_at->format('Y-m-d') }}</td>
+                                <td>{{ date('M d Y h:i a', strtotime($leave->created_at)) }}</td>
                                 <td>{{ $leave->leave_type}}</td>
                                 <td>{{ $leave->duration }}</td>
-                                <td>{{ $leave->leave_from }}</td>
+                                <td>{{ date('F d Y', strtotime($leave->leave_from))}}</td>
                                 <td>{{ $leave->reason }}</td>  
                                 <td>{{ $leave->name }}</td>
                                 <td>
