@@ -27,10 +27,8 @@ class EmployeeRequestController extends Controller
                 'users.name',
                 'official_businesses.*'
             )
-            ->where('status', 'PENDING')
             ->orderBy(DB::raw('status = "PENDING"'), 'desc')
             ->get();
-
         $data['overtimes'] = Overtime::leftJoin('users', 'users.id', 'overtimes.created_by')
             ->select(
                 'users.*',
