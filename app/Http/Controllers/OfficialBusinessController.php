@@ -12,6 +12,10 @@ class OfficialBusinessController extends Controller
     {
 
         $user_id = auth()->user()->id;
+        $server_datetime_today = now();
+        $datetime_object = new \DateTime($server_datetime_today);
+        $formatted_date = $datetime_object->format('F j Y');
+        $server_day = $server_datetime_today->format('l');
         $data = [];
         $data['pending_logs'] = OfficialBusiness::where('created_by', $user_id)
             ->where('status', 'PENDING')
@@ -25,6 +29,9 @@ class OfficialBusinessController extends Controller
             ->whereIn('status', ['REJECTED', 'CANCELED'])
             ->orderBy('created_at', 'desc')
             ->get();
+
+        $data['serverCurrentDay'] = $server_day;
+        $data['serverFormattedDate'] = $formatted_date;
 
         return view('my_official_business', $data);
     }

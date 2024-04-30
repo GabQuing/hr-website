@@ -58,16 +58,16 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <p>Alaska Current Date:</p>
-                                        <span>{{ $serverCurrentDay }}, {{ $serverFormattedDate }}</span>
-                                    </td>
-                                </tr>
-                                <tr>
                                     <td colspan="4">
                                         <p>Reason</p>
                                         <input class="u-input-border-boottom" name="reason" type="text" placeholder="Enter Reason" required>
                                     </td>                            
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Alaska Current Date:</p>
+                                        <span>{{ $serverCurrentDay }}, {{ $serverFormattedDate }}</span>
+                                    </td>
                                 </tr>
                         </table>
                     </div>

@@ -28,18 +28,6 @@
                                     <p>Shift:</p>
                                     <span>{{ $employee_schedule ?? "No Schedule" }}</span>
                                 </td>
-                                <td>
-                                    <p>Biometric Logs</p>
-                                    <span>No Logs</span>
-                                </td>                            
-                                <td>
-                                    <p>OT:</p>
-                                    <span>NO OT</span>
-                                </td>                            
-                                <td>
-                                    <p>OT Minutes:</p>
-                                    <span>0</span>
-                                </td>                            
                             </tr>
                             <tr>
                                 <td>
@@ -109,24 +97,6 @@
                                 <td colspan="4">
                                     <h3 class="f-weight-bold"><i class="fa-solid fa-eye"></i> Overtime Application Form</h3>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Shift:</p>
-                                    <span></span>
-                                </td>
-                                <td>
-                                    <p>Biometric Logs</p>
-                                    <span>No Logs</span>
-                                </td>                            
-                                <td>
-                                    <p>OT:</p>
-                                    <span>NO OT</span>
-                                </td>                            
-                                <td>
-                                    <p>OT Minutes:</p>
-                                    <span>0</span>
-                                </td>                            
                             </tr>
                             <tr>
                                 <td>
