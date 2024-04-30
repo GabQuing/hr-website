@@ -257,9 +257,9 @@
                         @foreach ($pending_logs as $pending_log)
                             <tr>
                                 <td><h5>{{ $pending_log->status }}</h5></td>
-                                <td><h5>{{ $pending_log->created_at->format('Y-m-d')}}</h5></td>
+                                <td><h5>{{ date('M d Y h:i a', strtotime($pending_log->created_at))}}</h5></td>
                                 <td><h5>{{ $pending_log->leave_type }}</h5></td>
-                                <td><h5>{{ $pending_log->leave_from }}</h5></td>
+                                <td><h5>{{ date('F d Y', strtotime($pending_log->leave_from))}}</h5></td>
                                 <td><h5>{{ $pending_log->duration }}</h5></td>
                                 <td><h5>{{ $pending_log->reason }}</h5></td>
                                 <td>
@@ -298,12 +298,12 @@
                         @foreach ($approved_logs as $approved_log)
                             <tr>    
                                 <td><h5>{{ $approved_log->status }}</h5></td>
-                                <td><h5>{{ $approved_log->created_at->format('Y-m-d')}}</h5></td>
+                                <td><h5>{{ date('M d Y h:i a', strtotime($approved_log->created_at)) }}</h5></td>
                                 <td><h5>{{ $approved_log->leave_type }}</h5></td>
-                                <td><h5>{{ $approved_log->leave_from }}</h5></td>
+                                <td><h5>{{ date('F d Y', strtotime($approved_log->leave_from))}}</h5></td>
                                 <td><h5>{{ $approved_log->duration }}</h5></td>
                                 <td><h5>{{ $approved_log->reason }}</h5></td>
-                                <td><h5>{{ $approved_log->approved_at}}</h5></td>
+                                <td><h5>{{ date('M d Y h:i a', strtotime($approved_log->approved_at))}}</h5></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -328,12 +328,12 @@
                         @foreach ($rejected_canceled_logs as $rejected_canceled_log)
                             <tr>
                                 <td><h5>{{ $rejected_canceled_log->status }}</h5></td>
-                                <td><h5>{{ $rejected_canceled_log->created_at->format('Y-m-d')}}</h5></td>
+                                <td><h5>{{ date('M d Y h:i a', strtotime($rejected_canceled_log->created_at))}}</h5></td>
                                 <td><h5>{{ $rejected_canceled_log->leave_type }}</h5></td>
-                                <td><h5>{{ $rejected_canceled_log->leave_from }}</h5></td>
+                                <td><h5>{{ date('F d Y', strtotime($rejected_canceled_log->leave_from)) }}</h5></td>
                                 <td><h5>{{ $rejected_canceled_log->duration }}</h5></td>
                                 <td><h5>{{ $rejected_canceled_log->reason }}</h5></td>
-                                <td><h5>{{ $rejected_canceled_log->rejected_at ?? $rejected_canceled_log->cancelled_at}}</h5></td>
+                                <td><h5>{{ date('M d Y h:i a', strtotime($rejected_canceled_log->rejected_at) ?: strtotime($rejected_canceled_log->cancelled_at)) }}</h5></td>
                             </tr>
                         @endforeach
                     </tbody>

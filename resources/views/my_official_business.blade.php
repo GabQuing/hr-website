@@ -185,11 +185,11 @@
                         @foreach ($pending_logs as $pending_log)
                             <tr>
                                 <td><h5>{{ $pending_log->status }}</h5></td>
-                                <td><h5>{{ $pending_log->created_at }}</h5></td>
+                                <td><h5>{{ date('M d Y h:i a', strtotime($pending_log->created_at)) }}</h5></td>
                                 <td><h5>{{ $pending_log->location }}</h5></td>
-                                <td><h5>{{ $pending_log->date_from }}</h5></td>
-                                <td><h5>{{ $pending_log->time_from }}</h5></td>
-                                <td><h5>{{ $pending_log->time_to }}</h5></td>
+                                <td><h5>{{ date('F d Y', strtotime($pending_log->date_from)) }}</h5></td>
+                                <td><h5>{{ date('g:ia', strtotime($pending_log->time_from)) }}</h5></td>
+                                <td><h5>{{ date('g:ia', strtotime($pending_log->time_to))  }}</h5></td>
                                 <td><h5>{{ $pending_log->reason }}</h5></td>
                                 <td>
                                     <div class="d-flex;">
@@ -228,13 +228,13 @@
                         @foreach ($approved_logs as $approved_log)
                             <tr>
                                 <td><h5>{{ $approved_log->status }}</h5></td>
-                                <td><h5>{{ $approved_log->created_at }}</h5></td>
+                                <td><h5>{{ date('M d Y h:i a', strtotime($approved_log->created_at)) }}</h5></td>
                                 <td><h5>{{ $approved_log->location }}</h5></td>
-                                <td><h5>{{ $approved_log->date_from }}</h5></td>
-                                <td><h5>{{ $approved_log->time_from }}</h5></td>
-                                <td><h5>{{ $approved_log->time_to }}</h5></td>
+                                <td><h5>{{ date('F d Y', strtotime($approved_log->date_from ))}}</h5></td>
+                                <td><h5>{{ date('g:ia', strtotime($approved_log->time_from)) }}</h5></td>
+                                <td><h5>{{ date('g:ia', strtotime($approved_log->time_to)) }}</h5></td>
                                 <td><h5>{{ $approved_log->reason }}</h5></td>
-                                <td><h5>{{ $approved_log->approved_at }}</h5></td>
+                                <td><h5>{{ date('M d Y h:i a', strtotime($approved_log->approved_at))}}</h5></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -258,13 +258,13 @@
                         @foreach ($rejected_canceled_logs as $rejected_canceled_log)
                             <tr>
                                 <td><h5>{{ $rejected_canceled_log->status }}</h5></td>
-                                <td><h5>{{ $rejected_canceled_log->created_at }}</h5></td>
+                                <td><h5>{{ date('M d Y h:i a', strtotime($rejected_canceled_log->created_at))}}</h5></td>
                                 <td><h5>{{ $rejected_canceled_log->location }}</h5></td>
-                                <td><h5>{{ $rejected_canceled_log->date_from }}</h5></td>
-                                <td><h5>{{ $rejected_canceled_log->time_from }}</h5></td>
-                                <td><h5>{{ $rejected_canceled_log->time_to }}</h5></td>
+                                <td><h5>{{ date('F d Y', strtotime($rejected_canceled_log->date_from ))}}</h5></td>
+                                <td><h5>{{ date('g:ia', strtotime($rejected_canceled_log->time_from)) }}</h5></td>
+                                <td><h5>{{ date('g:ia', strtotime($rejected_canceled_log->time_to)) }}</h5></td>
                                 <td><h5>{{ $rejected_canceled_log->reason }}</h5></td>
-                                <td><h5>{{ $rejected_canceled_log->rejected_at ?? $rejected_canceled_log->cancelled_at }}</h5></td>
+                                <td><h5>{{ date('M d Y h:i a', strtotime($rejected_canceled_log->rejected_at) ?: strtotime($rejected_canceled_log->cancelled_at)) }}</h5></td>
                             </tr>
                         @endforeach
                     </tbody>

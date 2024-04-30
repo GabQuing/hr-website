@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Exports\EmployeeActivityLogsExport;
 use App\Models\UserLog;
 use App\Models\User;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class LogUserAccessController extends Controller
 {
@@ -37,14 +37,14 @@ class LogUserAccessController extends Controller
         $fromDate = $request->input('from_date');
         $toDate = $request->input('to_date');
         $UserId = $request->input('users_id');
-
+    
         $data['user_logs'] = (new UserLog())
             ->getAllLogs()
             ->whereBetween('log_date',[$fromDate,$toDate])
             ->whereIn('user_id',$request->input('users_id'))
             ->paginate(10)
             ->appends($request->all());
-
+    
         $data['usernames'] = (new User())
             ->getAllActiveUsers()
             ->select(
@@ -52,8 +52,8 @@ class LogUserAccessController extends Controller
                 'users.name',
             )
             ->get();
-
-
+    
+    
         $numEntry = DB::table('user_log_view')
             ->whereBetween('log_date',[$fromDate,$toDate])
             ->select('user_id',
@@ -61,9 +61,9 @@ class LogUserAccessController extends Controller
                 'latest',
                 'log_type_id')
             ->get();
-
+    
         $dataEntry=[];
-
+    
             
         $dataEntry['from_date'] = $fromDate;
         $dataEntry['to_date'] = $toDate;
@@ -72,10 +72,11 @@ class LogUserAccessController extends Controller
         $dataEntry['has_generated'] = true;
         $data['query_params'] = http_build_query($dataEntry);
         
-        $request->session()->flash('success', '"Export File" generated successfully!');
-
-        return view ('log_user_access', $dataEntry, $data);
+        $data['success'] = '"Export File" generated successfully!';
+    
+        return view ('log_user_access', $data);
     }
+    
 
     public function exportEmployeeFile(Request $request)
     {
