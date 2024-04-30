@@ -17,13 +17,13 @@
                     <tr>
                         <td>
                             <p>From:</p>
-                            <input class="u-input" type="date" name="from_date" id="from_date" value="{{ $from ?? '' }}" required>
+                            <input class="u-input" type="date" name="from_date" id="from_date" value="{{ $params['from_date'] ?? '' }}" required>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <p>To:</p>
-                            <input class="u-input" type="date" name="to_date" id="to_date" value="{{ $to ?? '' }}" required>
+                            <input class="u-input" type="date" name="to_date" id="to_date" value="{{ $params['to_date'] ?? '' }}" required>
                         </td>
                     </tr>
                 </tbody>
