@@ -321,13 +321,15 @@
             dataType: 'json',
             type: 'GET',
                 success: function(response) {
+                    let submitUrl = "{{ route('my_official_business.update', 'entryId') }}";
+                    submitUrl = submitUrl.replace('entryId', response.id);
                     $('#edit_date_from').val(response.date_from);
                     $('#edit_time_from').val(response.time_from);
                     $('#edit_time_to').val(response.time_to);
                     $('#edit_location').val(response.location);
                     $('#edit_reason').val(response.reason);
                     $('.edit-ob-form').show(); // Show the modal
-                    $('form').attr('action', '/my_official_business/' + response.id + '/update');
+                    $('form').attr('action', submitUrl);
                     console.log(response);
                 },
                 error: function(error) {
