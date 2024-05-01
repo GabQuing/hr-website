@@ -140,7 +140,7 @@ Route::post('/employee_request/leaveForm', [EmployeeRequestController::class, 'l
 Route::get('/employee_leave', [EmployeeLeavesController::class, 'index'])->name('employee_leaves');
 Route::post('/employee_leave/add', [EmployeeLeavesController::class, 'add'])->name('employeeLeavesAdd');
 Route::get('/employee_leave/{id}/edit', [EmployeeLeavesController::class, 'edit'])->name('editEmployeeLeave');
-Route::post('/employee_leave/{id}/update', [EmployeeLeavesController::class, 'updateEmployeeLeave'])->name('my_leaves.update');
+Route::post('/employee_leave/{id}/update', [EmployeeLeavesController::class, 'updateEmployeeLeave'])->name('employee_leaves.update');
 
 //Employee Payroll
 Route::get('/employee_payroll', [EmployeePayrollController::class, 'index'])->name('employee_payroll');
@@ -183,7 +183,7 @@ Route::get('/my_undertimes', [UndertimesController::class, 'index'])->name('unde
 Route::get('/my_leaves', [LeavesController::class, 'index'])->name('leaves');
 Route::get('/my_leaves/{id}/edit', [LeavesController::class, 'edit'])->name('editLeave');
 Route::get('/my_leaves/{id}/delete', [LeavesController::class, 'deleteLeave'])->name('deleteLeave');
-Route::post('/my_leaves/{id}/update', [LeavesController::class, 'updateLeave'])->name('update');
+Route::post('/my_leaves/{id}/update', [LeavesController::class, 'updateLeave'])->name('my_leaves.update');
 Route::post('/my_leaves/submit', [LeavesController::class, 'createLeave'])->name('submitLeave');
 
 
