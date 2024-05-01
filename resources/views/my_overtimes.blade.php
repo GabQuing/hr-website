@@ -492,6 +492,8 @@
                     dataType: 'json',
                     type: 'GET',
                     success: function(response) {
+                        let submitUrl = "{{ route('my_overtimes.update', 'entryId') }}";
+                        submitUrl = submitUrl.replace('entryId', response.id);
                         $('#edit_shift_date').val(response.shift_date);
                         $('#edit_day_name').val(response.day_name);
                         $('#edit_shift_from').val(response.shift_from);
@@ -501,7 +503,7 @@
                         $('#edit_ot_classification').val(response.ot_classification);
                         $('#edit_reason').val(response.reason);
                         $('.edit-ot-form').show(); 
-                        $('form').attr('action', '/my_overtimes/' + response.id + '/update');
+                        $('form').attr('action', submitUrl);
                         console.log(response);
                     },
                     error: function(error) {

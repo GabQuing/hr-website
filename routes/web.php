@@ -140,7 +140,7 @@ Route::post('/employee_request/leaveForm', [EmployeeRequestController::class, 'l
 Route::get('/employee_leave', [EmployeeLeavesController::class, 'index'])->name('employee_leaves');
 Route::post('/employee_leave/add', [EmployeeLeavesController::class, 'add'])->name('employeeLeavesAdd');
 Route::get('/employee_leave/{id}/edit', [EmployeeLeavesController::class, 'edit'])->name('editEmployeeLeave');
-Route::post('/employee_leave/{id}/update', [EmployeeLeavesController::class, 'updateEmployeeLeave'])->name('update');
+Route::post('/employee_leave/{id}/update', [EmployeeLeavesController::class, 'updateEmployeeLeave'])->name('my_leaves.update');
 
 //Employee Payroll
 Route::get('/employee_payroll', [EmployeePayrollController::class, 'index'])->name('employee_payroll');
@@ -162,7 +162,7 @@ Route::get('employee_benefit/download-receipt/{history_id}', [EmployeeBenefitCon
 
 
 // Official Business
-Route::post('/my_official_business/{id}/update', [OfficialBusinessController::class, 'updateOB'])->name('update');
+Route::post('/my_official_business/{id}/update', [OfficialBusinessController::class, 'updateOB'])->name('my_official_business.update');
 Route::get('/my_official_business/{id}/edit', [OfficialBusinessController::class, 'edit'])->name('editInfo');
 Route::get('/my_official_business/{id}/delete', [OfficialBusinessController::class, 'deleteOB'])->name('deleteOB');
 Route::get('/my_official_business', [OfficialBusinessController::class, 'index'])->name('officialbusiness');
@@ -173,7 +173,7 @@ Route::get('/my_overtimes', [OvertimesController::class, 'index'])->name('overti
 Route::get('/my_overtimes/{id}/edit', [OvertimesController::class, 'edit'])->name('editOT');
 Route::get('/my_overtimes/{id}/delete', [OvertimesController::class, 'deleteOT'])->name('deleteOT');
 Route::post('/my_overtimes/submit', [OvertimesController::class, 'createOT'])->name('submitOT');
-Route::post('/my_overtimes/{id}/update', [OvertimesController::class, 'updateOT'])->name('update');
+Route::post('/my_overtimes/{id}/update', [OvertimesController::class, 'updateOT'])->name('my_overtimes.update');
 
 
 // Undertimes

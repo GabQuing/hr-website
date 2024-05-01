@@ -386,6 +386,8 @@
                     dataType: 'json',
                     type: 'GET',
                     success: function(response) {
+                        let submitUrl = "{{ route('my_leaves.update', 'entryId') }}";
+                        submitUrl = submitUrl.replace('entryId', response.id);
                         $('#edit_leave_type').val(response.leave_type);
                         $('#edit_duration').val(response.duration);
                         $('#edit_leave_from').val(response.leave_from);
@@ -393,7 +395,7 @@
                         $('#blc').text(response.sick_credit);
                         $('#vlc').text(response.vacation_credit);
                         $('.edit-leave-form').show(); 
-                        $('form').attr('action', '/my_leaves/' + response.id + '/update');
+                        $('form').attr('action', submitUrl);
                         console.log(response);
                     },
                     error: function(error) {
