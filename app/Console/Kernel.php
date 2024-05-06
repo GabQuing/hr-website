@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'App\Console\Commands\DatabaseBackup',
+        'App\Console\Commands\BirthdayLeaveUpdate',
     ];
 
     /**
@@ -21,7 +22,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('app:database-backup')->everyMinute();
+        $schedule->command('app:database-backup')->dailyAt('01:00');
+        $schedule->command('app:birthday-leave-update')->dailyAt('09:00');
     }
 
     /**
