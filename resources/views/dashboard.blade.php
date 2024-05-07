@@ -198,7 +198,7 @@ textarea {
         <div class="u-flex-center-column u-p-15 u-mt-10 u-gap-5 ">
             @if ($announcement)
             <div class="u-mt-15 u-flex-center-column">
-                <h4 id="ann_subject" class="u-fw-500 u-mb-5">{{ $announcement?->subject }}</h4>
+                <h4 id="ann_subject" class="u-fw-500 u-mb-5"><strong>{{ $announcement?->subject }}</strong></h4>
                 <div>
                     <p class="u-t-center">
                         {{ $announcement?->message }}
@@ -211,16 +211,11 @@ textarea {
             @role('admin||hr')
             <div>
                 <div class="today_attendance_btns">
+                    @if ($announcement)
                     <button type="button" class="ann_btn edit-ann">
                         <div class="edit_ann_btn">
                             <span class="material-symbols-outlined" style="font-size: 25px;">edit_square</span>
                             <span>Edit</span>
-                        </div>
-                    </button>
-                    <button type="button" class="ann_btn create-ann" >
-                        <div class="announcement_btn" >
-                            <span class="material-symbols-outlined">wysiwyg</span>
-                            <p>Create</p>
                         </div>
                     </button>
                     <button type="button" class="ann_btn remove-ann" >
@@ -229,6 +224,14 @@ textarea {
                             <p>Remove</p>
                         </div>
                     </button>
+                    @else
+                    <button type="button" class="ann_btn create-ann" >
+                        <div class="announcement_btn" >
+                            <span class="material-symbols-outlined">wysiwyg</span>
+                            <p>Create</p>
+                        </div>
+                    </button>
+                    @endif
                 </div>
                 @if (session('success'))
                     <h5 class="u-fw-b" style="color: green; display:block; margin-top: 15px;">{{ session('success') }}</h5>
