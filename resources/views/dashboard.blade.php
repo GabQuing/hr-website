@@ -4,27 +4,103 @@
 
 @section('content')
 <style>
-.dashboard_table{
-    /* border:5px solid #02718A; */
-    border-radius: 10px;
+textarea {
+    resize: none; /* Disable resizing */
 }
-.dashboard_table th{
-    text-align: center;
-    vertical-align: middle !important;
-    background: #02718A;
-    padding: 10px; 
-    color: white
-}
-.dashboard_table td{
-    text-align: center;
-    background-color: #e9eff5;
-    padding: 10px;
-}
-
-.dashboard_table td:hover{
-    background-color: #d4dbe2;
-}
+.modal-box{
+        max-width: 75rem !important;
+    }
 </style>
+<div class="modal-center create-ann-form" style="display:none;">
+    <div class="modal-box">
+        <div class="modal-content">
+            <form method="POST" action="" enctype="multipart/form-data">
+                @csrf
+                <table class="custom_normal_table">
+                    <tbody>
+                        <tr>
+                            <td colspan="4">
+                                <h3 class="f-weight-bold">Make Announcement</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Start Date:</p>
+                                <input class="u-input" name="" type="date" required>
+                            </td>
+                            <td>
+                                <p>End Date:</p>
+                                <input class="u-input" name="" type="date" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <p>Subject:</p>
+                                <input class="u-input" name="" placeholder="Reminder:" type="text" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <p>Message:</p>
+                                <textarea class="u-textarea" name="" id="" required></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="u-flex-space-between u-flex-wrap">
+                    <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default" id="modal-btn-close" type="button">Close</button>
+                    <button class="u-t-white u-fw-b u-btn u-bg-primary u-m-10 u-border-1-default" id="modal-btn-submit" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal-center edit-ann-form" style="display:none;">
+    <div class="modal-box">
+        <div class="modal-content">
+            <form method="POST">
+                @csrf
+                <table class="custom_normal_table">
+                    <tbody>
+                        <tr>
+                            <td colspan="4">
+                                <h3 class="f-weight-bold">Edit Announcement</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Start Date:</p>
+                                <input class="u-input" name="" type="date" required>
+                            </td>
+                            <td>
+                                <p>End Date:</p>
+                                <input class="u-input" name="" type="date" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <p>Subject:</p>
+                                <input class="u-input" name="" placeholder="Reminder:" type="text" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <p>Message:</p>
+                                <textarea class="u-textarea" name="" id="" required></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="u-flex-space-between u-flex-wrap">
+                    <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" id="btn-close-edit" type="button">Close</button>
+                    <button class="u-t-white u-fw-b u-btn u-bg-primary u-m-10 u-border-1-default btn-close" id="btn-edit-submit" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="grid">
     <div class="container container_today">
         <div class="container_title">
@@ -69,6 +145,7 @@
             </div>
         </div>
     </div>
+    
     <div class="container container_my_attendance">
         <div class="container_title">
             <p class="header_title_h2">My Break</p>
@@ -114,8 +191,55 @@
         </div>
     </div>
 
-    <div class="container container_my_store_location">
-        <div class="dashboard_table">
+    <div class="container container_today">
+        <div class="container_title">
+            <p class="header_title_h2">Announcement</p>
+        </div>
+        <div class="u-flex-center-column u-p-15 u-mt-10 u-gap-5 ">
+            <div class="u-mt-15 u-flex-center-column">
+                <h4 id="ann_subject" class="u-fw-500 u-mb-5">Don't Forget To Apply Official Business</h4>
+                <div>
+                    <p class="u-t-center">
+                        Date From: May 1 2024
+                        Time From: 8:00am
+                        Time To: 5:00pm
+                        Location: PH
+                        Reason: Labor Day
+                    </p>
+                </div>
+            </div>
+            @role('admin||hr')
+            <div>
+                <div class="today_attendance_btns">
+                    <button type="button" class="ann_btn edit-ann">
+                        <div class="edit_ann_btn">
+                            <span class="material-symbols-outlined" style="font-size: 25px;">edit_square</span>
+                            <span>Edit</span>
+                        </div>
+                    </button>
+                    <button type="button" class="ann_btn create-ann" >
+                        <div class="announcement_btn" >
+                            <span class="material-symbols-outlined">wysiwyg</span>
+                            <p>Create</p>
+                        </div>
+                    </button>
+                    <button type="button" class="ann_btn remove-ann" >
+                        <div class="remove_ann_btn" >
+                            <span class="material-symbols-outlined">disabled_by_default</span>
+                            <p>Remove</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            @endrole
+        </div>
+    </div>
+    
+    <div class="container container_today">
+        <div class="container_title">
+            <p class="header_title_h2">My Activity</p>
+        </div>
+        <div class="dashboard_table ">
             <table id="myTable" class="display" style="width:100%">
                 <thead>
                     <tr>
@@ -165,6 +289,27 @@
                 title: `Your log (${logDetails.log_type}) has been added to your today's log.`,
             });
         }
+
+        $('#myTable').DataTable({
+            responsive: true,
+            paging:false,
+            info:false,
+            searching: false,
+            ordering: false,
+        });
+        
+        $('#modal-btn-close').on('click', function(){
+            $('.create-ann-form').hide();
+        });
+        $('#btn-close-edit').on('click', function(){
+            $('.edit-ann-form').hide();
+        });
+        $('.edit-ann').on('click', function(){
+            $('.edit-ann-form').show();
+        });
+        $('.create-ann').on('click', function(){
+            $('.create-ann-form').show();
+        });
 
         function refreshButtons(logToday) {
             // console.log(logToday);
@@ -222,6 +367,26 @@
                     alert(errorMessage);
                 }
             })
+        });
+
+        $('.remove_ann_btn').click(function(e){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Remove It!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                Swal.fire(
+                    'Removed!',
+                    'Announcement has been removed',
+                    'success'
+                )
+                }
+            });
         });
 
                 

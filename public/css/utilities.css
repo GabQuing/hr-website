@@ -177,6 +177,10 @@
 .u-mt-15 {
     margin-top: 0.9375rem;
 }
+.u-mtb-15 {
+    margin-top: 0.9375rem;
+    margin-bottom: 0.9375rem;
+}
 
 .u-mt-16 {
     margin-top: 1rem;
@@ -205,6 +209,12 @@
 .u-mb-10 {
     margin: 0.625rem;
 }
+.u-mb-16 {
+    margin-bottom: 1rem;
+}
+.u-mb-80 {
+    margin-bottom: 5rem;
+}
 
 .u-mr-5 {
     margin-right: 0.5rem;
@@ -217,7 +227,9 @@
 .u-mr-16 {
     margin-right: 1rem;
 }
-
+.u-gap-5{
+    gap: 5rem;
+}
 .u-border-bottom-1 {
     border-bottom: 1px solid #ddd;
 }

@@ -314,6 +314,24 @@ h6 {
     border: 2px solid #16abbc;
 }
 
+.u-textarea{
+    height: 5rem;
+    width: 100%;
+    border: 1px solid transparent;
+    padding: 0 10px;
+    border-radius: 5px;
+    color: #3c3b3b;
+    font-size: 1rem;
+    outline: none;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border: 1px solid #b3b9c2;
+}
+.u-textarea:focus {
+    border: 2px solid #16abbc;
+}
+
+
+
 input::file-selector-button {
     margin-top: 7px;
 }
@@ -951,6 +969,7 @@ input::file-selector-button {
 .today_attendance_message {
     font-style: italic;
 }
+.ann_btn,
 .clock_out_btn,
 .clock_in_btn {
     text-decoration: none;
@@ -965,6 +984,9 @@ input::file-selector-button {
     padding: 6px 16px;
     gap: 5px;
 }
+.edit_ann_btn,
+.remove_ann_btn,
+.announcement_btn,
 .today_clock_out,
 .today_clock_in {
     display: flex;
@@ -973,16 +995,25 @@ input::file-selector-button {
     padding: 6px 16px;
     gap: 5px;
 }
+.edit_ann_btn,
 .today_clock_in,
 .break_start_btn {
     background: #238c7c;
     border-radius: 5px;
 }
+.remove_ann_btn,
 .today_clock_out,
 .break_end_btn {
     background: #882c03;
     border-radius: 5px;
 }
+.announcement_btn{
+    background: #23628c;
+    border-radius: 5px;
+}
+.edit_ann_btn:hover,
+.remove_ann_btn:hover,
+.announcement_btn:hover,
 .break_start_btn:hover,
 .break_end_btn:hover,
 .today_clock_out:hover,
@@ -996,7 +1027,9 @@ input::file-selector-button {
     /* padding: 40px; */
     /* width: 100%; */
 }
-
+.edit-ann,
+.remove-ann,
+.create-ann,
 .action-button-log {
     border: none;
     cursor: pointer;
@@ -1006,6 +1039,8 @@ input::file-selector-button {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+
 
 @media only screen and (max-width: 650px) {
     .sidenav_parent {
