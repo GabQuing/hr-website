@@ -25,7 +25,7 @@ class DashboardController extends Controller
 
         $data['announcement'] = Announcement::whereNull('deleted_at')
             ->where('start_date', '<=', $date)
-            ->where('end_date', '>=', $date)
+            ->where('end_date', '>', $date)
             ->first();
 
 
