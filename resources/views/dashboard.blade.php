@@ -14,7 +14,7 @@ textarea {
 <div class="modal-center create-ann-form" style="display:none;">
     <div class="modal-box">
         <div class="modal-content">
-            <form method="POST" action="{{ route('announcement.create') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('announcement.create') }}" autocomplete="off" enctype="multipart/form-data">
                 @csrf
                 <table class="custom_normal_table">
                     <tbody>
@@ -59,7 +59,7 @@ textarea {
 <div class="modal-center edit-ann-form" style="display:none;">
     <div class="modal-box">
         <div class="modal-content">
-            <form method="POST" action="{{ route('announcement.update') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('announcement.update') }}" autocomplete="off" enctype="multipart/form-data">
                 @csrf
                 <table class="custom_normal_table">
                     <tbody>
@@ -210,7 +210,7 @@ textarea {
             @endif 
             @role('admin||hr')
             <div>
-                <div class="today_attendance_btns">
+                <div class="today_attendance_btns" style="display: flex; justify-content: center;">
                     @if ($announcement)
                     <button type="button" class="ann_btn edit-ann">
                         <div class="edit_ann_btn">
@@ -218,20 +218,20 @@ textarea {
                             <span>Edit</span>
                         </div>
                     </button>
-                    <button type="button" class="ann_btn remove-ann" >
+                    <button type="button" class="ann_btn remove-ann">
                         <div class="remove_ann_btn" >
                             <span class="material-symbols-outlined">disabled_by_default</span>
                             <p>Remove</p>
                         </div>
                     </button>
                     @else
-                    <button type="button" class="ann_btn create-ann" >
+                    <button type="button" class="ann_btn create-ann">
                         <div class="announcement_btn" >
                             <span class="material-symbols-outlined">wysiwyg</span>
                             <p>Create</p>
                         </div>
                     </button>
-                    @endif
+                        @endif
                 </div>
                 @if (session('success'))
                     <h5 class="u-fw-b" style="color: green; display:block; margin-top: 15px;">{{ session('success') }}</h5>
@@ -386,11 +386,7 @@ textarea {
                 confirmButtonText: 'Yes, Remove It!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                Swal.fire(
-                    'Removed!',
-                    'Announcement has been removed',
-                    'success'
-                )
+                    location.assign("{{ route('announcement.delete') }}");
                 }
             });
         });

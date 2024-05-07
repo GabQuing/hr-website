@@ -91,4 +91,10 @@ class DashboardController extends Controller
         self::createAnnouncement($request);
         return redirect('/dashboard1')->with('success', 'Announcement updated successfully.');
     }
+
+    public function deleteAnnouncement(Request $request)
+    {
+        Announcement::whereNull('deleted_at')->update(['deleted_at' => date('Y-m-d H:i:s')]);
+        return redirect('/dashboard1')->with('success', 'Announcement deleted successfully.');
+    }
 }
