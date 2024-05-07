@@ -73,8 +73,8 @@ class DashboardController extends Controller
     {
         $user_id = auth()->user()->id;
         $date = date('Y-m-d H:i:s');
-        Announcement::whereNotNull('id')->update(['deleted_at' => $date]);
-        $announcement = Announcement::create([
+        Announcement::whereNull('deleted_at')->update(['deleted_at' => $date]);
+        Announcement::create([
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'subject' => $request->subject,
@@ -88,7 +88,7 @@ class DashboardController extends Controller
 
     public function updateAnnouncement(Request $request)
     {
-        $announcement = self::createAnnouncement($request);
+        self::createAnnouncement($request);
         return redirect('/dashboard1')->with('success', 'Announcement updated successfully.');
     }
 }
