@@ -5,7 +5,7 @@
 @section('content')
 <style>
 textarea {
-    resize: none; /* Disable resizing */
+    resize: none; 
 }
 .modal-box{
         max-width: 75rem !important;
@@ -59,7 +59,7 @@ textarea {
 <div class="modal-center edit-ann-form" style="display:none;">
     <div class="modal-box">
         <div class="modal-content">
-            <form method="POST">
+            <form method="POST" action="{{ route('announcement.update') }}" enctype="multipart/form-data">
                 @csrf
                 <table class="custom_normal_table">
                     <tbody>
@@ -71,23 +71,23 @@ textarea {
                         <tr>
                             <td>
                                 <p>Start Date:</p>
-                                <input class="u-input" name="" type="date" required>
+                                <input class="u-input" name="start_date" type="date" value="{{ $announcement?->start_date }}" required>
                             </td>
                             <td>
                                 <p>End Date:</p>
-                                <input class="u-input" name="" type="date" required>
+                                <input class="u-input" name="end_date" type="date" value="{{ $announcement?->end_date }}" required>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="4">
                                 <p>Subject:</p>
-                                <input class="u-input" name="" placeholder="Reminder:" type="text" required>
+                                <input class="u-input" name="subject" placeholder="Reminder:" type="text" value="{{ $announcement?->subject }}" required>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="4">
                                 <p>Message:</p>
-                                <textarea class="u-textarea" name="" id="" required></textarea>
+                                <textarea class="u-textarea" name="message" required>{{ $announcement?->message }}</textarea>
                             </td>
                         </tr>
                     </tbody>
@@ -196,18 +196,18 @@ textarea {
             <p class="header_title_h2">Announcement</p>
         </div>
         <div class="u-flex-center-column u-p-15 u-mt-10 u-gap-5 ">
+            @if ($announcement)
             <div class="u-mt-15 u-flex-center-column">
-                <h4 id="ann_subject" class="u-fw-500 u-mb-5">Don't Forget To Apply Official Business</h4>
+                <h4 id="ann_subject" class="u-fw-500 u-mb-5">{{ $announcement?->subject }}</h4>
                 <div>
                     <p class="u-t-center">
-                        Date From: May 1 2024
-                        Time From: 8:00am
-                        Time To: 5:00pm
-                        Location: PH
-                        Reason: Labor Day
+                        {{ $announcement?->message }}
                     </p>
                 </div>
             </div>
+            @else
+            <p class="text-center">No announcement for today.</p>
+            @endif 
             @role('admin||hr')
             <div>
                 <div class="today_attendance_btns">

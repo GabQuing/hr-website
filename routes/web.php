@@ -90,7 +90,8 @@ Route::get('/logout', [LoginAuthController::class, 'logout'])->name('logout');
 
 // Dashboard
 Route::get('/dashboard1', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
-Route::post('/dashboard1/announcement', [DashboardController::class, 'createAnnouncement'])->middleware(['auth'])->name('announcement.create');
+Route::post('/dashboard1/announcement/create', [DashboardController::class, 'createAnnouncement'])->middleware(['auth'])->name('announcement.create');
+Route::post('/dashboard1/announcement/update', [DashboardController::class, 'updateAnnouncement'])->middleware(['auth'])->name('announcement.update');
 
 
 //Clock in, Clock Out, Break Start, Break End

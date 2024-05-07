@@ -15,12 +15,18 @@ class DashboardController extends Controller
     {
 
         $user_id = auth()->user()->id;
+        $date = date('Y-m-d');
         $data = [];
         $data['serverDateTime'] = now();
         $data['today_log'] = (new AttendanceSummary())->getByDate(date('Y-m-d'), auth()->user()->id);
         $data['user_logs'] = (new UserLog())
             ->getByUserId($user_id)
             ->get();
+
+        $data['announcement'] = Announcement::whereNull('deleted_at')
+            ->where('start_date', '<=', $date)
+            ->where('end_date', '>=', $date)
+            ->first();
 
 
         return view('dashboard', $data);
@@ -67,6 +73,7 @@ class DashboardController extends Controller
     {
         $user_id = auth()->user()->id;
         $date = date('Y-m-d H:i:s');
+        Announcement::whereNotNull('id')->update(['deleted_at' => $date]);
         $announcement = Announcement::create([
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
@@ -77,7 +84,11 @@ class DashboardController extends Controller
         ]);
 
         return redirect('/dashboard1')->with('success', 'Announcement created successfully.');
+    }
 
-        dd($announcement);
+    public function updateAnnouncement(Request $request)
+    {
+        $announcement = self::createAnnouncement($request);
+        return redirect('/dashboard1')->with('success', 'Announcement updated successfully.');
     }
 }
