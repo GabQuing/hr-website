@@ -14,7 +14,7 @@ textarea {
 <div class="modal-center create-ann-form" style="display:none;">
     <div class="modal-box">
         <div class="modal-content">
-            <form method="POST" action="" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('announcement.create') }}" enctype="multipart/form-data">
                 @csrf
                 <table class="custom_normal_table">
                     <tbody>
@@ -26,23 +26,23 @@ textarea {
                         <tr>
                             <td>
                                 <p>Start Date:</p>
-                                <input class="u-input" name="" type="date" required>
+                                <input class="u-input" name="start_date" type="date" required>
                             </td>
                             <td>
                                 <p>End Date:</p>
-                                <input class="u-input" name="" type="date" required>
+                                <input class="u-input" name="end_date" type="date" required>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="4">
                                 <p>Subject:</p>
-                                <input class="u-input" name="" placeholder="Reminder:" type="text" required>
+                                <input class="u-input" name="subject" placeholder="Reminder:" type="text" required>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="4">
                                 <p>Message:</p>
-                                <textarea class="u-textarea" name="" id="" required></textarea>
+                                <textarea class="u-textarea" name="message" id="" required></textarea>
                             </td>
                         </tr>
                     </tbody>
@@ -230,6 +230,9 @@ textarea {
                         </div>
                     </button>
                 </div>
+                @if (session('success'))
+                    <h5 class="u-fw-b" style="color: green; display:block; margin-top: 15px;">{{ session('success') }}</h5>
+                @endif
             </div>
             @endrole
         </div>

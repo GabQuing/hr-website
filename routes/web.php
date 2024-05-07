@@ -41,10 +41,6 @@ use App\Http\Controllers\EmployeeBenefitController;
 
 
 
-// Gab's Register
-Route::get('/registerInfo', function () {
-    return view('registerInfo');
-});
 Route::post('users/register', [RegisterController::class, 'create'])->name("registerUser");
 
 // Register Face Biometrics
@@ -79,17 +75,6 @@ Route::get('/welcome', function () {
 Route::get('/contact_HR', function () {
     return view('/contact_HR');
 });
-Route::get('/geofencing', function () {
-    return view('/geofencing');
-});
-Route::get('/geolocation', function () {
-    return view('/geolocation');
-});
-
-
-// Register
-// Route::get('/register', [RegisterUserController::class, 'index']);
-// Route::post('/register', [RegisterUserController::class, 'store'])->name('register');
 
 // Login
 Route::get('/login', [LoginAuthController::class, 'index']);
@@ -105,6 +90,7 @@ Route::get('/logout', [LoginAuthController::class, 'logout'])->name('logout');
 
 // Dashboard
 Route::get('/dashboard1', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+Route::post('/dashboard1/announcement', [DashboardController::class, 'createAnnouncement'])->middleware(['auth'])->name('announcement.create');
 
 
 //Clock in, Clock Out, Break Start, Break End

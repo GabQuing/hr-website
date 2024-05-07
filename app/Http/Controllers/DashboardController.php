@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Announcement;
 use App\Models\AttendanceSummary;
 use App\Models\LogType;
 use App\Models\UserLog;
@@ -60,5 +61,23 @@ class DashboardController extends Controller
         $response['log_details'] = $log_details;
         $response['log_today'] = (new AttendanceSummary())->getByDate(date('Y-m-d'), $user_id);
         return $response;
+    }
+
+    public function createAnnouncement(Request $request)
+    {
+        $user_id = auth()->user()->id;
+        $date = date('Y-m-d H:i:s');
+        $announcement = Announcement::create([
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'subject' => $request->subject,
+            'message' => $request->message,
+            'created_by' => $user_id,
+            'created_at' => $date,
+        ]);
+
+        return redirect('/dashboard1')->with('success', 'Announcement created successfully.');
+
+        dd($announcement);
     }
 }
