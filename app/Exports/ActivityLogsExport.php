@@ -12,6 +12,7 @@ use DB;
 
 class ActivityLogsExport implements FromCollection, WithHeadings
 {
+    public $data;
     public function __construct($data)
     {
         $this->data = $data;
@@ -20,7 +21,8 @@ class ActivityLogsExport implements FromCollection, WithHeadings
     public function collection()
     {
         $collection = UserLogView::join('users', 'users.id', '=', 'user_log_view.user_id')
-            ->join('log_types', 'log_types.id', '=', 'user_log_view.log_type_id')            ->where('users.id',auth()->user()->id)
+            ->join('log_types', 'log_types.id', '=', 'user_log_view.log_type_id')
+            ->where('users.id', auth()->user()->id)
             ->whereBetween('log_date', [$this->data['from_date'], $this->data['to_date']])
             ->select(
                 'users.name',
@@ -32,7 +34,7 @@ class ActivityLogsExport implements FromCollection, WithHeadings
             ->orderBy('user_log_view.latest', 'DESC')
             ->get();
 
-        
+
         return $collection;
     }
 
