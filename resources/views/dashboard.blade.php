@@ -207,7 +207,7 @@ textarea {
         </div>
         <div class="u-flex-center-column ">
             @if ($announcement)
-            <div class="u-mt-15 message_container">
+            <div class=" message_container">
                 <h4 id="ann_subject" class="u-fw-500 u-mb-5"><strong>{{ $announcement?->subject }}</strong></h4>
                 <div>
                     <p class="">
@@ -250,7 +250,6 @@ textarea {
             @endrole
         </div>
     </div>
-    
     <div class="container container_today">
         <div class="container_title">
             <p class="header_title_h2">My Activity</p>
