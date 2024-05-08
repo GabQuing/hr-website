@@ -14,7 +14,7 @@ textarea {
 <div class="modal-center create-ann-form" style="display:none;">
     <div class="modal-box">
         <div class="modal-content">
-            <form method="POST" action="{{ route('announcement.create') }}" autocomplete="off" enctype="multipart/form-data" id="announcementForm">
+            <form method="POST" action="{{ route('announcement.create') }}" autocomplete="off" enctype="multipart/form-data" id="announcementCreateForm">
                 @csrf
                 <table class="custom_normal_table">
                     <tbody>
@@ -41,10 +41,10 @@ textarea {
                         </tr>
                         <tr>
                             <td colspan="4">
-                                <div id="editor" class="u-input" name="message" required></div>
+                                <div id="create-editor" class="u-input" name="message" required></div>
                                 
                                 </div>
-                                <input type="hidden" name="message" id="messageInput">
+                                <input type="hidden" name="message" id="messageInputCreate">
                             </td>
                         </tr>
                     </tbody>
@@ -61,7 +61,7 @@ textarea {
 <div class="modal-center edit-ann-form" style="display:none;">
     <div class="modal-box">
         <div class="modal-content">
-            <form method="POST" action="{{ route('announcement.update') }}" autocomplete="off" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('announcement.update') }}" autocomplete="off" enctype="multipart/form-data" id="announcementEditForm">
                 @csrf
                 <table class="custom_normal_table">
                     <tbody>
@@ -88,8 +88,10 @@ textarea {
                         </tr>
                         <tr>
                             <td colspan="4">
-                                <p>Message:</p>
-                                <textarea class="u-textarea" name="message" required>{{ $announcement?->message }}</textarea>
+                                <div id="edit-editor" class="u-input" name="message" required></div>
+                                
+                                </div>
+                                <input type="hidden" name="message" id="messageInputEdit">
                             </td>
                         </tr>
                     </tbody>
@@ -297,15 +299,27 @@ textarea {
                 title: `Your log (${logDetails.log_type}) has been added to your today's log.`,
             });
         }
-        const quill = new Quill('#editor', {
-            theme: 'snow'
-        });
-        $('#announcementForm').submit(function(e) {
+        const createAnnouncementEditor = new Quill('#create-editor', {theme: 'snow'});
+        const editAnnouncementEditor = new Quill('#edit-editor', {theme: 'snow' });
+        const htmlEditString = "{!! $announcement?->message !!}";
+        const delta = editAnnouncementEditor.clipboard.dangerouslyPasteHTML(htmlEditString);
+        $('#announcementCreateForm').submit(function(e) {
             e.preventDefault();
-            // Get the HTML content from the Quill editor
-            const quillContent = $('.ql-editor').html();
-            // Assign the Quill editor content to the hidden input field
-            $('#messageInput').val(quillContent);
+            const quillContent = createAnnouncementEditor.getSemanticHTML();
+            $('#messageInputCreate').val(quillContent);
+            this.submit();
+        });
+
+        $('#announcementEditForm').submit(function(e) {
+            e.preventDefault();
+            const quillContent = editAnnouncementEditor.getSemanticHTML();
+            $('#messageInputEdit').val(quillContent);
+            this.submit();
+        });
+        $('#announcementCreateForm').submit(function(e) {
+            e.preventDefault();
+            const quillContent = createAnnouncementEditor.getSemanticHTML();
+            $('#messageInputCreate').val(quillContent);
             this.submit();
         });
         
