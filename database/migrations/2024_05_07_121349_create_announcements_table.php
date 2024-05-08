@@ -16,7 +16,7 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->string('subject')->nullable();
-            $table->text('message')->nullable();
+            $table->longText('message')->nullable();
             $table->mediumInteger('created_by')->unsigned()->nullable();
             $table->mediumInteger('updated_by')->unsigned()->nullable();
             $table->timestamps();

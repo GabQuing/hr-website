@@ -14,7 +14,7 @@ textarea {
 <div class="modal-center create-ann-form" style="display:none;">
     <div class="modal-box">
         <div class="modal-content">
-            <form method="POST" action="{{ route('announcement.create') }}" autocomplete="off" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('announcement.create') }}" autocomplete="off" enctype="multipart/form-data" id="announcementForm">
                 @csrf
                 <table class="custom_normal_table">
                     <tbody>
@@ -41,8 +41,10 @@ textarea {
                         </tr>
                         <tr>
                             <td colspan="4">
-                                <p>Message:</p>
-                                <textarea class="u-textarea" name="message" id="" required></textarea>
+                                <div id="editor" class="u-input" name="message" required></div>
+                                
+                                </div>
+                                <input type="hidden" name="message" id="messageInput">
                             </td>
                         </tr>
                     </tbody>
@@ -197,11 +199,11 @@ textarea {
         </div>
         <div class="u-flex-center-column u-p-15 u-mt-10 u-gap-5 ">
             @if ($announcement)
-            <div class="u-mt-15 u-flex-center-column">
+            <div class="u-mt-15">
                 <h4 id="ann_subject" class="u-fw-500 u-mb-5"><strong>{{ $announcement?->subject }}</strong></h4>
                 <div>
-                    <p class="u-t-center">
-                        {{ $announcement?->message }}
+                    <p class="">
+                        {!!$announcement?->message !!}
                     </p>
                 </div>
             </div>
@@ -295,7 +297,18 @@ textarea {
                 title: `Your log (${logDetails.log_type}) has been added to your today's log.`,
             });
         }
-
+        const quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+        $('#announcementForm').submit(function(e) {
+            e.preventDefault();
+            // Get the HTML content from the Quill editor
+            const quillContent = $('.ql-editor').html();
+            // Assign the Quill editor content to the hidden input field
+            $('#messageInput').val(quillContent);
+            this.submit();
+        });
+        
         $('#myTable').DataTable({
             responsive: true,
             paging:false,
