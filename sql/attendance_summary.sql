@@ -1,11 +1,14 @@
 SELECT
     user_log_view.`user_id`,
+    user_log_view.`schedule_types_id`,
     user_log_view.`log_date`,
+    DAYNAME(user_log_view.`log_date`) as day_name,
     clock_in.earliest as clock_in,
     break_start.earliest as break_start,
     break_end.latest as break_end,
     clock_out.latest as clock_out
-from user_log_view
+from
+    user_log_view
     left join (
         select *
         from user_log_view
@@ -37,6 +40,7 @@ from user_log_view
 group BY
     user_log_view.`user_id`,
     user_log_view.`log_date`,
+    user_log_view.`schedule_types_id`,
     clock_in.earliest,
     break_start.earliest,
     break_end.latest,
