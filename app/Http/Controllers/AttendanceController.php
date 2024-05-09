@@ -84,6 +84,11 @@ class AttendanceController extends Controller
         $userId = is_array($userId) ? $userId : [$userId];
         return DB::table('attendance_summary')
             ->join('users', 'attendance_summary.user_id', '=', 'users.id')
+            ->leftJoin('work_schedules', function ($join) {
+                $join
+                    ->on('work_schedules.schedule_types_id', '=', 'attendance_summary.schedule_types_id')
+                    ->on('work_schedules.work_day', '=', DB::raw('dayname(attendance_summary.log_date)'));
+            })
             ->select(
                 'users.name',
                 'attendance_summary.log_date',
@@ -91,7 +96,8 @@ class AttendanceController extends Controller
                 'attendance_summary.break_start',
                 'attendance_summary.break_end',
                 'attendance_summary.clock_out',
-                DB::raw('(TIME_TO_SEC(attendance_summary.clock_out) - TIME_TO_SEC(attendance_summary.clock_in)) / 60 / 60 as total_hours')
+                DB::raw('(TIME_TO_SEC(attendance_summary.clock_out) - TIME_TO_SEC(attendance_summary.clock_in)) / 60 / 60 as total_hours'),
+                'work_schedules.rest_day',
             )
 
             ->whereBetween('log_date', [$fromDate, $toDate])
