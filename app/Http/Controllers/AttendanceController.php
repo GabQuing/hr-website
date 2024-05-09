@@ -100,7 +100,8 @@ class AttendanceController extends Controller
                 DB::raw('(TIME_TO_SEC(attendance_summary.clock_out) - TIME_TO_SEC(attendance_summary.clock_in)) / 60 / 60 as total_hours'),
                 'work_schedules.rest_day',
             )
-
+            ->orderBy('users.name')
+            ->orderBy('attendance_summary.log_date')
             ->whereBetween('log_date', [$fromDate, $toDate])
             ->whereIn('user_id', $userId);
     }
