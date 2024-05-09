@@ -10,6 +10,12 @@ textarea {
 .modal-box{
         max-width: 75rem !important;
     }
+.message_container{
+    padding: 20px;
+}
+.message_container img{
+    width: 100%;
+}
 </style>
 <div class="modal-center create-ann-form" style="display:none;">
     <div class="modal-box">
@@ -199,9 +205,9 @@ textarea {
         <div class="container_title">
             <p class="header_title_h2">Announcement</p>
         </div>
-        <div class="u-flex-center-column u-p-15 u-mt-10 u-gap-5 ">
+        <div class="u-flex-center-column ">
             @if ($announcement)
-            <div class="u-mt-15">
+            <div class=" message_container">
                 <h4 id="ann_subject" class="u-fw-500 u-mb-5"><strong>{{ $announcement?->subject }}</strong></h4>
                 <div>
                     <p class="">
@@ -210,11 +216,11 @@ textarea {
                 </div>
             </div>
             @else
-            <p class="text-center">No announcement for today.</p>
+            <p class="text-center u-p-15 u-mt-25">No announcement for today.</p>
             @endif 
             @role('admin||hr')
             <div>
-                <div class="today_attendance_btns" style="display: flex; justify-content: center;">
+                <div class="today_attendance_btns u-p-10" style="display: flex; justify-content: center;">
                     @if ($announcement)
                     <button type="button" class="ann_btn edit-ann">
                         <div class="edit_ann_btn">
@@ -244,7 +250,6 @@ textarea {
             @endrole
         </div>
     </div>
-    
     <div class="container container_today">
         <div class="container_title">
             <p class="header_title_h2">My Activity</p>
@@ -301,7 +306,7 @@ textarea {
         }
         const createAnnouncementEditor = new Quill('#create-editor', {theme: 'snow'});
         const editAnnouncementEditor = new Quill('#edit-editor', {theme: 'snow' });
-        const htmlEditString = "{!! $announcement?->message !!}";
+        const htmlEditString = `{!! $announcement?->message !!}`;
         const delta = editAnnouncementEditor.clipboard.dangerouslyPasteHTML(htmlEditString);
         $('#announcementCreateForm').submit(function(e) {
             e.preventDefault();
