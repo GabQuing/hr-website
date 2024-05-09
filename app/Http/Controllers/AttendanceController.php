@@ -92,6 +92,7 @@ class AttendanceController extends Controller
             ->select(
                 'users.name',
                 'attendance_summary.log_date',
+                'attendance_summary.day_name',
                 'attendance_summary.clock_in',
                 'attendance_summary.break_start',
                 'attendance_summary.break_end',

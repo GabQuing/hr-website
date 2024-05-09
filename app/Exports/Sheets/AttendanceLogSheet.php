@@ -37,6 +37,7 @@ class AttendanceLogSheet implements FromQuery, WithTitle, WithHeadings, WithMapp
 		return [
 			'Employee',
 			'Date',
+			'Day of Week',
 			'Clock In',
 			'Break Start',
 			'Break End',
@@ -51,6 +52,7 @@ class AttendanceLogSheet implements FromQuery, WithTitle, WithHeadings, WithMapp
 		return [
 			$item->name,
 			$item->log_date,
+			$item->day_name,
 			$item->clock_in,
 			$item->break_start,
 			$item->break_end,
