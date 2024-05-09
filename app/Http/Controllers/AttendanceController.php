@@ -111,10 +111,18 @@ class AttendanceController extends Controller
         return DB::table('overtimes')
             ->join('users as requestor', 'overtimes.created_by', '=', 'requestor.id')
             ->leftJoin('users as approver', 'overtimes.approved_by', '=', 'approver.id')
+            ->leftJoin('work_schedules', function ($join) {
+                $join
+                    ->on('work_schedules.schedule_types_id', '=', 'overtimes.schedule_types_id')
+                    ->on('work_schedules.work_day', '=', DB::raw('dayname(overtimes.shift_date)'));
+            })
             ->select(
                 'requestor.name as requestor_name',
                 'approver.name as approver_name',
-                'overtimes.*'
+                'overtimes.*',
+                DB::raw('DAYNAME(overtimes.shift_date) as day_name'),
+                DB::raw('(TIME_TO_SEC(overtimes.time_end) - TIME_TO_SEC(overtimes.time_start)) / 60 / 60 as total_hours'),
+                'work_schedules.rest_day',
             )
             ->where('status', 'APPROVED')
             ->whereBetween('shift_date', [$fromDate, $toDate])
