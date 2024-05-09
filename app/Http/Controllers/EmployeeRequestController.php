@@ -209,6 +209,22 @@ class EmployeeRequestController extends Controller
             $date = $request_item->shift_date;
             $user_id = $request_item->created_by;
             $time_out = $request_item->time_end;
+            $time_start = $request_item->time_start;
+
+            $log_in = UserLog::where([
+                'user_id' => $user_id,
+                'log_type_id' => 1,
+                'log_date' => $date,
+            ]);
+
+            if (!$log_in?->exists()) {
+                UserLog::create([
+                    'user_id' => $user_id,
+                    'log_type_id' => 1,
+                    'schedule_types_id' => $request_item->schedule_types_id,
+                    'log_at' => "$date $time_start",
+                ]);
+            }
 
             $log_out = UserLog::where([
                 'user_id' => $user_id,
