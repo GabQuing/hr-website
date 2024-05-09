@@ -2,13 +2,9 @@
 
 namespace App\Exports;
 
-use App\Models\ActivityLogs;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use App\Models\loginAttendance;
-use App\Models\User;
 use App\Models\UserLogView;
-use DB;
 
 class ActivityLogsExport implements FromCollection, WithHeadings
 {
