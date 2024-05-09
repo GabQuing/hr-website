@@ -139,7 +139,7 @@ textarea {
                     <h5 class="f-weight-4"><strong>Clock in</strong> once per day and then <strong>clock out</strong>.</h5>
                 </div>
                 <div class="today_attendance_btns">
-                    <button type="button" data-action="CLOCK IN" data-column="clock_in" id="clock-in" class="action-button-log clock_in_btn" {{ $today_log?->clock_in || $today_log?->clock_out ? 'disabled' : '' }}>
+                    <button type="button" data-action="CLOCK IN" data-column="clock_in" id="clock-in" class="action-button-log clock_in_btn" {{ $today_log?->clock_in || $today_log?->clock_out || $is_rest_day ? 'disabled' : '' }}>
                         <div class="today_clock_in">
                             <span class="material-symbols-outlined" style="font-size: 25px;">schedule</span>
                             <span>Clock In</span>
