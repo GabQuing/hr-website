@@ -13,7 +13,7 @@
 <div class="modal-center add-ot-form" style="display: none;">
     <div class="modal-box">
         <div class="modal-content">
-            <form method="POST" action="{{ route('submitOT') }}" class="add-ot-form" autocomplete="off" id="addOTForm">
+            <form method="POST" action="{{ route('submitOT') }}" class="add-form" autocomplete="off" id="add-form">
                 @csrf
                 <div style="overflow-x: auto; width: 100%;">
                     <table class="custom_normal_table">
@@ -58,8 +58,8 @@
                                     <select class="u-input" name="ot_classification" required>
                                         <option value="" selected disabled>Select OT classification</option>
                                         <option value="Normal OT">Normal OT</option>
-                                        <option value="Normal OT">Rest Day OT</option>
-                                        <option value="Normal OT">Holiday OT</option>
+                                        <option value="Rest Day OT">Rest Day OT</option>
+                                        <option value="Holiday OT">Holiday OT</option>
                                     </select>
                                 </td> 
                                 <td>
@@ -91,7 +91,7 @@
 <div class="modal-center edit-ot-form" id="edit-ot-form" style="display: none;">
     <div class="modal-box">
         <div class="modal-content">
-            <form method="POST" >
+            <form method="POST" class="edit-form" autocomplete="off" id="edit-form">
                 @csrf
                 <div style="overflow-x: auto; width: 100%;">
                     <table class="custom_normal_table">
@@ -103,20 +103,26 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <p>Day:</p>
-                                    <input class="u-input-border-boottom" type="text" id="edit_day_name" value="" readonly>
+                                    <p>Shift:</p>
+                                    <span>{{ $employee_schedule ?? "No Schedule" }}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Date:</p>
+                                    <input class="u-input-border-boottom shift-date" type="date" name="shift_date" value="" id="shift_date" required>
                                 </td>
                                 <td>
-                                    <p>Shift Date:</p>
-                                    <input class="u-input-border-boottom" type="date" name="shift_date" value="" id="edit_shift_date" readonly>
+                                    <p>Day:</p>
+                                    <input class="u-input-border-boottom day-name" type="text" value="" readonly>
                                 </td>
                                 <td>
                                     <p>Shift From:</p>
-                                    <input class="u-input-border-boottom" name="shift_from" value=""  id="edit_shift_from" type="time" readonly>
+                                    <input class="u-input-border-boottom shift-from" name="shift_from" value="" placeholder="" type="time" readonly>
                                 </td>
                                 <td>
                                     <p>Shift To:</p>
-                                    <input class="u-input-border-boottom" name="shift_to" value=""  id="edit_shift_to"type="time" readonly>
+                                    <input class="u-input-border-boottom shift-to" name="shift_to" value="" placeholder="" type="time" readonly>
                                 </td>
                             </tr>
                             <tr>
@@ -127,21 +133,26 @@
                             <tr>
                                 <td colspan="2">
                                     <p>OT Classification:</p>
-                                    <input class="u-input-border-boottom" name="ot_classification" value="" id="edit_ot_classification" type="text" readonly>
+                                    <select class="u-input ot-classification" name="ot_classification" required>
+                                        <option value="" selected disabled>Select OT classification</option>
+                                        <option value="Normal OT">Normal OT</option>
+                                        <option value="Rest Day OT">Rest Day OT</option>
+                                        <option value="Holiday OT">Holiday OT</option>
+                                    </select>
                                 </td> 
                                 <td>
                                     <p>Start:</p>
-                                    <input class="u-input" name="start_time" value="" id="edit_time_start"  type="time" readonly>
+                                    <input class="u-input start-time" name="start_time" value="" placeholder="" type="time" readonly required>
                                 </td>                           
                                 <td>
                                     <p>End:</p>
-                                    <input class="u-input" name="end_time" type="time" id="edit_time_end" required>
+                                    <input class="u-input end-time" name="end_time" type="time" required>
                                 </td>                           
                             </tr>
                             <tr>
                                 <td colspan="4">
                                     <p>Indicate Ticket Number (If Applicable) and Reason</p>
-                                    <input class="u-input-border-boottom" name="reason" id="edit_reason"type="text" placeholder="Enter Reason" required>
+                                    <input class="u-input-border-boottom ot-reason" name="reason" type="text" placeholder="Enter Reason" required>
                                 </td>                            
                             </tr>
                         </tbody>
@@ -330,6 +341,7 @@
                 form.find('.shift-to').val(workTo);
                 form.find('.day-name').val(dayName);
                 form.find('.start-time').val(startTime);
+                form.find('.end-time').val('');
 
                 if (isRestDay) {
                     form.find('.start-time').attr('readonly', false);
@@ -388,18 +400,24 @@
                     dataType: 'json',
                     type: 'GET',
                     success: function(response) {
+                        const form = $('.edit-form');
                         let submitUrl = "{{ route('my_overtimes.update', 'entryId') }}";
                         submitUrl = submitUrl.replace('entryId', response.id);
-                        $('#edit_shift_date').val(response.shift_date);
-                        $('#edit_day_name').val(response.day_name);
-                        $('#edit_shift_from').val(response.shift_from);
-                        $('#edit_shift_to').val(response.shift_to);
-                        $('#edit_time_start').val(response.time_start);
-                        $('#edit_time_end').val(response.time_end);
-                        $('#edit_ot_classification').val(response.ot_classification);
-                        $('#edit_reason').val(response.reason);
+                        form.find('.shift-date').val(response.shift_date);
+                        form.find('.shift-date').trigger('change');
+                        form.find('.start-time').val(response.time_start);
+                        form.find('.end-time').val(response.time_end);
+                        form.find('.ot-classification').val(response.ot_classification);
+                        form.find('.ot-reason').val(response.reason);
+                        // form.find('#edit_day_name').val(response.day_name);
+                        // form.find('#edit_shift_from').val(response.shift_from);
+                        // form.find('#edit_shift_to').val(response.shift_to);
+                        // form.find('#edit_time_start').val(response.time_start);
+                        // form.find('#edit_time_end').val(response.time_end);
+                        // form.find('#edit_ot_classification').val(response.ot_classification);
+                        // form.find('#edit_reason').val(response.reason);
                         $('.edit-ot-form').show(); 
-                        $('form').attr('action', submitUrl);
+                        form.attr('action', submitUrl);
                         console.log(response);
                     },
                     error: function(error) {

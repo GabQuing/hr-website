@@ -97,10 +97,16 @@ class OvertimesController extends Controller
         $updateOT = Overtime::find($id);
 
         $updateOT->update([
+            'shift_date' => $request->input('shift_date'),
+            'shift_from' => $request->input('shift_from'),
+            'shift_to' => $request->input('shift_to'),
+            'time_start' => $request->input('start_time'),
             'time_end' => $request->input('end_time'),
+            'status' => 'PENDING',
+            'ot_classification' => $request->input('ot_classification'),
             'reason' => $request->input('reason'),
-            'updated_by' => $employee_id,
-            'updated_at' => now(),
+            'created_at' => now(),
+            'created_by' => $employee_id,
         ]);
 
         return redirect()->back()->with('success', 'Overtime Form Has Been Edited!');
