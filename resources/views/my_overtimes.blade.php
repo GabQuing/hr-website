@@ -13,7 +13,7 @@
 <div class="modal-center add-ot-form" style="display: none;">
     <div class="modal-box">
         <div class="modal-content">
-            <form method="POST" action="{{ route('submitOT') }}">
+            <form method="POST" action="{{ route('submitOT') }}" class="add-ot-form" autocomplete="off" id="addOTForm">
                 @csrf
                 <div style="overflow-x: auto; width: 100%;">
                     <table class="custom_normal_table">
@@ -31,20 +31,20 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <p>Day:</p>
-                                    <input class="u-input-border-boottom" type="text" value="{{ $serverCurrentDay }}" readonly>
+                                    <p>Date:</p>
+                                    <input class="u-input-border-boottom shift-date" type="date" name="shift_date" value="" id="shift_date" required>
                                 </td>
                                 <td>
-                                    <p>Shift Date:</p>
-                                    <input class="u-input-border-boottom" type="date" name="shift_date" value="{{ $serverDateTime->format('Y-m-d') }}" id="shift_date" readonly>
+                                    <p>Day:</p>
+                                    <input class="u-input-border-boottom day-name" type="text" value="" readonly>
                                 </td>
                                 <td>
                                     <p>Shift From:</p>
-                                    <input class="u-input-border-boottom" name="shift_from" value="{{ $shift_from }}" placeholder="{{ $shift_from }}" type="time" readonly>
+                                    <input class="u-input-border-boottom shift-from" name="shift_from" value="" placeholder="" type="time" readonly>
                                 </td>
                                 <td>
                                     <p>Shift To:</p>
-                                    <input class="u-input-border-boottom" name="shift_to" value="{{ $shift_to }}" placeholder="{{ $shift_to }}" type="time" readonly>
+                                    <input class="u-input-border-boottom shift-to" name="shift_to" value="" placeholder="" type="time" readonly>
                                 </td>
                             </tr>
                             <tr>
@@ -56,16 +56,19 @@
                                 <td colspan="2">
                                     <p>OT Classification:</p>
                                     <select class="u-input" name="ot_classification" required>
-                                        <option selected value="Normal OT">Normal OT</option>
+                                        <option value="" selected disabled>Select OT classification</option>
+                                        <option value="Normal OT">Normal OT</option>
+                                        <option value="Normal OT">Rest Day OT</option>
+                                        <option value="Normal OT">Holiday OT</option>
                                     </select>
                                 </td> 
                                 <td>
                                     <p>Start:</p>
-                                    <input class="u-input" name="start_time" value="{{ $shift_to }}" placeholder="{{ $shift_to }}" type="time" readonly>
+                                    <input class="u-input start-time" name="start_time" value="" placeholder="" type="time" readonly required>
                                 </td>                           
                                 <td>
                                     <p>End:</p>
-                                    <input class="u-input" name="end_time" type="time" required>
+                                    <input class="u-input end-time" name="end_time" type="time" required>
                                 </td>                           
                             </tr>
                             <tr>
@@ -311,6 +314,31 @@
 
     @section('script_content')
         <script>
+            const userSchedules = {!! json_encode($user_schedules) !!}
+
+            $('.shift-date').on('change', function() {
+                const value = $(this).val();
+                const form = $(this).parents('form');
+                const date = new Date(value);
+                const dayName = date.toLocaleString('en-us', { weekday: 'long' });
+                const sched = userSchedules.find(sched => sched.work_day === dayName);
+                const isRestDay = sched.rest_day;
+                const workFrom = sched.work_from;
+                const workTo = sched.work_to;
+                const startTime = sched.work_to;
+                form.find('.shift-from').val(workFrom);
+                form.find('.shift-to').val(workTo);
+                form.find('.day-name').val(dayName);
+                form.find('.start-time').val(startTime);
+
+                if (isRestDay) {
+                    form.find('.start-time').attr('readonly', false);
+                } else {
+                    form.find('.start-time').attr('readonly', true);
+                }
+            });
+
+
             $('.my_official_business_content').fadeIn('slow');
 
             $('.user_accounts_table').fadeIn('slow');

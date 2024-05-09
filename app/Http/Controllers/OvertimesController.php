@@ -18,6 +18,11 @@ class OvertimesController extends Controller
         $server_datetime_today = now();
         $server_day = $server_datetime_today->format('l');
         $user_sched_id = auth()->user()->schedule_types_id;
+        $user_schedules = WorkSchedule::where('schedule_types_id', $user_sched_id)
+            ->get()
+            ->toArray();
+
+        $data['user_schedules'] = $user_schedules;
 
         $user_sched = schedule_type::where('id', $user_sched_id)
             ->pluck('name')
@@ -58,7 +63,6 @@ class OvertimesController extends Controller
     public function createOT(Request $request)
     {
         $employee_id = auth()->user()->id;
-        $employee_name = auth()->user()->name;
         $user_sched_id = auth()->user()->schedule_types_id;
 
         Overtime::insert([
@@ -73,8 +77,6 @@ class OvertimesController extends Controller
             'reason' => $request->input('reason'),
             'created_at' => now(),
             'created_by' => $employee_id,
-
-
         ]);
 
         return redirect()->back()->with('success', 'Overtime Generated Successfully!');
