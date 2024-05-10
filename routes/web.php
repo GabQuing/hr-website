@@ -242,6 +242,7 @@ Route::post('/schedule_profile_edit', [ScheduleProfileController::class, 'edit']
 
 //Policy & Procedure
 Route::get('/policy_procedure', [PolicyProcedureController::class, 'index'])->name('policy_procedure');
+Route::post('/policy_procedure/payroll-calendar/add', [PolicyProcedureController::class, 'addPayrollCalendar'])->name('policy_procedure.add_payroll_calendar');
 
 
 // SideTopContent

@@ -34,6 +34,48 @@
     }
 </style>
 @section('content')
+    <div>
+        <br>
+        @if (session('success'))
+            <h5 class="u-fw-b" style="color: green; display:block;">{{ session('success') }}</h5>
+        @endif
+    </div>
+    <div class="modal-center" id="payroll-calendar-modal" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-content">
+                <form method="POST" action="{{ route('policy_procedure.add_payroll_calendar') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div style="overflow-x: auto; width: 100%;">
+                        <table class="custom_normal_table">
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <h3 class="f-weight-bold"><i class="fa-solid fa-eye"></i> Update Payroll Calendar</h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Year:</p>
+                                        <input type="number" class="u-input" name="calendar_year">
+                                    </td>
+                                    <td>
+                                        <p>Image File:</p>
+                                        <input type="file" class="u-input" name="image_file" accept=".jpg,.jpeg,.png">
+                                    </td>                            
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="u-flex-space-between u-flex-wrap">
+                        <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" id="ob-btn-close" type="button">Close</button>
+                        <div class="u-flex-space-between">
+                            <button class="ob-btns u-t-white u-fw-b u-btn u-bg-accent u-m-5 u-border-1-default" type="submit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="attendance_summary_content" style="display: none;">
         <div class="profile_info_section">
             <div class="show_profile">
@@ -308,11 +350,18 @@
                 </div>
 
                 <div class="work_information_content show_content1 info_padding">
-                    <div class="pic">
-                        <h5>Schedule of pay cycle for the year of 2024</h5>
+                    <div class="pic" style="display: flex; justify-content: space-between; align-items: center;">
+                        <h5>Schedule of pay cycle for the year of {{ $payroll_calendar?->calendar_year ?: '2024' }}</h5>
+                        @role('hr|admin')
+                        <button type="button" class="u-action-btn u-bg-primary btn-edit edit-payroll-calendar">
+                            <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                edit
+                            </span>
+                        </button>
+                        @endrole
                     </div>
                     <div>
-                        <img src="{{ asset('img/pay_salary_date.png') }}" alt="" style="object-fit: contain; width: 100%;">
+                        <img src="{{ $payroll_calendar?->file_path ?: asset('img/pay_salary_date.png') }}" alt="" style="object-fit: contain; width: 100%;">
                     </div>
                     <div class="pic_input_main_table">
                         <table class="table_schedule" id="normal_schedule_table" >
@@ -905,6 +954,13 @@
     @section('script_content')
         <script>
             $('.attendance_summary_content').fadeIn('slow');
+            $('.btn-close').on('click', function(){
+                $('.modal-center').hide();
+            })
+
+            $('.edit-payroll-calendar').on('click', function() {
+                $('#payroll-calendar-modal').show();
+            });
 
             if ("{{ session('success') }}"){
                     setTimeout(function(){
@@ -962,9 +1018,6 @@
                 });
 
 
-            // function showTable(){
-            //     $('#table_generate').attr('hidden',false);
-            // }
 
 
         </script>
