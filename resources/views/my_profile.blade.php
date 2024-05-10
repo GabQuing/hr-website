@@ -36,6 +36,7 @@
             text-transform: uppercase;
 
         }
+        .my-contract-div,
         .employee-contract-div{
             max-width: 75rem !important;
         }
@@ -101,7 +102,7 @@
                             <tr>
                                 <td>
                                     <p>Employee Name</p>
-                                    <input class="u-input" id="" value="{{$user_info->name}}"  type="text" readonly>
+                                    <input class="u-input" id="" value="{{$user_info->name}}" type="text" disabled>
                                     <input class="u-input" id="" value="{{$user_info->id}}" name="employee_id" type="text" hidden readonly>
                                 </td>
                                 <td>
