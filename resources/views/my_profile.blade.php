@@ -36,11 +36,14 @@
             text-transform: uppercase;
 
         }
+        .employee-contract-div{
+            max-width: 75rem !important;
+        }
 
     </style>
 @endsection
 
-<div class="modal-center" style="display: none">
+<div class="modal-center change-password" style="display: none">
     <div class="modal-box">
         <div class="modal-content">
             <form method="POST" action="{{ route('update_password', auth()->user()->id) }}">
@@ -64,6 +67,8 @@
                                     <p>New Password:</p>
                                     <input class="u-input" name="new_password" type="password" required>
                                 </td>                           
+                            </tr>
+                            <tr>
                                 <td>
                                     <p>Confirm Password:</p>
                                     <input class="u-input" name="confirmation_password" type="password" required>
@@ -73,44 +78,72 @@
                     </table>
                 </div>
                 <div class="u-flex-space-between">
-                    <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default" id="btn-close" type="button">Close</button>
+                    <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default" id="btn-close-password" type="button">Close</button>
                     <button class="u-t-white u-fw-b u-btn u-bg-accent u-m-10 u-border-1-default" id="btn-close" type="submit">Submit</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-{{-- <div id="password_modal" class="modal">
-    <form method="POST" action="{{ route('update_password', auth()->user()->id) }}">
-        @csrf
-
-        <div class="useraccounts_add_header">
-            <p style="color: #006064">Change Password:</p>
+@role('hr|admin')
+    <div class="modal-center employee-contract" style="display: none;">
+        <div class="modal-box employee-contract-div">
+            <div class="modal-content">
+                <form method="POST" action="{{ route('employee_contract_add')}}" enctype="multipart/form-data">
+                    @csrf
+                    <table class="custom_normal_table">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <h3 class="f-weight-bold">Employee Contract</h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Employee Name</p>
+                                    <input class="u-input" id="" value="{{$user_info->name}}"  type="text" readonly>
+                                    <input class="u-input" id="" value="{{$user_info->id}}" name="employee_id" type="text" hidden readonly>
+                                </td>
+                                <td>
+                                    <p>Upload/Edit PDF</p>
+                                    <input class="u-input" id="pdfInput" name="pr_pdf" type="file" accept=".pdf" required>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="u-flex-space-between u-flex-wrap">
+                        <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" id="btn-close-contract" type="button">Close</button>
+                        <button class="u-t-white u-fw-b u-btn u-bg-primary u-m-10 u-border-1-default btn-close" id="modal-btn-submit" type="submit">Submit</button>
+                    </div>
+                    @if($employee_contract)
+                    <div class="u-m-10">
+                        <div class="u-bg-primary u-fw-b u-t-white" style="padding: 20px 10px">
+                            Uploaded Employee Contract
+                        </div>
+                            <embed src="{{ route('show_contract', $employee_contract->file_name) }}" width="100%" height="700px"></embed>
+                    </div>
+                    @endif
+                </form>
+            </div>
         </div>
-        <br>
-        <div>
-            <div class="label_input">
-                <label style="color: #006064"> Current Password: </label>
-                <input type="password" name="current_password" required style="color: #006064">
-            </div>
-            <div class="label_input">
-                <label style="color: #006064"> New Password: </label>
-                <input type="password" name="new_password" required style="color: #006064">
-            </div>
-            <div class="label_input">
-                <label style="color: #006064">Confirm New Password: </label>
-                <input type="password" name="confirmation_password" required style="color: #006064">
-            </div>
-            <div style="text-align:center">
-            <button type="submit" class="addaccount_btn" >Submit</button>
+    </div>
+@endrole
+@role('employee')
+    <div class="modal-center my-contract" style="display: none;">
+        <div class="modal-box  my-contract-div">
+            <div class="modal-content">
+                <br>
+                <div class="u-m-10">
+                    <embed src="" id="pdfShow" width="100%" height="700px"></embed>
+                </div>
+                <div>
+                    <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" id="modal-btn-close" type="button">Close</button>
+                    <button class="ob-btns u-t-white u-fw-b u-btn u-bg-accent u-m-5 u-border-1-default" id="modal-btn-download" type="button">Download</button>
+                </div>
             </div>
         </div>
-    </form>
-</div> --}}
-
-
-
+    </div>
+@endrole
 
 @section('content')
     @role('hr|admin')
@@ -118,6 +151,8 @@
             <label class="my_profile_employee_info" for="">Employee Name: {{ $basic_information->first_name.' '.$basic_information->last_name }}</label>
             <br>
             <label class="my_profile_employee_info" for="">User ID: {{ $basic_information->user_id }}</label>
+            <br>
+            <button class="u-btn u-mt-5 u-bg-default u-t-dark u-border-1-gray u-box-shadow-default update-contract-modal">Employee Contract</button>
         @endif
     @endrole
     {{-- My Profile Content --}}
@@ -125,8 +160,10 @@
         <br>
         @if($show_password)
             <div>
-                <a class="user_info_link open-modal">Change Password</a>
-                {{-- <a class="user_info_link" id="register_face_btn" href="registerFace/{{ auth()->user()->id }}">Register Face-Biometric</a> --}}
+                <a class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default open-modal change-password-modal">Change Password</a>
+                @role('employee')
+                <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default my-contract-btn" file-path="{{ $my_contract->file_path }}" data-contract-name="{{ $my_contract->file_name }}" >View Contract</button>
+                @endrole
             </div>
             <br>
         @endif
@@ -136,6 +173,9 @@
             @endif
             @if (session('success'))
                 <span style="color: green; display:block;">{{ session('success') }}</span>
+            @endif
+            @if (session('successContract'))
+                <span style="color: green; display:block;">{{ session('successContract') }}</span>
             @endif
             @if ($errors->has('new_password'))
                 <span style="color: red; display:block;">{{ $errors->first('new_password') }}</span>
@@ -507,6 +547,10 @@
                                 <label>Bank Routing Number</label>
                                 <input type="text"  value="{{ $government_information->bank_routing_number }}" name="bank_routing_number" readonly>
                             </div>
+                            <div class="pic_input">
+                                <label>Mobile Number</label>
+                                <input type="text" name="mobile_number" value="{{ $basic_information->mobile_number }}" disabled>
+                            </div>
                         </div>
                         @role('hr|admin')
                         @if( Request::segment(count(Request::segments())) == 'show' )
@@ -586,7 +630,7 @@
                         <div class="pic">
                             <div class="pic_input">
                                 <label>Mobile Number</label>
-                                <input type="text"  value="{{ $basic_information->mobile_number }}" name="mobile_number" readonly>
+                                <input type="text"  value="{{ $basic_information->mobile_number }}" name="mobile_number" disabled>
                             </div>
                             {{-- <div class="pic_input">
                                 <label> Local Trunk Line</label>
@@ -766,13 +810,7 @@
     if((user_auth == 'admin' || user_auth == 'hr') && (url_segment != 'profile')){
         $('select').removeAttr('disabled');
         $('input').not('.input_time').removeAttr('readonly');
-        // $('.checkbox_sunday').removeAttr('disabled');
-        // $('.checkbox_monday').removeAttr('disabled');
-        // $('.checkbox_tuesday').removeAttr('disabled');
-        // $('.checkbox_wednesday').removeAttr('disabled');
-        // $('.checkbox_thursday').removeAttr('disabled');
-        // $('.checkbox_friday').removeAttr('disabled');
-        // $('.checkbox_saturday').removeAttr('disabled');
+
     }
     //Change Work Schedule
     $(document).ready(function(){
@@ -784,16 +822,36 @@
         });
     });
 
+
+    $('#pdfInput').on('change', function() {
+        var file = this.files[0];
+        var fileType = file.type;
+        if (fileType !== 'application/pdf') {
+            alert('Please select a PDF file.');
+            $(this).val(''); 
+        }
+    }); 
+
     //Disabled TimeSchedule by Checkbox
 
     $(document).ready(function() {
 
-        $('.open-modal').on('click', function(){
-            $('.modal-center').show();
+        $('.change-password-modal').on('click', function(){
+            $('.change-password').show();
         })
 
-        $('#btn-close').on('click', function(){
-            $('.modal-center').hide();
+        $('#btn-close-password').on('click', function(){
+            $('.change-password').hide();
+        })
+        $('.update-contract-modal').on('click', function(){
+            $('.employee-contract').show();
+        })
+        $('#btn-close-contract').on('click', function(){
+            $('.employee-contract').hide();
+        })
+
+        $('#modal-btn-close').on('click', function(){
+            $('.my-contract').hide();
         })
 
         if($('.checkbox_sunday').val() === '1'){
@@ -882,6 +940,21 @@
 
         }
         });
+    });
+
+
+    $('.my-contract-btn').on('click', function(){
+        const contractName = $(this).data('contract-name');
+        const route = "{{ route('show_contract', ':contractName') }}".replace(':contractName', contractName);
+        $('#modal-btn-download').attr('contract-name', contractName);
+        $('#pdfShow').attr('src', route);
+        $('.my-contract').show();
+    });
+
+    $(document).on('click', '#modal-btn-download', function(){
+        const contractName = $(this).attr('contract-name');
+        const route = `{{ route('employee_contract_download') }}?contract_name=${contractName}`;
+        location.assign(route);
     });
 
     // Update Basic Information

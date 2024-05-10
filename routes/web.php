@@ -217,6 +217,9 @@ Route::get('/employee_informations', [EmployeeInformationsController::class, 'in
 Route::get('/employee_information/{id}/show', [ProfileController::class, 'show'])->name('edit_profile');
 Route::get('/employee_informations/downloadEditProfileTemplate', [EmployeeInformationsController::class, 'downloadEditProfileTemplate'])->name('downloadEditProfileTemplate');
 Route::post('/employee_informations/getSchedule', [ProfileController::class, 'getSchedule'])->name('getSchedule');
+Route::post('/employee_informations/addContract', [ProfileController::class, 'addContract'])->name('employee_contract_add');
+Route::get('/employee_informations/showContract/{file_name}', [ProfileController::class, 'showContract'])->name('show_contract');
+Route::get('/employee_informations/download', [ProfileController::class, 'downloadPDF'])->name('employee_contract_download');
 
 
 
@@ -242,6 +245,7 @@ Route::post('/schedule_profile_edit', [ScheduleProfileController::class, 'edit']
 
 //Policy & Procedure
 Route::get('/policy_procedure', [PolicyProcedureController::class, 'index'])->name('policy_procedure');
+Route::post('/policy_procedure/payroll-calendar/add', [PolicyProcedureController::class, 'addPayrollCalendar'])->name('policy_procedure.add_payroll_calendar');
 
 
 // SideTopContent

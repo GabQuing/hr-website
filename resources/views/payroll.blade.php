@@ -13,15 +13,13 @@
 <div class="modal-center" style="display: none;">
     <div class="modal-box">
         <div class="modal-content">
-            <div >
-                <button class="ob-btns u-t-white u-fw-b u-btn u-bg-accent u-m-5 u-border-1-default" id="modal-btn-download" type="button">Download</button>
-            </div>
             <br>
             <div class="u-m-10">
                 <embed src="" id="pdfShow" width="100%" height="700px"></embed>
             </div>
             <div>
                 <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" id="modal-btn-close" type="button">Close</button>
+                <button class="ob-btns u-t-white u-fw-b u-btn u-bg-accent u-m-5 u-border-1-default" id="modal-btn-download" type="button">Download</button>
             </div>
         </div>
     </div>

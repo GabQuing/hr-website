@@ -6,6 +6,7 @@ use App\Models\Announcement;
 use App\Models\AttendanceSummary;
 use App\Models\LogType;
 use App\Models\UserLog;
+use App\Models\WorkSchedule;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -15,8 +16,15 @@ class DashboardController extends Controller
     {
 
         $user_id = auth()->user()->id;
+        $sched_type = auth()->user()->schedule_types_id;
+        $day_name = date('l');
+        $is_rest_day = WorkSchedule::where('schedule_types_id', $sched_type)
+            ->where('work_day', $day_name)
+            ->first()
+            ->rest_day;
         $date = date('Y-m-d');
         $data = [];
+        $data['is_rest_day'] = $is_rest_day;
         $data['serverDateTime'] = now();
         $data['today_log'] = (new AttendanceSummary())->getByDate(date('Y-m-d'), auth()->user()->id);
         $data['user_logs'] = (new UserLog())
@@ -27,7 +35,6 @@ class DashboardController extends Controller
             ->where('start_date', '<=', $date)
             ->where('end_date', '>', $date)
             ->first();
-
 
         return view('dashboard', $data);
     }

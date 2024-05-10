@@ -348,12 +348,13 @@
                     <thead>
                         <tr>
                             <th>Status</th>
-                            <th>Date Filed</th>
+                            <th>Date Request</th>
                             <th>Day</th>
                             <th>Start</th>
                             <th>End</th>
                             <th>OT Minutes</th>   
-                            <th>Requested By</th>   
+                            <th>Requested By</th>
+                            <th>Date Filed</th>
                             <th>Actions</th>         
                         </tr>
                     </thead>
@@ -368,8 +369,9 @@
                             @endphp
                             <tr>
                                 <td class="{{ $status_class }} u-fw-b">{{ $overtime->status }}</td>
-                                <td>{{ date('M d Y h:i a', strtotime($overtime->created_at)) }}</td>
-                                <td>{{ date('l', strtotime($overtime->shift_date)) }}</td>
+                                <td>{{date('F d Y', strtotime($overtime->shift_date)) }}</td>
+                                <td>{{$overtime->day_name}}</td>
+                                {{-- <td>{{ date('l', strtotime($overtime->shift_date)) }}</td> --}}
                                 <td>{{ date('g:ia', strtotime($overtime->time_start)) }}</td>
                                 <td>{{ date('g:ia', strtotime($overtime->time_end)) }}</td>
                                 <td>
@@ -388,6 +390,7 @@
                                     ?>
                                 </td>
                                 <td>{{ $overtime->name }}</td>
+                                <td>{{ date('M d Y h:i a', strtotime($overtime->created_at)) }}</td>
                                 <td>
                                     @if ($overtime->status == 'PENDING')
                                     <div class="d-flex;">
@@ -405,12 +408,13 @@
                     <tfoot>
                         <tr>
                             <th>Status</th>
-                            <th>Date Filed</th>
+                            <th>Date Request</th>
                             <th>Day</th>
                             <th>Start</th>
                             <th>End</th>
                             <th>OT Minutes</th>   
                             <th>Requested By</th>   
+                            <th>Date Filed</th>
                             <th>Actions</th>    
                         </tr>
                     </tfoot>

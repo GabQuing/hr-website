@@ -33,7 +33,7 @@
                                 <p>Employee Name</p>
                                 <select class="u-input" name="pr_employee_id" id="" disabled>
                                     @foreach ($employees as $employee)
-                                        <option value="{{ $employee->id }}" {{ $payroll->id == $employee->id ? 'selected' : '' }}>{{ $employee->name }}</option>
+                                        <option value="{{ $employee->id }}" {{ $payroll->user_id == $employee->id ? 'selected' : '' }}>{{ $employee->name }}</option>
                                     @endforeach
                                 </select>
                             </td>

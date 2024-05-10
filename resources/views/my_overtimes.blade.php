@@ -13,7 +13,7 @@
 <div class="modal-center add-ot-form" style="display: none;">
     <div class="modal-box">
         <div class="modal-content">
-            <form method="POST" action="{{ route('submitOT') }}">
+            <form method="POST" action="{{ route('submitOT') }}" class="add-form" autocomplete="off" id="add-form">
                 @csrf
                 <div style="overflow-x: auto; width: 100%;">
                     <table class="custom_normal_table">
@@ -31,20 +31,20 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <p>Day:</p>
-                                    <input class="u-input-border-boottom" type="text" value="{{ $serverCurrentDay }}" readonly>
+                                    <p>Date:</p>
+                                    <input class="u-input-border-boottom shift-date" type="date" name="shift_date" value="" max="{{ $server_date }}" id="shift_date" required>
                                 </td>
                                 <td>
-                                    <p>Shift Date:</p>
-                                    <input class="u-input-border-boottom" type="date" name="shift_date" value="{{ $serverDateTime->format('Y-m-d') }}" id="shift_date" readonly>
+                                    <p>Day:</p>
+                                    <input class="u-input-border-boottom day-name" type="text" value="" readonly>
                                 </td>
                                 <td>
                                     <p>Shift From:</p>
-                                    <input class="u-input-border-boottom" name="shift_from" value="{{ $shift_from }}" placeholder="{{ $shift_from }}" type="time" readonly>
+                                    <input class="u-input-border-boottom shift-from" name="shift_from" value="" placeholder="" type="time" readonly>
                                 </td>
                                 <td>
                                     <p>Shift To:</p>
-                                    <input class="u-input-border-boottom" name="shift_to" value="{{ $shift_to }}" placeholder="{{ $shift_to }}" type="time" readonly>
+                                    <input class="u-input-border-boottom shift-to" name="shift_to" value="" placeholder="" type="time" readonly>
                                 </td>
                             </tr>
                             <tr>
@@ -56,16 +56,19 @@
                                 <td colspan="2">
                                     <p>OT Classification:</p>
                                     <select class="u-input" name="ot_classification" required>
-                                        <option selected value="Normal OT">Normal OT</option>
+                                        <option value="" selected disabled>Select OT classification</option>
+                                        <option value="Normal OT">Normal OT</option>
+                                        <option value="Rest Day OT">Rest Day OT</option>
+                                        <option value="Holiday OT">Holiday OT</option>
                                     </select>
                                 </td> 
                                 <td>
                                     <p>Start:</p>
-                                    <input class="u-input" name="start_time" value="{{ $shift_to }}" placeholder="{{ $shift_to }}" type="time" readonly>
+                                    <input class="u-input start-time" name="start_time" value="" placeholder="" type="time" readonly required>
                                 </td>                           
                                 <td>
                                     <p>End:</p>
-                                    <input class="u-input" name="end_time" type="time" required>
+                                    <input class="u-input end-time" name="end_time" type="time" required>
                                 </td>                           
                             </tr>
                             <tr>
@@ -77,9 +80,12 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="warning-note" style="display: none;">
+                    <p class="u-t-danger u-fw-b u-fs-16 u-m-10">Note: Please clock in first today before filing your overtime.</p>
+                </div>
                 <div class="u-flex-space-between">
                     <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default" id="btn-close" type="button">Close</button>
-                    <button class="u-t-white u-fw-b u-btn u-bg-accent u-m-10 u-border-1-default" id="btn-close" type="submit">Submit</button>
+                    <button class="u-t-white u-fw-b u-btn u-bg-accent u-m-10 u-border-1-default submit-btn-ot" id="btn-close" type="submit">Submit</button>
                 </div>
             </form>
         </div>
@@ -88,7 +94,7 @@
 <div class="modal-center edit-ot-form" id="edit-ot-form" style="display: none;">
     <div class="modal-box">
         <div class="modal-content">
-            <form method="POST" >
+            <form method="POST" class="edit-form" autocomplete="off" id="edit-form">
                 @csrf
                 <div style="overflow-x: auto; width: 100%;">
                     <table class="custom_normal_table">
@@ -100,20 +106,26 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <p>Day:</p>
-                                    <input class="u-input-border-boottom" type="text" id="edit_day_name" value="" readonly>
+                                    <p>Shift:</p>
+                                    <span>{{ $employee_schedule ?? "No Schedule" }}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Date:</p>
+                                    <input class="u-input-border-boottom shift-date" type="date" name="shift_date" value="" max="{{ $server_date }}" id="shift_date" required>
                                 </td>
                                 <td>
-                                    <p>Shift Date:</p>
-                                    <input class="u-input-border-boottom" type="date" name="shift_date" value="" id="edit_shift_date" readonly>
+                                    <p>Day:</p>
+                                    <input class="u-input-border-boottom day-name" type="text" value="" readonly>
                                 </td>
                                 <td>
                                     <p>Shift From:</p>
-                                    <input class="u-input-border-boottom" name="shift_from" value=""  id="edit_shift_from" type="time" readonly>
+                                    <input class="u-input-border-boottom shift-from" name="shift_from" value="" placeholder="" type="time" readonly>
                                 </td>
                                 <td>
                                     <p>Shift To:</p>
-                                    <input class="u-input-border-boottom" name="shift_to" value=""  id="edit_shift_to"type="time" readonly>
+                                    <input class="u-input-border-boottom shift-to" name="shift_to" value="" placeholder="" type="time" readonly>
                                 </td>
                             </tr>
                             <tr>
@@ -124,29 +136,37 @@
                             <tr>
                                 <td colspan="2">
                                     <p>OT Classification:</p>
-                                    <input class="u-input-border-boottom" name="ot_classification" value="" id="edit_ot_classification" type="text" readonly>
+                                    <select class="u-input ot-classification" name="ot_classification" required>
+                                        <option value="" selected disabled>Select OT classification</option>
+                                        <option value="Normal OT">Normal OT</option>
+                                        <option value="Rest Day OT">Rest Day OT</option>
+                                        <option value="Holiday OT">Holiday OT</option>
+                                    </select>
                                 </td> 
                                 <td>
                                     <p>Start:</p>
-                                    <input class="u-input" name="start_time" value="" id="edit_time_start"  type="time" readonly>
+                                    <input class="u-input start-time" name="start_time" value="" placeholder="" type="time" readonly required>
                                 </td>                           
                                 <td>
                                     <p>End:</p>
-                                    <input class="u-input" name="end_time" type="time" id="edit_time_end" required>
+                                    <input class="u-input end-time" name="end_time" type="time" required>
                                 </td>                           
                             </tr>
                             <tr>
                                 <td colspan="4">
                                     <p>Indicate Ticket Number (If Applicable) and Reason</p>
-                                    <input class="u-input-border-boottom" name="reason" id="edit_reason"type="text" placeholder="Enter Reason" required>
+                                    <input class="u-input-border-boottom ot-reason" name="reason" type="text" placeholder="Enter Reason" required>
                                 </td>                            
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                <div class="warning-note" style="display: none;">
+                    <p class="u-t-danger u-fw-b u-fs-16 u-m-10">Note: Please clock in first today before filing your overtime.</p>
+                </div>
                 <div class="u-flex-space-between">
                     <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default" id="btn-close-edit" type="button">Close</button>
-                    <button class="u-t-white u-fw-b u-btn u-bg-accent u-m-10 u-border-1-default" id="btn-edit-submit" type="submit">Submit</button>
+                    <button class="u-t-white u-fw-b u-btn u-bg-accent u-m-10 u-border-1-default submit-btn-ot" id="btn-edit-submit" type="submit">Submit</button>
                 </div>
             </form>
         </div>
@@ -308,141 +328,61 @@
     </form>
 </div>
 
-{{-- <div class="my_official_business_content" style="display: none">
-    <div class="my_official_business_main_content u-bg-white">
-        <div class="my_official_business_header">
-            <p class="header_title_h2">My Official Businesses</p>
-        </div>
-        <div class="my_official_businesses u-m-15">
-            <div style="display: flex; flex-wrap: wrap;">
-                <h5 class="my_official_businesses_header my_official_businesses_header_active" id="mob-pending">Pending/Resubmit for editing</h5>
-                <h5 class="my_official_businesses_header" id="mob-approve">Approved</h5>
-                <h5 class="my_official_businesses_header" id="mob-rejected">Rejected/Cancelled</h5>
-            </div>
-            <button  class="u-btn u-bg-accent u-t-white" style="display: block; margin-top: 12px;" id="my_official_business_add" type="button">
-                <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 16px; font-weight: bold;">
-                    add
-                </span>
-                Add OT
-            </button>
-            <div>
-                @if (session('success'))
-                    <br>
-                    <span style="color: green; display:block;">{{ session('success') }}</span>
-                @endif
-            </div>
-        </div>
-        <div class="my_official_business_request_pending u-m-15">
-            <h5 style="font-weight: bold;">My Request - <span class="request-title">Pending</span></h5>
-        </div>
-        <div class="mob-pending-table u-m-15" style="overflow-x: auto; border-radifus: 0.5rem;">
-            <table class="u-responsive-table">
-                <thead>
-                    <tr class="f-weight-bold">
-                        <td><h6 class="f-weight-bold">Status</h6></td>
-                        <td><h6 class="f-weight-bold">Date Filed</h6></td>
-                        <td><h6 class="f-weight-bold">Shift From</h6></td>
-                        <td><h6 class="f-weight-bold">Shift To</h6></td>
-                        <td><h6 class="f-weight-bold">Time Start</h6></td>
-                        <td><h6 class="f-weight-bold">Time End</h6></td>
-                        <td><h6 class="f-weight-bold">Purpose</h6></td>
-                        <td><h6 class="f-weight-bold">Actions</h6></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($pending_logs as $pending_log)
-                        <tr>
-                            <td><h6>{{ $pending_log->status }}</h6></td>
-                            <td><h6>{{ $pending_log->shift_date }}</h6></td>
-                            <td><h6>{{ $pending_log->shift_from }}</h6></td>
-                            <td><h6>{{ $pending_log->shift_to }}</h6></td>
-                            <td><h6>{{ $pending_log->time_start }}</h6></td>
-                            <td><h6>{{ $pending_log->time_end }}</h6></td>
-                            <td><h6>{{ $pending_log->reason }}</h6></td>
-                            <td>
-                                <div class="d-flex;">
-                                    <button type="button" class="u-action-btn u-bg-primary btn-edit" data-entry-id="{{ $pending_log->id }}" data-href="{{ route('editOT', $pending_log->id) }}">
-                                        <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
-                                            edit
-                                        </span>
-                                    </button>
-                                    <button type="button" class="u-action-btn u-bg-danger btn-cancel" data-entry-id="{{ $pending_log->id }}" data-href="{{ route('deleteOT', $pending_log->id) }}" >
-                                        <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
-                                            delete
-                                        </span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        <div class="mob-approve-table u-m-15" style="overflow-x: auto; border-radius: 0.5rem;">
-            <table class="u-responsive-table">
-                <thead>
-                    <tr class="f-weight-bold">
-                        <td><h6 class="f-weight-bold">Status</h6></td>
-                        <td><h6 class="f-weight-bold">Date Filed</h6></td>
-                        <td><h6 class="f-weight-bold">Shift From</h6></td>
-                        <td><h6 class="f-weight-bold">Shift To</h6></td>
-                        <td><h6 class="f-weight-bold">Time Start</h6></td>
-                        <td><h6 class="f-weight-bold">Time End</h6></td>
-                        <td><h6 class="f-weight-bold">Purpose</h6></td>
-                        <td><h6 class="f-weight-bold">Date Approved</h6></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($approved_logs as $approved_log)
-                        <tr>
-                            <td><h6>{{ $approved_log->status }}</h6></td>
-                            <td><h6>{{ $approved_log->shift_date }}</h6></td>
-                            <td><h6>{{ $approved_log->shift_from }}</h6></td>
-                            <td><h6>{{ $approved_log->shift_to }}</h6></td>
-                            <td><h6>{{ $approved_log->time_start }}</h6></td>
-                            <td><h6>{{ $approved_log->time_end }}</h6></td>
-                            <td><h6>{{ $approved_log->reason }}</h6></td>
-                            <td><h6>{{ $approved_log->approved_at }}</h6></td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        <div class="mob-rejected-table u-m-15" style="overflow-x: auto; border-radius: 0.5rem;">
-            <table class="u-responsive-table">
-                <thead>
-                    <tr class="f-weight-bold">
-                        <td><h6 class="f-weight-bold">Status</h6></td>
-                        <td><h6 class="f-weight-bold">Date Filed</h6></td>
-                        <td><h6 class="f-weight-bold">Shift From</h6></td>
-                        <td><h6 class="f-weight-bold">Shift To</h6></td>
-                        <td><h6 class="f-weight-bold">Time Start</h6></td>
-                        <td><h6 class="f-weight-bold">Time End</h6></td>
-                        <td><h6 class="f-weight-bold">Purpose</h6></td>
-                        <td><h6 class="f-weight-bold">Date Rejected/Cancelled</h6></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($rejected_canceled_logs as $rejected_canceled_log)
-                    <tr>
-                        <td><h6>{{ $rejected_canceled_log->status }}</h6></td>
-                        <td><h6>{{ $rejected_canceled_log->shift_date }}</h6></td>
-                        <td><h6>{{ $rejected_canceled_log->shift_from }}</h6></td>
-                        <td><h6>{{ $rejected_canceled_log->shift_to }}</h6></td>
-                        <td><h6>{{ $rejected_canceled_log->time_start }}</h6></td>
-                        <td><h6>{{ $rejected_canceled_log->time_end }}</h6></td>
-                        <td><h6>{{ $rejected_canceled_log->reason }}</h6></td>
-                        <td><h6>{{ $rejected_canceled_log->rejected_at ?? $rejected_canceled_log->cancelled_at }}</h6></td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div> --}}
 
     @section('script_content')
         <script>
+            const userSchedules = {!! json_encode($user_schedules) !!}
+
+            $('.shift-date').on('change', function() {
+                const value = $(this).val();
+                const form = $(this).parents('form');
+                const date = new Date(value);
+                const dayName = date.toLocaleString('en-us', { weekday: 'long' });
+                const sched = userSchedules.find(sched => sched.work_day === dayName);
+                const isRestDay = sched.rest_day;
+                const workFrom = sched.work_from;
+                const workTo = sched.work_to;
+                const startTime = sched.work_to;
+                form.find('.shift-from').val(workFrom);
+                form.find('.shift-to').val(workTo);
+                form.find('.day-name').val(dayName);
+                form.find('.start-time').val(startTime);
+                form.find('.end-time').val('');
+
+                const serverDate = "{{ $server_date }}";
+                const hasClockInToday = "{{ $has_clock_in_today }}" == '1';
+                const dateValue = form.find('.shift-date').val();
+                if (dateValue === serverDate && !hasClockInToday) {
+                    form.find('.warning-note').show();
+                    form.find('.submit-btn-ot').attr('disabled', true);
+                    form.find('.submit-btn-ot').css('opacity', '0.7');
+                } else {
+                    form.find('.warning-note').hide();
+                    form.find('.submit-btn-ot').attr('disabled', false);
+                    form.find('.submit-btn-ot').css('opacity', '1');
+                }
+
+                if (isRestDay) {
+                    form.find('.start-time').attr('readonly', false);
+                } else {
+                    form.find('.start-time').attr('readonly', true);
+                }
+            });
+
+            // $('.add-form, .edit-form').on('submit', function(e) {
+            //     e.preventDefault();
+            //     const serverDate = "{{ $server_date }}";
+            //     const hasClockInToday = "{{ $has_clock_in_today }}" == '1';
+            //     const dateValue = $(this).find('.shift-date').val();
+            //     if (dateValue === serverDate && !hasClockInToday) {
+            //         $(this).find('.warning-note').show();
+            //         return false;
+            //     }
+            //     $(this).find('.warning-note').hide();
+            //     this.submit();
+            // });
+
+
             $('.my_official_business_content').fadeIn('slow');
 
             $('.user_accounts_table').fadeIn('slow');
@@ -492,18 +432,24 @@
                     dataType: 'json',
                     type: 'GET',
                     success: function(response) {
+                        const form = $('.edit-form');
                         let submitUrl = "{{ route('my_overtimes.update', 'entryId') }}";
                         submitUrl = submitUrl.replace('entryId', response.id);
-                        $('#edit_shift_date').val(response.shift_date);
-                        $('#edit_day_name').val(response.day_name);
-                        $('#edit_shift_from').val(response.shift_from);
-                        $('#edit_shift_to').val(response.shift_to);
-                        $('#edit_time_start').val(response.time_start);
-                        $('#edit_time_end').val(response.time_end);
-                        $('#edit_ot_classification').val(response.ot_classification);
-                        $('#edit_reason').val(response.reason);
+                        form.find('.shift-date').val(response.shift_date);
+                        form.find('.shift-date').trigger('change');
+                        form.find('.start-time').val(response.time_start);
+                        form.find('.end-time').val(response.time_end);
+                        form.find('.ot-classification').val(response.ot_classification);
+                        form.find('.ot-reason').val(response.reason);
+                        // form.find('#edit_day_name').val(response.day_name);
+                        // form.find('#edit_shift_from').val(response.shift_from);
+                        // form.find('#edit_shift_to').val(response.shift_to);
+                        // form.find('#edit_time_start').val(response.time_start);
+                        // form.find('#edit_time_end').val(response.time_end);
+                        // form.find('#edit_ot_classification').val(response.ot_classification);
+                        // form.find('#edit_reason').val(response.reason);
                         $('.edit-ot-form').show(); 
-                        $('form').attr('action', submitUrl);
+                        form.attr('action', submitUrl);
                         console.log(response);
                     },
                     error: function(error) {

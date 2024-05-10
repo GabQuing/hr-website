@@ -28,10 +28,14 @@ class OvertimeSheet implements FromQuery, WithTitle, WithHeadings, WithMapping
 	{
 		return [
 			$item->requestor_name,
+			$item->ot_classification,
 			$item->shift_date,
+			$item->day_name,
 			$item->time_start,
 			$item->time_end,
+			$item->total_hours,
 			$item->reason,
+			$item->rest_day ? 'Yes' : 'No',
 			$item->approver_name,
 			$item->approved_at,
 		];
@@ -49,10 +53,14 @@ class OvertimeSheet implements FromQuery, WithTitle, WithHeadings, WithMapping
 	{
 		return [
 			'Requested By',
+			'OT Classification',
 			'Date',
+			'Day of Week',
 			'Start Time',
 			'End Time',
+			'Total Hours',
 			'Reason',
+			'Is Rest Day',
 			'Approved By',
 			'Approved At',
 		];

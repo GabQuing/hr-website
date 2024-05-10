@@ -13,7 +13,6 @@ use App\Models\User;
 use App\Models\company;
 use App\Models\department;
 use App\Models\employee_type;
-use App\Models\immediate_supervisor;
 use App\Models\employment_status;
 use App\Models\user_type;
 use App\Models\work_information;
@@ -22,9 +21,9 @@ use App\Models\schedule_type;
 use App\Models\work_hours;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-
+use App\Models\EmployeeContract;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -34,6 +33,7 @@ class ProfileController extends Controller
         $data = [];
         $data['work_days'] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         $data['genders'] = Gender::get();
+        $data['user_info'] = User::where('id',auth()->user()->id)->first();
         $data['civil_status'] = CivilStatus::get();
         $data['companies'] = company::get();
         $data['departments'] = department::get();
@@ -54,8 +54,20 @@ class ProfileController extends Controller
             ->leftJoin('work_schedules', 'work_schedules.schedule_types_id', 'schedule_types.id')
             ->get()
             ->toArray();
+        $data['my_contract'] = EmployeeContract::leftJoin('users as head', 'head.id', 'employee_contracts.created_by')
+            ->select(
+                'employee_contracts.*',
+                'head.name as created_by_head'
+            )
+            ->where('user_id', auth()->user()->id)
+            ->whereNull('employee_contracts.deleted_at')
+            ->first();
+
+
         $data['user_id'] = auth()->user()->id;
         $data['show_password'] = true;
+        $data['employee_contract'] = false; 
+
 
 
         return view('my_profile', $data);
@@ -63,6 +75,7 @@ class ProfileController extends Controller
 
     public function show(string $id)
     {
+        // dd('test');
         $data = [];
         $data['work_days'] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         $data['user_info'] = User::find($id);
@@ -88,7 +101,7 @@ class ProfileController extends Controller
             ->get()
             ->toArray();
         $data['user_id'] = $id;
-
+        $data['employee_contract'] = EmployeeContract::where('user_id',$id)->first(); 
         $data['show_password'] = false;
 
         return view('my_profile', $data);
@@ -258,4 +271,38 @@ class ProfileController extends Controller
             return redirect()->back()->with('error', 'Incorrect Current Password.');
         }
     }
+
+    public function addContract(Request $request){
+        $return_input = $request->all();
+        $employee_id = $return_input['employee_id'];
+        $file = $return_input['pr_pdf'];
+        $file_name = "$employee_id." . $file->getClientOriginalExtension();
+        $file->storeAs('employee-contract', $file_name);
+
+        EmployeeContract::updateOrInsert(['user_id' => $employee_id],[
+            'user_id' => $employee_id,
+            'file_name' => $file_name,
+            'file_path' => storage_path('app/employee-contract') . "/$file_name",
+            'created_by' => auth()->user()->id,
+            'created_at' => now(),
+        ]);
+        return redirect()->back()->with('successContract', 'Contract successfully added.');
+    }
+
+    public function showContract($file_name){
+        $fileContents = Storage::get("employee-contract/$file_name");
+
+        return Response::make($fileContents, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $file_name . '"'
+        ]);
+    }
+
+    public function downloadPDF(Request $request)
+    {
+        $path = storage_path("app/employee-contract/$request->contract_name");
+        // dd($path);
+        return Response::download($path);
+    }
+
 }
