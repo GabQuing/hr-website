@@ -163,7 +163,9 @@
             <div>
                 <a class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default open-modal change-password-modal">Change Password</a>
                 @role('employee')
+                @if($my_contract)
                 <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default my-contract-btn" file-path="{{ $my_contract->file_path }}" data-contract-name="{{ $my_contract->file_name }}" >View Contract</button>
+                @endif
                 @endrole
             </div>
             <br>
