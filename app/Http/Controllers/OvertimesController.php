@@ -5,18 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\schedule_type;
 use App\Models\Overtime;
+use App\Models\UserLog;
 use App\Models\WorkSchedule;
-use Carbon\Carbon;
 
 class OvertimesController extends Controller
 {
 
-    public function index(Request $request)
+    public function index()
     {
         $data = [];
         $user_id = auth()->user()->id;
         $server_datetime_today = now();
         $server_day = $server_datetime_today->format('l');
+        $server_date = date('Y-m-d');
         $user_sched_id = auth()->user()->schedule_types_id;
         $user_schedules = WorkSchedule::where('schedule_types_id', $user_sched_id)
             ->get()
@@ -50,11 +51,16 @@ class OvertimesController extends Controller
             ->whereIn('status', ['REJECTED', 'CANCELED'])
             ->orderBy('created_at', 'desc')
             ->get();
+        $data['has_clock_in_today'] = UserLog::where('log_date', $server_date)
+            ->where('log_type_id', 1)
+            ->where('user_id', $user_id)
+            ->exists();
 
         $data['shift_from'] = $user_shift_from;
         $data['shift_to'] = $user_shift_to;
         $data['serverCurrentDay'] = $server_day;
         $data['serverDateTime'] = $server_datetime_today;
+        $data['server_date'] = $server_date;
         $data['employee_schedule'] = $user_sched;
 
         return view('my_overtimes', $data);

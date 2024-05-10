@@ -32,7 +32,7 @@
                             <tr>
                                 <td>
                                     <p>Date:</p>
-                                    <input class="u-input-border-boottom shift-date" type="date" name="shift_date" value="" id="shift_date" required>
+                                    <input class="u-input-border-boottom shift-date" type="date" name="shift_date" value="" max="{{ $server_date }}" id="shift_date" required>
                                 </td>
                                 <td>
                                     <p>Day:</p>
@@ -80,9 +80,12 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="warning-note" style="display: none;">
+                    <p class="u-t-danger u-fw-b u-fs-16 u-m-10">Note: Please clock in first today before filing your overtime.</p>
+                </div>
                 <div class="u-flex-space-between">
                     <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default" id="btn-close" type="button">Close</button>
-                    <button class="u-t-white u-fw-b u-btn u-bg-accent u-m-10 u-border-1-default" id="btn-close" type="submit">Submit</button>
+                    <button class="u-t-white u-fw-b u-btn u-bg-accent u-m-10 u-border-1-default submit-btn-ot" id="btn-close" type="submit">Submit</button>
                 </div>
             </form>
         </div>
@@ -110,7 +113,7 @@
                             <tr>
                                 <td>
                                     <p>Date:</p>
-                                    <input class="u-input-border-boottom shift-date" type="date" name="shift_date" value="" id="shift_date" required>
+                                    <input class="u-input-border-boottom shift-date" type="date" name="shift_date" value="" max="{{ $server_date }}" id="shift_date" required>
                                 </td>
                                 <td>
                                     <p>Day:</p>
@@ -158,9 +161,12 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="warning-note" style="display: none;">
+                    <p class="u-t-danger u-fw-b u-fs-16 u-m-10">Note: Please clock in first today before filing your overtime.</p>
+                </div>
                 <div class="u-flex-space-between">
                     <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default" id="btn-close-edit" type="button">Close</button>
-                    <button class="u-t-white u-fw-b u-btn u-bg-accent u-m-10 u-border-1-default" id="btn-edit-submit" type="submit">Submit</button>
+                    <button class="u-t-white u-fw-b u-btn u-bg-accent u-m-10 u-border-1-default submit-btn-ot" id="btn-edit-submit" type="submit">Submit</button>
                 </div>
             </form>
         </div>
@@ -343,12 +349,38 @@
                 form.find('.start-time').val(startTime);
                 form.find('.end-time').val('');
 
+                const serverDate = "{{ $server_date }}";
+                const hasClockInToday = "{{ $has_clock_in_today }}" == '1';
+                const dateValue = form.find('.shift-date').val();
+                if (dateValue === serverDate && !hasClockInToday) {
+                    form.find('.warning-note').show();
+                    form.find('.submit-btn-ot').attr('disabled', true);
+                    form.find('.submit-btn-ot').css('opacity', '0.7');
+                } else {
+                    form.find('.warning-note').hide();
+                    form.find('.submit-btn-ot').attr('disabled', false);
+                    form.find('.submit-btn-ot').css('opacity', '1');
+                }
+
                 if (isRestDay) {
                     form.find('.start-time').attr('readonly', false);
                 } else {
                     form.find('.start-time').attr('readonly', true);
                 }
             });
+
+            // $('.add-form, .edit-form').on('submit', function(e) {
+            //     e.preventDefault();
+            //     const serverDate = "{{ $server_date }}";
+            //     const hasClockInToday = "{{ $has_clock_in_today }}" == '1';
+            //     const dateValue = $(this).find('.shift-date').val();
+            //     if (dateValue === serverDate && !hasClockInToday) {
+            //         $(this).find('.warning-note').show();
+            //         return false;
+            //     }
+            //     $(this).find('.warning-note').hide();
+            //     this.submit();
+            // });
 
 
             $('.my_official_business_content').fadeIn('slow');
