@@ -56,11 +56,11 @@
                                 <tr>
                                     <td>
                                         <p>Year:</p>
-                                        <input type="number" class="u-input" name="calendar_year">
+                                        <input type="number" class="u-input" name="calendar_year" required>
                                     </td>
                                     <td>
                                         <p>Image File:</p>
-                                        <input type="file" class="u-input" name="image_file" accept=".jpg,.jpeg,.png">
+                                        <input type="file" class="u-input" name="image_file" accept=".jpg,.jpeg,.png" required>
                                     </td>                            
                                 </tr>
                             </tbody>
@@ -962,11 +962,7 @@
                 $('#payroll-calendar-modal').show();
             });
 
-            if ("{{ session('success') }}"){
-                    setTimeout(function(){
-                        window.location.href = "{{ route('logout') }}"
-                    }, 2000);
-                }
+
                 $('.info_header').click(function(){
                     $('.show_content').slideToggle('fast');
                 })
