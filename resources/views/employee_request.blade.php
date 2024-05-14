@@ -301,6 +301,7 @@
                                     else if ($official_business->status == 'APPROVED') $status_class = 'u-t-success';
                                     else if ($official_business->status == 'REJECTED') $status_class = 'u-t-danger';
                                     else if ($official_business->status == 'CANCELLED') $status_class = 'u-t-danger';
+                                    else if ($official_business->status == 'CANCELED') $status_class = 'u-t-danger';
                                 @endphp
                                 <tr>
                                     <td class="{{ $status_class }} u-fw-b">{{ $official_business->status }}</td>
@@ -366,6 +367,8 @@
                                 else if ($overtime->status == 'APPROVED') $status_class = 'u-t-success';
                                 else if ($overtime->status == 'REJECTED') $status_class = 'u-t-danger';
                                 else if ($overtime->status == 'CANCELLED') $status_class = 'u-t-danger';
+                                else if ($overtime->status == 'CANCELED') $status_class = 'u-t-danger';
+
                             @endphp
                             <tr>
                                 <td class="{{ $status_class }} u-fw-b">{{ $overtime->status }}</td>
@@ -445,6 +448,7 @@
                             else if ($leave->status == 'APPROVED') $status_class = 'u-t-success';
                             else if ($leave->status == 'REJECTED') $status_class = 'u-t-danger';
                             else if ($leave->status == 'CANCELLED') $status_class = 'u-t-danger';
+                            else if ($leave->status == 'CANCELED') $status_class = 'u-t-danger';
                         @endphp
                             <tr>
                                 <td class="{{ $status_class }} u-fw-b">{{ $leave->status }}</td>
