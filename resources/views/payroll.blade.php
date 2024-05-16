@@ -45,7 +45,7 @@
                     <td>{{ $payroll->created_at }}</td>
                     <td>
                         <div class="d-flex;">
-                            <button file-path="{{ $payroll->file_path }}" class="material-symbols-outlined u-action-btn u-bg-primary" id="payroll-view" data-payroll-name="{{ $payroll->file_name }}" style="vertical-align: bottom; font-size: 20px; font-weight: bold; color: white; text-decoration: none;">
+                            <button file-path="{{ $payroll->file_path }}" class="material-symbols-outlined u-action-btn u-bg-primary payroll-view" id="payroll-view" data-payroll-name="{{ $payroll->file_name }}" style="vertical-align: bottom; font-size: 20px; font-weight: bold; color: white; text-decoration: none;">
                                 visibility
                             </a>
                         </div>
@@ -75,7 +75,7 @@
         responsive: true
     });
 
-    $('#payroll-view').on('click', function(){
+    $('.payroll-view').on('click', function(){
         const payrollName = $(this).data('payroll-name');
         const route = "{{ route('showPDF', ':payrollName') }}".replace(':payrollName', payrollName);
         $('#modal-btn-download').attr('payroll-name', payrollName);
