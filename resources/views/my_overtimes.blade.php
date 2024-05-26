@@ -352,7 +352,7 @@
                 const serverDate = "{{ $server_date }}";
                 const hasClockInToday = "{{ $has_clock_in_today }}" == '1';
                 const dateValue = form.find('.shift-date').val();
-                if (dateValue === serverDate && !hasClockInToday) {
+                if (dateValue === serverDate && !hasClockInToday && !isRestDay) {
                     form.find('.warning-note').show();
                     form.find('.submit-btn-ot').attr('disabled', true);
                     form.find('.submit-btn-ot').css('opacity', '0.7');

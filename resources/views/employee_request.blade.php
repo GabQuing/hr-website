@@ -127,8 +127,9 @@
                                         <td colspan="2">
                                             <p>OT Classification:</p>
                                             <select class="u-input" name="ot_classification" disabled>
-                                                <option value="">Normal OT</option>
-                                                <option value="">Early OT</option>
+                                                <option value="Normal OT">Normal OT</option>
+                                                <option value="Rest Day OT">Rest Day OT</option>
+                                                <option value="Holiday OT">Holiday OT</option>
                                             </select>
                                         </td> 
                                         <td>
@@ -597,6 +598,7 @@
                     $('input[name="ot_time_from"]').val(response.time_start);
                     $('input[name="ot_time_to"]').val(response.time_end);
                     $('input[name="ot_reason"]').val(response.reason);
+                    $('select[name="ot_classification"]').val(response.ot_classification);
                 },
                 error: function(error){
                     console.log(error)
