@@ -36,6 +36,7 @@
             text-transform: uppercase;
 
         }
+        .my-contract-div,
         .employee-contract-div{
             max-width: 75rem !important;
         }
@@ -101,7 +102,7 @@
                             <tr>
                                 <td>
                                     <p>Employee Name</p>
-                                    <input class="u-input" id="" value="{{$user_info->name}}"  type="text" readonly>
+                                    <input class="u-input" id="" value="{{$user_info->name}}" type="text" disabled>
                                     <input class="u-input" id="" value="{{$user_info->id}}" name="employee_id" type="text" hidden readonly>
                                 </td>
                                 <td>
@@ -162,7 +163,9 @@
             <div>
                 <a class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default open-modal change-password-modal">Change Password</a>
                 @role('employee')
+                @if($my_contract)
                 <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default my-contract-btn" file-path="{{ $my_contract->file_path }}" data-contract-name="{{ $my_contract->file_name }}" >View Contract</button>
+                @endif
                 @endrole
             </div>
             <br>
