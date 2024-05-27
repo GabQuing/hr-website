@@ -241,8 +241,8 @@
                         <tr>
                             <td><h5>{{ $pending_log->status }}</h5></td>
                             <td><h5>{{ date('F d Y', strtotime($pending_log->shift_date))}}</h5></td>
-                            <td><h5>{{ date('g:ia', strtotime($pending_log->shift_from))}}</h5></td>
-                            <td><h5>{{ date('g:ia', strtotime($pending_log->shift_to)) }}</h5></td>
+                            <td><h5>{{ $pending_log->shift_from ? date('g:ia', strtotime($pending_log->shift_from)) : ''}}</h5></td>
+                            <td><h5>{{ $pending_log->shift_to ? date('g:ia', strtotime($pending_log->shift_to)) : ''}}</h5></td>
                             <td><h5>{{ date('g:ia', strtotime($pending_log->time_start)) }}</h5></td>
                             <td><h5>{{ date('g:ia', strtotime($pending_log->time_end)) }}</h5></td>
                             <td><h5>{{ $pending_log->reason }}</h5></td>
@@ -284,8 +284,8 @@
                         <tr>
                             <td><h5>{{ $approved_log->status }}</h5></td>
                             <td><h5>{{ date('F d Y', strtotime($approved_log->shift_date)) }}</h5></td>
-                            <td><h5>{{ date('g:ia', strtotime($approved_log->shift_from)) }}</h5></td>
-                            <td><h5>{{ date('g:ia', strtotime($approved_log->shift_to)) }}</h5></td>
+                            <td><h5>{{ $approved_log->shift_from ? date('g:ia', strtotime($approved_log->shift_from)) : ''}}</h5></td>
+                            <td><h5>{{ $approved_log->shift_to ? date('g:ia', strtotime($approved_log->shift_to)) : ''}}</h5></td>
                             <td><h5>{{ date('g:ia', strtotime($approved_log->time_start)) }}</h5></td>
                             <td><h5>{{ date('g:ia', strtotime($approved_log->time_end))}}</h5></td>
                             <td><h5>{{ $approved_log->reason }}</h5></td>
@@ -314,8 +314,8 @@
                     <tr>
                         <td><h5>{{ $rejected_canceled_log->status }}</h5></td>
                         <td><h5>{{ date('F d Y', strtotime($rejected_canceled_log->shift_date)) }}</h5></td>
-                        <td><h5>{{ date('g:ia', strtotime($rejected_canceled_log->shift_from)) }}</h5></td>
-                        <td><h5>{{ date('g:ia', strtotime($rejected_canceled_log->shift_to)) }}</h5></td>
+                        <td><h5>{{ $rejected_canceled_log->shift_from ? date('g:ia', strtotime($rejected_canceled_log->shift_from)) : ''}}</h5></td>
+                        <td><h5>{{ $rejected_canceled_log->shift_to ? date('g:ia', strtotime($rejected_canceled_log->shift_to)) : ''}}</h5></td>
                         <td><h5>{{ date('g:ia', strtotime($rejected_canceled_log->time_start)) }}</h5></td>
                         <td><h5>{{ date('g:ia', strtotime($rejected_canceled_log->time_end))}}</h5></td>
                         <td><h5>{{ $rejected_canceled_log->reason }}</h5></td>
