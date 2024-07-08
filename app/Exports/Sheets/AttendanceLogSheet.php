@@ -43,6 +43,7 @@ class AttendanceLogSheet implements FromQuery, WithTitle, WithHeadings, WithMapp
 			'Break End',
 			'Clock Out',
 			'Total Hours',
+			'Break Minutes',
 			'Is Rest Day'
 		];
 	}
@@ -58,6 +59,7 @@ class AttendanceLogSheet implements FromQuery, WithTitle, WithHeadings, WithMapp
 			$item->break_end,
 			$item->clock_out,
 			$item->total_hours,
+			$item->break_minutes,
 			$item->rest_day ? 'Yes' : 'No',
 		];
 	}

@@ -98,6 +98,7 @@ class AttendanceController extends Controller
                 'attendance_summary.break_end',
                 'attendance_summary.clock_out',
                 DB::raw('(TIME_TO_SEC(attendance_summary.clock_out) - TIME_TO_SEC(attendance_summary.clock_in)) / 60 / 60 as total_hours'),
+                DB::raw('(TIME_TO_SEC(attendance_summary.break_end) - TIME_TO_SEC(attendance_summary.break_start)) / 60 as break_minutes'),
                 'work_schedules.rest_day',
             )
             ->orderBy('users.name')
