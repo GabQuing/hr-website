@@ -5,16 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Announcement;
 use App\Models\AttendanceSummary;
 use App\Models\LogType;
+use App\Models\User;
 use App\Models\UserLog;
 use App\Models\WorkSchedule;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
 
 class DashboardController extends Controller
 {
     //
     public function index()
     {
-
+        $today = Carbon::today()->toDateString(); // Get today's date
         $user_id = auth()->user()->id;
         $sched_type = auth()->user()->schedule_types_id;
         $day_name = date('l');
@@ -27,9 +31,28 @@ class DashboardController extends Controller
         $data['is_rest_day'] = $is_rest_day;
         $data['serverDateTime'] = now();
         $data['today_log'] = (new AttendanceSummary())->getByDate(date('Y-m-d'), auth()->user()->id);
-        $data['user_logs'] = (new UserLog())
-            ->getByUserId($user_id)
+        $data['team_logs'] = User::leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
+            ->leftJoin('user_logs', function($join) use ($today) {
+                $join->on('user_logs.user_id', '=', 'users.id')
+                    ->whereDate('user_logs.created_at', '=', $today)
+                    ->where('user_logs.log_type_id', '=', 1);
+            })
+            ->whereNull('users.deleted_at')
+            ->where('users.approval_status', 'APPROVED')
+            ->where('model_has_roles.role_id', 2)
+            ->select(
+                'users.*',
+                DB::raw('IF(user_logs.id IS NOT NULL, "PRESENT", "ABSENT") as attendance_status'),
+                'user_logs.log_time'
+            )
+            ->orderBy('users.name','ASC')
             ->get();
+        $num_rows = $data['team_logs']->count();
+        $data['user_logs'] = (new UserLog())
+        ->getByUserId($user_id)
+        ->orderByDesc('log_date')
+        ->take($num_rows)
+        ->get();
 
         $data['announcement'] = Announcement::whereNull('deleted_at')
             ->where('start_date', '<=', $date)

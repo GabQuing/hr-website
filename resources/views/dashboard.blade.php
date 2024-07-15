@@ -16,6 +16,19 @@ textarea {
 .message_container img{
     width: 100%;
 }
+
+.text-success {
+        color: green;
+    }
+.text-danger {
+    color: red;
+}
+.text-cetner{
+    text-align: center;
+}
+.pad-left{
+    padding-left: 1rem !important;
+}
 </style>
 <div class="modal-center create-ann-form" style="display:none;">
     <div class="modal-box">
@@ -200,7 +213,64 @@ textarea {
             </div>
         </div>
     </div>
-
+    <div class="container container_today">
+        <div class="container_title">
+            <p class="header_title_h2">My Activity</p>
+        </div>
+        <div class="dashboard_table ">
+            <table class="myTable" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Date Access</th>
+                        <th>Time Access</th>
+                        <th>Log-Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($user_logs as $user_log)
+                        <tr>
+                            <td>{{ date('M d Y', strtotime($user_log->log_date)) }}</td>
+                            <td class="pad-left">{{ date('h:ia', strtotime($user_log->log_time)) }}</td>
+                            <td>{{ $user_log->log_type_description }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="container container_today">
+        <div class="container_title">
+            <p class="header_title_h2">Team Attendance (Today)</p>
+        </div>
+        <div class="dashboard_table ">
+            <table class="myTable" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Employee Name</th>
+                        <th>Time-Access</th>
+                        <th>Attendance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($team_logs as $team_log)
+                        <tr>
+                            <td>{{ $team_log->name }}</td>
+                            <td>
+                                @if($team_log->attendance_status == 'PRESENT')
+                                    <span class="pad-left">{{ date('h:ia', strtotime($team_log->log_time)) }}</span>
+                                @else
+                                    <span>Not Available</span>
+                                @endif
+                            </td>
+                            <td class="{{ $team_log->attendance_status == 'PRESENT' ? 'text-success' : 'text-danger' }}">
+                                {{ $team_log->attendance_status }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
     <div class="container container_today">
         <div class="container_title">
             <p class="header_title_h2">Announcement</p>
@@ -248,34 +318,6 @@ textarea {
                 @endif
             </div>
             @endrole
-        </div>
-    </div>
-    <div class="container container_today">
-        <div class="container_title">
-            <p class="header_title_h2">My Activity</p>
-        </div>
-        <div class="dashboard_table ">
-            <table id="myTable" class="display" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Date Access</th>
-                        <th>Time Access</th>
-                        <th>Log-Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                        $user_logs = $user_logs->sortByDesc('log_date')->take(4);
-                    @endphp
-                    @foreach ($user_logs as $user_log)
-                        <tr>
-                            <td>{{ date('M d Y', strtotime($user_log->log_date)) }}</td>
-                            <td>{{ date('h:i a', strtotime($user_log->log_time)) }}</td>
-                            <td>{{ $user_log->log_type_description }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
@@ -328,7 +370,7 @@ textarea {
             this.submit();
         });
         
-        $('#myTable').DataTable({
+        $('.myTable').DataTable({
             responsive: true,
             paging:false,
             info:false,
