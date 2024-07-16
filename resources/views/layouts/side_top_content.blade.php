@@ -46,7 +46,7 @@
         </div>
         <!-- Top Navbar -->
         <div class="main_content">
-            <div style="padding: 0 20px;">
+            <div style="padding: 0 20px 20px 20px;">
                 <div class="top_navbar">
                     @if ( Request::segment(1) == 'dashboard1')
                         <div>

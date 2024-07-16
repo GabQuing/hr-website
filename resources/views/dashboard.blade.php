@@ -16,12 +16,15 @@ textarea {
 }
 
 
-.text-success {
-        color: green;
+.text-red {
+        color: red;
+        font-weight: bold
     }
-.text-danger {
-    color: red;
-}
+    .text-green {
+        color: green;
+        font-weight: bold
+
+    }
 .text-cetner{
     text-align: center;
 }
@@ -290,15 +293,20 @@ textarea {
                     @foreach ($team_logs as $team_log)
                         <tr>
                             <td>{{ $team_log->name }}</td>
-                            <td>
-                                @if($team_log->attendance_status == 'PRESENT')
-                                    <span class="pad-left">{{ date('h:ia', strtotime($team_log->log_time)) }}</span>
-                                @else
-                                    <span>Not Available</span>
-                                @endif
+                            <td class="pad-left"> 
+                                {{ $team_log->log_time ? date('h:ia', strtotime($team_log->log_time)) : 'Not Available' }}
                             </td>
-                            <td class="{{ $team_log->attendance_status == 'PRESENT' ? 'text-success' : 'text-danger' }}">
-                                {{ $team_log->attendance_status }}
+                            <td class="
+                                {{ 
+                                    !$team_log->description ? 'text-red' : 
+                                    ($team_log->description === 'CLOCK IN' ? 'text-green' : 
+                                    ($team_log->description === 'CLOCK OUT' ? 'text-red' : 
+                                    ($team_log->description === 'BREAK START' ? 'text-red' : 
+                                    ($team_log->description === 'BREAK END' ? 'text-green' : '')))
+                                    )
+                                }}"
+                            >
+                                {{ $team_log->description ? $team_log->description : 'NO LOGS' }}
                             </td>
                         </tr>
                     @endforeach
@@ -306,7 +314,7 @@ textarea {
             </table>
         </div>
     </div>
-    <div class="container container_today ">
+    <div class="container container_today">
         <div class="container_title">
             <p class="header_title_h2">Announcement</p>
         </div>

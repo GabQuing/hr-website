@@ -32,21 +32,35 @@ class DashboardController extends Controller
         $data['serverDateTime'] = now();
         $data['today_log'] = (new AttendanceSummary())->getByDate(date('Y-m-d'), auth()->user()->id);
         $data['team_logs'] = User::leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
-            ->leftJoin('user_logs', function($join) use ($today) {
-                $join->on('user_logs.user_id', '=', 'users.id')
-                    ->whereDate('user_logs.created_at', '=', $today)
-                    ->where('user_logs.log_type_id', '=', 1);
+            ->leftJoin(DB::raw('
+                (SELECT user_logs.user_id, user_logs.log_type_id, user_logs.log_time 
+                FROM user_logs 
+                WHERE user_logs.log_date = "' . $today . '" 
+                AND user_logs.created_at = (
+                    SELECT MAX(created_at) 
+                    FROM user_logs ul 
+                    WHERE ul.user_id = user_logs.user_id 
+                    AND DATE(ul.created_at) = "' . $today . '"
+                )
+            ) as latest_user_logs'), function($join) {
+                $join->on('latest_user_logs.user_id', '=', 'users.id');
             })
+            ->leftJoin('log_types', 'log_types.id', '=', 'latest_user_logs.log_type_id') // Join with log_types
             ->whereNull('users.deleted_at')
             ->where('users.approval_status', 'APPROVED')
             ->where('model_has_roles.role_id', 2)
+            // ->where('users.id','!=',$user_id)
             ->select(
                 'users.*',
-                DB::raw('IF(user_logs.id IS NOT NULL, "PRESENT", "ABSENT") as attendance_status'),
-                'user_logs.log_time'
+                'latest_user_logs.log_type_id', // Selecting log_type_id
+                'latest_user_logs.log_time',
+                'log_types.description' // Selecting the description from log_types
             )
-            ->orderBy('users.name','ASC')
+            ->orderBy('users.name', 'ASC')
             ->get();
+    
+        // dd($data['team_logs']);
+    
         $num_rows = $data['team_logs']->count();
         $data['user_logs'] = (new UserLog())
         ->getByUserId($user_id)
