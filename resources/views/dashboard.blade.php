@@ -50,6 +50,30 @@ textarea {
     margin-bottom: 20px;
 }
 
+
+.scrollable-container {
+    max-height: 250px; /* Set your desired height */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Custom scrollbar styles */
+.scrollable-container::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+}
+
+.scrollable-container::-webkit-scrollbar-track {
+    background: #f3eeee; /* Background of the scrollbar track */
+}
+
+.scrollable-container::-webkit-scrollbar-thumb {
+    background: #02718A; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners for the scrollbar thumb */
+}
+
+.scrollable-container::-webkit-scrollbar-thumb:hover {
+    background: #02718A; /* Color of the scrollbar thumb on hover */
+}
+
 @media (max-width: 1492px) {
     .blue-border {
         width: 100%;
@@ -58,6 +82,7 @@ textarea {
         padding: 0px 30px;
     }
 }
+
 
 </style>
 <div class="modal-center create-ann-form" style="display:none;">
@@ -255,7 +280,7 @@ textarea {
         <div class="container_title">
             <p class="header_title_h2">My Activity</p>
         </div>
-        <div class="dashboard_table ">
+        <div class="dashboard_table scrollable-container ">
             <table class="myTable" class="display" style="width:100%">
                 <thead>
                     <tr>
@@ -280,13 +305,13 @@ textarea {
         <div class="container_title">
             <p class="header_title_h2">Team Attendance (Today)</p>
         </div>
-        <div class="dashboard_table ">
+        <div class="dashboard_table scrollable-container ">
             <table class="myTable" class="display" style="width:100%">
                 <thead>
                     <tr>
                         <th>Employee Name</th>
                         <th>Time-Access</th>
-                        <th>Attendance</th>
+                        <th>Log-Type</th>
                     </tr>
                 </thead>
                 <tbody>
