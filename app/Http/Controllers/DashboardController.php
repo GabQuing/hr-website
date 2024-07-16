@@ -5,16 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Announcement;
 use App\Models\AttendanceSummary;
 use App\Models\LogType;
+use App\Models\User;
 use App\Models\UserLog;
 use App\Models\WorkSchedule;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
 
 class DashboardController extends Controller
 {
     //
     public function index()
     {
-
+        $today = Carbon::today()->toDateString(); // Get today's date
         $user_id = auth()->user()->id;
         $sched_type = auth()->user()->schedule_types_id;
         $day_name = date('l');
@@ -27,9 +31,42 @@ class DashboardController extends Controller
         $data['is_rest_day'] = $is_rest_day;
         $data['serverDateTime'] = now();
         $data['today_log'] = (new AttendanceSummary())->getByDate(date('Y-m-d'), auth()->user()->id);
-        $data['user_logs'] = (new UserLog())
-            ->getByUserId($user_id)
+        $data['team_logs'] = User::leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
+            ->leftJoin(DB::raw('
+                (SELECT user_logs.user_id, user_logs.log_type_id, user_logs.log_time 
+                FROM user_logs 
+                WHERE user_logs.log_date = "' . $today . '" 
+                AND user_logs.created_at = (
+                    SELECT MAX(created_at) 
+                    FROM user_logs ul 
+                    WHERE ul.user_id = user_logs.user_id 
+                    AND DATE(ul.created_at) = "' . $today . '"
+                )
+            ) as latest_user_logs'), function($join) {
+                $join->on('latest_user_logs.user_id', '=', 'users.id');
+            })
+            ->leftJoin('log_types', 'log_types.id', '=', 'latest_user_logs.log_type_id') // Join with log_types
+            ->whereNull('users.deleted_at')
+            ->where('users.approval_status', 'APPROVED')
+            ->where('model_has_roles.role_id', 2)
+            // ->where('users.id','!=',$user_id)
+            ->select(
+                'users.*',
+                'latest_user_logs.log_type_id', // Selecting log_type_id
+                'latest_user_logs.log_time',
+                'log_types.description' // Selecting the description from log_types
+            )
+            ->orderBy('users.name', 'ASC')
             ->get();
+    
+        // dd($data['team_logs']);
+    
+        $num_rows = $data['team_logs']->count();
+        $data['user_logs'] = (new UserLog())
+        ->getByUserId($user_id)
+        ->orderByDesc('log_date')
+        ->take($num_rows)
+        ->get();
 
         $data['announcement'] = Announcement::whereNull('deleted_at')
             ->where('start_date', '<=', $date)
@@ -78,18 +115,31 @@ class DashboardController extends Controller
 
     public function createAnnouncement(Request $request)
     {
-        $user_id = auth()->user()->id;
         $date = date('Y-m-d H:i:s');
+        $user_id = auth()->user()->id;
+    
+        $file_path = null;
+    
+        if ($request->hasFile('imageInput')) {
+            $image_file = $request->file('imageInput');
+            $storage_path = 'img/announcements';
+            $image_file_name = time() . '.' . $image_file->getClientOriginalExtension();
+            $image_file->storeAs($storage_path, $image_file_name, 'public');
+            $file_path = url('/img/announcements/' . $image_file_name);
+        }
+    
         Announcement::whereNull('deleted_at')->update(['deleted_at' => $date]);
+    
         Announcement::create([
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'subject' => $request->subject,
+            'file_path' => $file_path, // Save the file path or null
             'message' => $request->message,
             'created_by' => $user_id,
             'created_at' => $date,
         ]);
-
+    
         return redirect('/dashboard1')->with('success', 'Announcement created successfully.');
     }
 

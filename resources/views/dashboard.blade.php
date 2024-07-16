@@ -11,11 +11,54 @@ textarea {
         max-width: 75rem !important;
     }
 .message_container{
-    padding: 20px;
+    margin-top: 30px;
+    padding: 0px 50px;
 }
-.message_container img{
-    width: 100%;
+
+
+.text-red {
+        color: red;
+        font-weight: bold
+    }
+    .text-green {
+        color: green;
+        font-weight: bold
+
+    }
+.text-cetner{
+    text-align: center;
 }
+.pad-left{
+    padding-left: 1rem !important;
+}
+.blue-border{
+    object-fit: contain;
+    width: 80%;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+    margin-bottom: 20px;
+}
+.text-message{
+    color: #333333;
+    text-align: justify;
+}
+#ann_subject{
+    margin-bottom: 10px;
+    color: black;
+}
+
+.text-message-container{
+    margin-bottom: 20px;
+}
+
+@media (max-width: 1492px) {
+    .blue-border {
+        width: 100%;
+    }
+    ..message_container{
+        padding: 0px 30px;
+    }
+}
+
 </style>
 <div class="modal-center create-ann-form" style="display:none;">
     <div class="modal-box">
@@ -40,15 +83,19 @@ textarea {
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
-                                <p>Subject:</p>
-                                <input class="u-input" name="subject" placeholder="Reminder:" type="text" required>
+                            <td>
+                                <p>Subject: <span style="font-size: 12px; color: rgb(69, 110, 159) !important;">*Optional</span></p>
+                                <input class="u-input" name="subject" placeholder="Enter the subject of your message" type="text" >
+                            </td>
+                            <td>
+                                <p>Insert Image: <span style="font-size: 12px; color: rgb(69, 110, 159) !important;">*Optional</span></p>
+                                <input class="u-input" id="imageInput" name="imageInput" type="file" accept=".png, .jpg, .jpeg" >
                             </td>
                         </tr>
                         <tr>
                             <td colspan="4">
-                                <div id="create-editor" class="u-input" name="message" required></div>
-                                
+                                <p>Message: <span style="font-size: 12px; color: rgb(69, 110, 159) !important;">*Optional</span></p>
+                                <div id="create-editor" class="u-input" name="message" ></div>
                                 </div>
                                 <input type="hidden" name="message" id="messageInputCreate">
                             </td>
@@ -87,15 +134,19 @@ textarea {
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
-                                <p>Subject:</p>
-                                <input class="u-input" name="subject" placeholder="Reminder:" type="text" value="{{ $announcement?->subject }}" required>
+                            <td>
+                                <p>Subject: <span style="font-size: 12px; color: rgb(69, 110, 159) !important;">*Optional</span></p>
+                                <input class="u-input" name="subject" placeholder="Reminder:" type="text" value="{{ $announcement?->subject }}">
+                            </td>
+                            <td>
+                                <p>Insert Image: <span style="font-size: 12px; color: rgb(69, 110, 159) !important;">*Optional</span></p>
+                                <input class="u-input"  name="imageInput" type="file" accept=".png, .jpg, .jpeg" >
                             </td>
                         </tr>
                         <tr>
                             <td colspan="4">
-                                <div id="edit-editor" class="u-input" name="message" required></div>
-                                
+                                <p>Message: <span style="font-size: 12px; color: rgb(69, 110, 159) !important;">*Optional</span></p>
+                                <div id="edit-editor" class="u-input" name="message"></div>
                                 </div>
                                 <input type="hidden" name="message" id="messageInputEdit">
                             </td>
@@ -200,7 +251,69 @@ textarea {
             </div>
         </div>
     </div>
-
+    <div class="container container_today">
+        <div class="container_title">
+            <p class="header_title_h2">My Activity</p>
+        </div>
+        <div class="dashboard_table ">
+            <table class="myTable" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Date Access</th>
+                        <th>Time Access</th>
+                        <th>Log-Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($user_logs as $user_log)
+                        <tr>
+                            <td>{{ date('M d Y', strtotime($user_log->log_date)) }}</td>
+                            <td class="pad-left">{{ date('h:ia', strtotime($user_log->log_time)) }}</td>
+                            <td>{{ $user_log->log_type_description }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="container container_today">
+        <div class="container_title">
+            <p class="header_title_h2">Team Attendance (Today)</p>
+        </div>
+        <div class="dashboard_table ">
+            <table class="myTable" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Employee Name</th>
+                        <th>Time-Access</th>
+                        <th>Attendance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($team_logs as $team_log)
+                        <tr>
+                            <td>{{ $team_log->name }}</td>
+                            <td class="pad-left"> 
+                                {{ $team_log->log_time ? date('h:ia', strtotime($team_log->log_time)) : 'Not Available' }}
+                            </td>
+                            <td class="
+                                {{ 
+                                    !$team_log->description ? 'text-red' : 
+                                    ($team_log->description === 'CLOCK IN' ? 'text-green' : 
+                                    ($team_log->description === 'CLOCK OUT' ? 'text-red' : 
+                                    ($team_log->description === 'BREAK START' ? 'text-red' : 
+                                    ($team_log->description === 'BREAK END' ? 'text-green' : '')))
+                                    )
+                                }}"
+                            >
+                                {{ $team_log->description ? $team_log->description : 'NO LOGS' }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
     <div class="container container_today">
         <div class="container_title">
             <p class="header_title_h2">Announcement</p>
@@ -208,11 +321,14 @@ textarea {
         <div class="u-flex-center-column ">
             @if ($announcement)
             <div class=" message_container">
-                <h4 id="ann_subject" class="u-fw-500 u-mb-5"><strong>{{ $announcement?->subject }}</strong></h4>
-                <div>
-                    <p class="">
-                        {!!$announcement?->message !!}
-                    </p>
+                @if ($announcement && $announcement->file_path)
+                    <div style="text-align: center;">
+                        <img class="blue-border" src="{{ $announcement->file_path }}" alt="" style=" ">
+                    </div>
+                @endif
+                <h4 id="ann_subject" class="u-fw-500  u-t-center "><strong>{{ $announcement?->subject }}</strong></h4>
+                <div class="text-message-container">
+                    <span class=" text-message">{!!$announcement?->message !!}</span>
                 </div>
             </div>
             @else
@@ -248,34 +364,6 @@ textarea {
                 @endif
             </div>
             @endrole
-        </div>
-    </div>
-    <div class="container container_today">
-        <div class="container_title">
-            <p class="header_title_h2">My Activity</p>
-        </div>
-        <div class="dashboard_table ">
-            <table id="myTable" class="display" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Date Access</th>
-                        <th>Time Access</th>
-                        <th>Log-Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                        $user_logs = $user_logs->sortByDesc('log_date')->take(4);
-                    @endphp
-                    @foreach ($user_logs as $user_log)
-                        <tr>
-                            <td>{{ date('M d Y', strtotime($user_log->log_date)) }}</td>
-                            <td>{{ date('h:i a', strtotime($user_log->log_time)) }}</td>
-                            <td>{{ $user_log->log_type_description }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
@@ -328,7 +416,7 @@ textarea {
             this.submit();
         });
         
-        $('#myTable').DataTable({
+        $('.myTable').DataTable({
             responsive: true,
             paging:false,
             info:false,
