@@ -49,7 +49,7 @@ class DashboardController extends Controller
             ->whereNull('users.deleted_at')
             ->where('users.approval_status', 'APPROVED')
             ->where('model_has_roles.role_id', 2)
-            // ->where('users.id','!=',$user_id)
+            ->where('users.id','!=',$user_id)
             ->select(
                 'users.*',
                 'latest_user_logs.log_type_id', // Selecting log_type_id
