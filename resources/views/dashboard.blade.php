@@ -11,11 +11,10 @@ textarea {
         max-width: 75rem !important;
     }
 .message_container{
-    padding: 20px;
+    margin-top: 30px;
+    padding: 0px 50px;
 }
-.message_container img{
-    width: 100%;
-}
+
 
 .text-success {
         color: green;
@@ -29,6 +28,34 @@ textarea {
 .pad-left{
     padding-left: 1rem !important;
 }
+.blue-border{
+    object-fit: contain;
+    width: 80%;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+    margin-bottom: 20px;
+}
+.text-message{
+    color: #333333;
+    text-align: justify;
+}
+#ann_subject{
+    margin-bottom: 10px;
+    color: black;
+}
+
+.text-message-container{
+    margin-bottom: 20px;
+}
+
+@media (max-width: 1492px) {
+    .blue-border {
+        width: 100%;
+    }
+    ..message_container{
+        padding: 0px 30px;
+    }
+}
+
 </style>
 <div class="modal-center create-ann-form" style="display:none;">
     <div class="modal-box">
@@ -53,15 +80,19 @@ textarea {
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
-                                <p>Subject:</p>
-                                <input class="u-input" name="subject" placeholder="Reminder:" type="text" required>
+                            <td>
+                                <p>Subject: <span style="font-size: 12px; color: rgb(69, 110, 159) !important;">*Optional</span></p>
+                                <input class="u-input" name="subject" placeholder="Enter the subject of your message" type="text" >
+                            </td>
+                            <td>
+                                <p>Insert Image: <span style="font-size: 12px; color: rgb(69, 110, 159) !important;">*Optional</span></p>
+                                <input class="u-input" id="imageInput" name="imageInput" type="file" accept=".png, .jpg, .jpeg" >
                             </td>
                         </tr>
                         <tr>
                             <td colspan="4">
-                                <div id="create-editor" class="u-input" name="message" required></div>
-                                
+                                <p>Message: <span style="font-size: 12px; color: rgb(69, 110, 159) !important;">*Optional</span></p>
+                                <div id="create-editor" class="u-input" name="message" ></div>
                                 </div>
                                 <input type="hidden" name="message" id="messageInputCreate">
                             </td>
@@ -100,15 +131,19 @@ textarea {
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
-                                <p>Subject:</p>
-                                <input class="u-input" name="subject" placeholder="Reminder:" type="text" value="{{ $announcement?->subject }}" required>
+                            <td>
+                                <p>Subject: <span style="font-size: 12px; color: rgb(69, 110, 159) !important;">*Optional</span></p>
+                                <input class="u-input" name="subject" placeholder="Reminder:" type="text" value="{{ $announcement?->subject }}">
+                            </td>
+                            <td>
+                                <p>Insert Image: <span style="font-size: 12px; color: rgb(69, 110, 159) !important;">*Optional</span></p>
+                                <input class="u-input"  name="imageInput" type="file" accept=".png, .jpg, .jpeg" >
                             </td>
                         </tr>
                         <tr>
                             <td colspan="4">
-                                <div id="edit-editor" class="u-input" name="message" required></div>
-                                
+                                <p>Message: <span style="font-size: 12px; color: rgb(69, 110, 159) !important;">*Optional</span></p>
+                                <div id="edit-editor" class="u-input" name="message"></div>
                                 </div>
                                 <input type="hidden" name="message" id="messageInputEdit">
                             </td>
@@ -271,18 +306,21 @@ textarea {
             </table>
         </div>
     </div>
-    <div class="container container_today">
+    <div class="container container_today ">
         <div class="container_title">
             <p class="header_title_h2">Announcement</p>
         </div>
         <div class="u-flex-center-column ">
             @if ($announcement)
             <div class=" message_container">
-                <h4 id="ann_subject" class="u-fw-500 u-mb-5"><strong>{{ $announcement?->subject }}</strong></h4>
-                <div>
-                    <p class="">
-                        {!!$announcement?->message !!}
-                    </p>
+                @if ($announcement && $announcement->file_path)
+                    <div style="text-align: center;">
+                        <img class="blue-border" src="{{ $announcement->file_path }}" alt="" style=" ">
+                    </div>
+                @endif
+                <h4 id="ann_subject" class="u-fw-500  u-t-center "><strong>{{ $announcement?->subject }}</strong></h4>
+                <div class="text-message-container">
+                    <span class=" text-message">{!!$announcement?->message !!}</span>
                 </div>
             </div>
             @else

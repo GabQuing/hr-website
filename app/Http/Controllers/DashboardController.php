@@ -101,18 +101,31 @@ class DashboardController extends Controller
 
     public function createAnnouncement(Request $request)
     {
-        $user_id = auth()->user()->id;
         $date = date('Y-m-d H:i:s');
+        $user_id = auth()->user()->id;
+    
+        $file_path = null;
+    
+        if ($request->hasFile('imageInput')) {
+            $image_file = $request->file('imageInput');
+            $storage_path = 'img/announcements';
+            $image_file_name = time() . '.' . $image_file->getClientOriginalExtension();
+            $image_file->storeAs($storage_path, $image_file_name, 'public');
+            $file_path = url('/img/announcements/' . $image_file_name);
+        }
+    
         Announcement::whereNull('deleted_at')->update(['deleted_at' => $date]);
+    
         Announcement::create([
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'subject' => $request->subject,
+            'file_path' => $file_path, // Save the file path or null
             'message' => $request->message,
             'created_by' => $user_id,
             'created_at' => $date,
         ]);
-
+    
         return redirect('/dashboard1')->with('success', 'Announcement created successfully.');
     }
 
