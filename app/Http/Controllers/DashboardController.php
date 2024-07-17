@@ -36,11 +36,11 @@ class DashboardController extends Controller
                 (SELECT user_logs.user_id, user_logs.log_type_id, user_logs.log_time 
                 FROM user_logs 
                 WHERE user_logs.log_date = "' . $today . '" 
-                AND user_logs.created_at = (
-                    SELECT MAX(created_at) 
+                AND user_logs.log_at = (
+                    SELECT MAX(log_at) 
                     FROM user_logs ul 
                     WHERE ul.user_id = user_logs.user_id 
-                    AND DATE(ul.created_at) = "' . $today . '"
+                    AND ul.log_date = "' . $today . '"
                 )
             ) as latest_user_logs'), function($join) {
                 $join->on('latest_user_logs.user_id', '=', 'users.id');
