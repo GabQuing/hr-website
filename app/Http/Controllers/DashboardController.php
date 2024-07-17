@@ -19,6 +19,7 @@ class DashboardController extends Controller
     public function index()
     {
         $today = Carbon::today()->toDateString(); // Get today's date
+        $now = date('Y-m-d H:i:s');
         $user_id = auth()->user()->id;
         $sched_type = auth()->user()->schedule_types_id;
         $day_name = date('l');
@@ -32,17 +33,19 @@ class DashboardController extends Controller
         $data['serverDateTime'] = now();
         $data['today_log'] = (new AttendanceSummary())->getByDate(date('Y-m-d'), auth()->user()->id);
         $data['team_logs'] = User::leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
-            ->leftJoin(DB::raw('
+            ->leftJoin(DB::raw("
                 (SELECT user_logs.user_id, user_logs.log_type_id, user_logs.log_time 
                 FROM user_logs 
-                WHERE user_logs.log_date = "' . $today . '" 
-                AND user_logs.created_at = (
-                    SELECT MAX(created_at) 
+                WHERE user_logs.log_date = '$today'  
+                AND user_logs.log_at < '$now'  
+                AND user_logs.log_at = (
+                    SELECT MAX(log_at) 
                     FROM user_logs ul 
-                    WHERE ul.user_id = user_logs.user_id 
-                    AND DATE(ul.created_at) = "' . $today . '"
+                    WHERE ul.user_id = user_logs.user_id
+                    AND ul.log_at < '$now' 
+                    AND ul.log_date = '$today'
                 )
-            ) as latest_user_logs'), function($join) {
+            ) as latest_user_logs"), function($join) {
                 $join->on('latest_user_logs.user_id', '=', 'users.id');
             })
             ->leftJoin('log_types', 'log_types.id', '=', 'latest_user_logs.log_type_id') // Join with log_types
