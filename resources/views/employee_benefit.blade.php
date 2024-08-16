@@ -210,13 +210,14 @@
 @section('script_content')
     <script>
 
-        // DataTable 
-        // $('.myTable').DataTable({
-        //     responsive: true,
-        //     "columnDefs": [
-        //         { "className": "dt-center", "targets": "_all" }
-        //     ]
-        // });
+        DataTable 
+        $('.myTable').DataTable({
+            responsive: true,
+            "columnDefs": [
+                { "className": "dt-center", "targets": "_all" }
+            ],
+            paging: false,
+        });
 
         // Select2
         $('.js-example-basic-single').select2({
