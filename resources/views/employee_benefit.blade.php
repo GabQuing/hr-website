@@ -171,7 +171,7 @@
                     <td>{{$user->employee_benefits_updated_by}}</td>
                     <td>{{$user->employee_benefits_updated_at}}</td>
                     <td>
-                        <div class="d-flex;">
+                        <div class="d-flex" style="gap: 5px">
                             <button class="ob-btn u-action-btn u-bg-primary view-benefit-btn"  data-entry-id="{{ $user->id }}" data-href="{{ route('employee_benefit.view', $user->id) }}">
                                 <span class="material-symbols-outlined"  style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
                                     visibility
@@ -202,6 +202,7 @@
             </tr>
         </tfoot>
     </table>
+    {{  $users->links() }}
 </div>
 
 
@@ -210,12 +211,12 @@
     <script>
 
         // DataTable 
-        $('.myTable').DataTable({
-            responsive: true,
-            "columnDefs": [
-                { "className": "dt-center", "targets": "_all" }
-            ]
-        });
+        // $('.myTable').DataTable({
+        //     responsive: true,
+        //     "columnDefs": [
+        //         { "className": "dt-center", "targets": "_all" }
+        //     ]
+        // });
 
         // Select2
         $('.js-example-basic-single').select2({
