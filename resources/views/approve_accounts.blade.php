@@ -41,7 +41,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <p>Last Name"</p>
+                            <p>Last Name:</p>
                             <input class="u-input" type="text" name="last_name" required>
                         </td>
                         <td>
