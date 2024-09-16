@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 
 class ChangePasswordController extends Controller
@@ -17,9 +17,9 @@ class ChangePasswordController extends Controller
      */
     public function index($id)
     {
-        $data= [];
+        $data = [];
         $data['user_info'] = User::where('id', $id)->first();
-        
+
 
 
         return view('/change_password', $data);
@@ -35,20 +35,14 @@ class ChangePasswordController extends Controller
             'password' => 'required|min:8',
             'password_confirmation' => 'required|min:8|same:password'
         ]);
-        
+
         $user->password = Hash::make($request->get('password'));
         $user->save();
 
-        DB::table('users')->where('id',$id)->update(['biometric_register' => 1 , 'approval_status' => 'PENDING']);
+        DB::table('users')->where('id', $id)->update(['biometric_register' => 1, 'approval_status' => 'PENDING']);
 
         // Logout User
-        Auth::logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return redirect()->back()->with('success','Password Updated, You Will Be Logged-Out.');
+        return redirect('logout');
     }
 
     /**
