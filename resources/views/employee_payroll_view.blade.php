@@ -24,6 +24,11 @@
                         </tr>
                         <tr>
                             <td>
+                                <p>Employee Name: {{ $user->name }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
                                 <p>Date From:</p>
                                 <input class="u-input" name="pr_date_from" type="date" required>
                             </td>

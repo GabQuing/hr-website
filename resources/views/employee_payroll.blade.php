@@ -90,8 +90,8 @@
         <tbody>
             @foreach($employees as $employee)
                 <tr>
-                    <td>{{ "$employee->employee_name" }}</td>
-                    <td>{{ "$employee->mobile_number" }}</td>
+                    <td>{{ "$employee->name" }}</td>
+                    <td>{{ $employee->basic_information->mobile_number }}</td>
                     <td>{{ "$employee->email" }}</td>
                     <td>
                         <div class="d-flex" style="gap:3px">

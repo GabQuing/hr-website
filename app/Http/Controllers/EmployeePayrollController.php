@@ -102,6 +102,7 @@ class EmployeePayrollController extends Controller
     {
         $data = [];
         $data['id'] = $id;
+        $data['user'] = User::with('basic_information')->find($id);
         $data['payroll'] = EmployeePayroll::find($id);
         $data['payrolls'] = EmployeePayroll::where('user_id', $id)->leftJoin('users as employee', 'employee.id', 'employee_payrolls.user_id')
             ->leftJoin('users as head', 'head.id', 'employee_payrolls.created_by')
