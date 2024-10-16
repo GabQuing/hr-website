@@ -135,7 +135,8 @@ Route::middleware(['auth'])->group(function () {
     //Employee Payroll
     Route::get('/employee_payroll', [EmployeePayrollController::class, 'index'])->name('employee_payroll');
     Route::get('/employee_payroll/edit/{id}', [EmployeePayrollController::class, 'edit'])->name('employee_payroll_edit');
-    Route::post('/employee_payroll/store', [EmployeePayrollController::class, 'add'])->name('employee_payroll_add');
+    Route::get('/employee_payroll/view/{id}', [EmployeePayrollController::class, 'view'])->name('employee_payroll_view');
+    Route::post('/employee_payroll/store/{id}', [EmployeePayrollController::class, 'add'])->name('employee_payroll_add');
     Route::post('/employee_payroll/update/{id}', [EmployeePayrollController::class, 'update'])->name('employee_payroll_update');
     Route::get('/employee_payroll/pdfShow/{file_name}', [EmployeePayrollController::class, 'showPDF'])->name('showPDF');
     Route::get('/employee_payroll/delete', [EmployeePayrollController::class, 'deletePayroll'])->name('employee_payroll_delete');

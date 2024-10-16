@@ -19,7 +19,7 @@ class EmployeePayrollController extends Controller
         $data['employees'] = (new User())
             ->getActiveEmployees()
             ->orderBy('users.name', 'asc')
-            ->get();
+            ->paginate(10);
         $data['payrolls'] = EmployeePayroll::leftJoin('users as employee', 'employee.id', 'employee_payrolls.user_id')
             ->leftJoin('users as head', 'head.id', 'employee_payrolls.created_by')
             ->select(
@@ -34,10 +34,11 @@ class EmployeePayrollController extends Controller
         return view('employee_payroll', $data);
     }
 
-    public function add(Request $request)
+    public function add(Request $request, $id)
     {
         $return_input = $request->all();
-        $employee_id = $return_input['pr_employee_id'];
+        $employee_id = $id;
+        // $employee_id = $return_input['pr_employee_id'];
         $date_from = $return_input['pr_date_from'];
         $date_to = $return_input['pr_date_to'];
         $file = $return_input['pr_pdf'];
@@ -46,7 +47,7 @@ class EmployeePayrollController extends Controller
         $file->storeAs('payroll', $file_name);
 
         EmployeePayroll::create([
-            'user_id' => $return_input['pr_employee_id'],
+            'user_id' => $id,
             'from_date' => $date_from,
             'to_date' => $date_to,
             'file_name' => $file_name,
@@ -95,6 +96,25 @@ class EmployeePayrollController extends Controller
         $file_name = $data['payroll']->file_name;
 
         return view('employee_payroll_edit', $data);
+    }
+
+    public function view($id)
+    {
+        $data = [];
+        $data['id'] = $id;
+        $data['payroll'] = EmployeePayroll::find($id);
+        $data['payrolls'] = EmployeePayroll::where('user_id', $id)->leftJoin('users as employee', 'employee.id', 'employee_payrolls.user_id')
+            ->leftJoin('users as head', 'head.id', 'employee_payrolls.created_by')
+            ->select(
+                'employee_payrolls.*',
+                'employee.name as name',
+                'head.name as created_by_head'
+            )
+            ->orderBy('id', 'desc')
+            ->whereNull('employee_payrolls.deleted_at')
+            ->paginate(10);
+
+        return view('employee_payroll_view', $data);
     }
 
     public function saveEdit(Request $request)

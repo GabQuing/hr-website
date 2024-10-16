@@ -10,10 +10,10 @@
     }
 </style>
 
-{{-- <div class="modal-center" style="display: none;">
+<div class="modal-center" style="display: none;">
     <div class="modal-box">
         <div class="modal-content">
-            <form method="POST" action="{{ route('employee_payroll_add') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('employee_payroll_add', $id) }}" enctype="multipart/form-data">
                 @csrf
                 <table class="custom_normal_table">
                     <tbody>
@@ -24,27 +24,18 @@
                         </tr>
                         <tr>
                             <td>
-                                <p>Employee Name</p>
-                                <select class="u-input" name="pr_employee_id" id="" required>
-                                    <option value="" selected disabled>Select employee</option>
-                                    @foreach ($employees as $employee)
-                                        <option value="{{ $employee->id }}">{{ $employee->name }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <p>Upload PDF</p>
-                                <input class="u-input" id="pdfInput" name="pr_pdf" type="file" accept=".pdf" required>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
                                 <p>Date From:</p>
                                 <input class="u-input" name="pr_date_from" type="date" required>
                             </td>
                             <td>
                                 <p>Date To:</p>
                                 <input class="u-input" name="pr_date_to" type="date" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Upload PDF</p>
+                                <input class="u-input" id="pdfInput" name="pr_pdf" type="file" accept=".pdf" required>
                             </td>
                         </tr>
                     </tbody>
@@ -62,7 +53,7 @@
     <div class="u-mr-16" style="position: relative" id="add-payroll-btn">
         <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default" href="">Add Payroll</button>
     </div>
-</div> --}}
+</div>
 
 @if (session('success'))
     <div class="u-mt-10">
@@ -75,34 +66,16 @@
         <thead>
             <tr>
                 <th>Employee Name</th>
-                <th>Mobile Number</th>
-                <th>Email</th>
-                <th>Action</th>
-                {{-- <th>Employee Name</th>
                 <th>From Date</th>
                 <th>To Date</th>
                 <th>Created By</th>
                 <th>Created At</th>
                 <th>Updated By</th>
-                <th>Action</th> --}}
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($employees as $employee)
-                <tr>
-                    <td>{{ "$employee->employee_name" }}</td>
-                    <td>{{ "$employee->mobile_number" }}</td>
-                    <td>{{ "$employee->email" }}</td>
-                    <td>
-                        <div class="d-flex" style="gap:3px">
-                            <a href="{{ route('employee_payroll_view', $employee->id) }}" class="material-symbols-outlined u-action-btn u-bg-primary" style="vertical-align: bottom; font-size: 20px; font-weight: bold; color: white; text-decoration: none;">
-                                edit
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            @endforeach
-            {{-- @foreach ($payrolls as $payroll)
+            @foreach ($payrolls as $payroll)
                 <tr>
                     <td>{{ $payroll->name }}</td>
                     <td>{{ $payroll->from_date }}</td>
@@ -121,28 +94,21 @@
                         </div>
                     </td>
                 </tr>   
-            @endforeach --}}
+            @endforeach
         </tbody>
         <tfoot>
-            {{-- Comment --}}
             <tr>
-                <th>Employee Name</th>
-                <th>Mobile Number</th>
-                <th>Email</th>
-                <th>Action</th>
-            </tr>
-            {{-- <tr>
                 <th>Employee Name</th>
                 <th>From Date</th>
                 <th>To Date</th>
                 <th>Created By</th>
                 <th>Created At</th>
                 <th>Action</th>
-            </tr> --}}
+            </tr>
         </tfoot>
     </table>
-    {{ $employees->links() }}
-    <p>Showing {{ $employees->firstItem() ?? 0 }} to {{ $employees->lastItem() ?? 0 }} of {{ $employees->total() }} items.</p>
+    {{ $payrolls->links() }}
+    <p>Showing {{ $payrolls->firstItem() ?? 0 }} to {{ $payrolls->lastItem() ?? 0 }} of {{ $payrolls->total() }} items.</p>
 </div>
 
 

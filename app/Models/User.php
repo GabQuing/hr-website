@@ -66,4 +66,9 @@ class User extends Authenticatable
         $user_id = DB::table('model_has_roles')->where('role_id', 2)->pluck('model_id');
         return $this->whereNull('users.deleted_at')->whereIn('id', $user_id);
     }
+
+    public function userPayroll()
+    {
+        return $this->hasMany(EmployeePayroll::class);
+    }
 }
