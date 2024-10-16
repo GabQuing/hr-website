@@ -1,6 +1,6 @@
-@extends('layouts.side_top_content', ['title' => 'Approve Registration'])
+@extends('layouts.side_top_content', ['title' => 'Employee Registration'])
 
-@section('module_name', 'Approve Registration')
+@section('module_name', 'Employee Registration')
 
 @section('content')
 <style>
@@ -21,144 +21,99 @@
 </style>
 
 <div class="modal-center" id="add-account-modal" style="display: none;">
-    <div class="modal-box u-p-10">
-        <form action="{{ route('add_user') }}" method="POST" autocomplete="off">
-            @csrf
-            <div>
-                <h4 class="u-t-gray u-fw-b">Add Account</h4>
-            </div>
-            <table class="custom_normal_table">
-                <tbody>
-                    <tr>
-                        <td>
-                            <p>Email Address:</p>
-                            <input class="u-input" type="text" name="email"  required>
-                        </td>
-                        <td>
-                            <p>First Name:</p>
-                            <input class="u-input" type="text" name="first_name" onchange="removeExcessSpaces(this)" required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>Last Name:</p>
-                            <input class="u-input" type="text" name="last_name" required>
-                        </td>
-                        <td>
-                            <p>Mobile Number:</p>
-                            <input class="u-input" type="text" name="mobile_number" required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p for="">Privilege</p>
-                            <select class="js-example-basic-single s-add u-input" name="privilege_role" id="user_privilege" style="text-align: center;">
-                                @foreach ($privilege_roles as $role)
-                                    <option value="{{ $role->name }}">{{ $role->name }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td style="position: relative">
-                            <p for="">Temporary Password: </p>
-                            <input class="u-input" type="password" name="password" value="qwerty123" placeholder="qwerty123" readonly>
-                            <p style="position: absolute; font-size: 12px; color: rgb(69, 110, 159) !important; "> Temporary password = qwerty123</p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="u-ml-10 u-mt-10 u-flex-space-between" style="padding: 10px;">
-                <button class="u-btn u-mr-10" type="button" id="modal-btn-close">Close</button>
-                <button class="u-btn u-bg-primary u-t-white" type="submit">Submit</button>
-            </div>
-        </form>
+    <div class="modal-box ">
+        <div class="modal-content">
+            <form action="{{ route('add_user') }}" method="POST" autocomplete="off">
+                @csrf
+                <table class="custom_normal_table">
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                                <h3 class="f-weight-bold"><i class="fa-solid fa-eye"></i> Add Account</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Email Address:</p>
+                                <input class="u-input" type="text" name="email"  required>
+                            </td>
+                            <td>
+                                <p>First Name:</p>
+                                <input class="u-input" type="text" name="first_name" onchange="removeExcessSpaces(this)" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Last Name:</p>
+                                <input class="u-input" type="text" name="last_name" required>
+                            </td>
+                            <td>
+                                <p>Mobile Number:</p>
+                                <input class="u-input" type="text" name="mobile_number" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p for="">Privilege</p>
+                                <select class="js-example-basic-single s-add u-input" name="privilege_role" id="user_privilege" style="text-align: center;">
+                                    @foreach ($privilege_roles as $role)
+                                        <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td style="position: relative">
+                                <p for="">Temporary Password: </p>
+                                <input class="u-input" type="password" name="password" value="qwerty123" placeholder="qwerty123" readonly>
+                                <p style="position: absolute; font-size: 12px; color: rgb(69, 110, 159) !important; "> Temporary password = qwerty123</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="u-ml-10 u-mt-10 u-flex-space-between" style="padding: 10px;">
+                    <button class="u-btn u-mr-10" type="button" id="modal-btn-close">Close</button>
+                    <button class="u-btn u-bg-primary u-t-white" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 <div class="modal-center" id="modal-import" style="display: none;">
-    <div class="modal-box u-p-10">
-        <form action="{{ route('importUser') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
-            @csrf
-            <div>
-                <h4 class="u-t-gray u-fw-b">Import Excel File</h4>
-            </div>
-            <table class="custom_normal_table">
-                <tbody>
-                    <tr>
-                        <td>
-                            <p>Attach File:</p>
-                            <input class="u-input" type="file" name="import_accounts"  required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>Download Template:</p>
-                            <a class="u-input" style="padding-top: 7px; padding-bottom: 7px; text-decoration: none;" href="{{ route('downloadNewEmployeeTemplate') }}" >Add-New-Employee-Template</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="u-ml-10 u-mt-10 u-flex-space-between" style="padding: 10px;">
-                <button class="u-btn u-mr-10" type="button" id="modal-import-btn-close">Close</button>
-                <button class="u-btn u-bg-primary u-t-white" type="submit">Submit</button>
-            </div>
-        </form>
+    <div class="modal-box">
+        <div class="modal-content">
+            <form action="{{ route('importUser') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
+                @csrf
+                <table class="custom_normal_table">
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                                <h3 class="f-weight-bold"><i class="fa-solid fa-eye"></i>Import Excel File</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Attach File:</p>
+                                <input class="u-input" type="file" name="import_accounts"  required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Download Template:</p>
+                                <a class="u-input" style="padding-top: 7px; padding-bottom: 7px; text-decoration: none;" href="{{ route('downloadNewEmployeeTemplate') }}" >Add-New-Employee-Template</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="u-ml-10 u-mt-10 u-flex-space-between" style="padding: 10px;">
+                    <button class="u-btn u-mr-10" type="button" id="modal-import-btn-close">Close</button>
+                    <button class="u-btn u-bg-primary u-t-white" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 <div class="mg-bottom">
-    {{-- <div id="useraccounts_add" class="modal">
-        <form action="{{ route('add_user') }}" method="POST" autocomplete="off">
-            @csrf
-            <div class="useraccounts_add_header">
-                <p>Add Account</p>
-            </div>
-            <div>
-                <div class="label_input">
-                    <label for="">Email Address: </label>
-                    <input type="text" name="email"  required>
-                    @if ($errors->has('email'))
-                        <span class="text-danger">{{ $errors->first('email') }}</span>
-                    @endif
-                </div>
-                <div class="label_input">
-                    <label for="">First Name: </label>
-                    <input type="text" name="first_name" onchange="removeExcessSpaces(this)" required>
-                    @if ($errors->has('first_name'))
-                        <span class="text-danger">{{ $errors->first('first_name') }}</span>
-                    @endif
-                </div>
-                <div class="label_input">
-                    <label for="">Last Name: </label>
-                    <input type="text" name="last_name" required>
-                    @if ($errors->has('last_name'))
-                        <span class="text-danger">{{ $errors->first('last_name') }}</span>
-                    @endif
-                </div>
-                <div class="label_input">
-                    <label for="">Mobile Number: </label>
-                    <input type="text" name="mobile_number" required>
-                    @if ($errors->has('mobile_number'))
-                        <span class="text-danger">{{ $errors->first('mobile_number') }}</span>
-                    @endif
-                </div>
-                <div class="label_input">
-                    <label for="">Privilege</label>
-                    <select class="js-example-basic-single s-add" name="privilege_role" id="user_privilege" style="text-align: center;">
-                        @foreach ($privilege_roles as $role)
-                            <option value="{{ $role->name }}">{{ $role->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="label_input">
-                    <label for="">Temporary Password: </label> <label style="color: #20B2AA"><em>qwerty123</em></label>
-                    <input type="password" name="password" value="qwerty123" placeholder="qwerty123" readonly>
-                </div>
-            </div>
-
-            <a class="addaccount_close" href="#" rel="modal:close" id="clsaccount_btn">Close</a>
-            <button class="addaccount_btn">Submit</button>
-        </form>
-    </div> --}}
 
     <div id="useraccounts_import" class="modal">
         <form action="{{ route('importUser') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
