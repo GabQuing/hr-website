@@ -1,6 +1,6 @@
-@extends('layouts.side_top_content', ['title' => 'Payroll'])
+@extends('layouts.side_top_content', ['title' => 'My Payroll'])
 
-@section('module_name', 'Payroll')
+@section('module_name', 'My Payroll')
 
 @section('content')
 

@@ -1,6 +1,6 @@
 @extends('layouts.side_top_content')
 
-@section('module_name', 'Official Business')
+@section('module_name', 'My Official Business')
 
 @section('content')
 
