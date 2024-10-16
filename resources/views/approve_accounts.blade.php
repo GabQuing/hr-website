@@ -1,6 +1,6 @@
-@extends('layouts.side_top_content', ['title' => 'Approve Registration'])
+@extends('layouts.side_top_content', ['title' => 'Employee Registration'])
 
-@section('module_name', 'Approve Registration')
+@section('module_name', 'Employee Registration')
 
 @section('content')
 <style>
