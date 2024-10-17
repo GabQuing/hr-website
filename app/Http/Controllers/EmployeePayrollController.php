@@ -71,7 +71,8 @@ class EmployeePayrollController extends Controller
         $employee_payroll->update([
             'from_date' => $date_from,
             'to_date' => $date_to,
-            'updated_at' => date('Y-m-d H:i:s')
+            'updated_at' => date('Y-m-d H:i:s'),
+            'updated_by' => auth()->user()->id
         ]);
 
         if ($hasFile) {

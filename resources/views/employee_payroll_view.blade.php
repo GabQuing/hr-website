@@ -87,7 +87,7 @@
                     <td>{{ $payroll->to_date }}</td>
                     <td>{{ $payroll->created_by_head }}</td>
                     <td>{{ $payroll->created_at }}</td>
-                    <td>{{ $payroll->name }}</td>
+                    <td>{{ $payroll->updatedBy->name ?? '' }}</td>
                     <td>
                         <div class="d-flex" style="gap:3px">
                             <a href="{{ route('employee_payroll_edit', $payroll->id) }}" class="material-symbols-outlined u-action-btn u-bg-primary" style="vertical-align: bottom; font-size: 20px; font-weight: bold; color: white; text-decoration: none;">
