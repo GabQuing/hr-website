@@ -522,7 +522,7 @@
         })
 
 
-        $('.ob-btn').on('click', function(){
+        $(document).on('click','.ob-btn', function(){
             $('#official-business-modal').show();
             
             let obId = $(this).attr('ob-id');
@@ -548,7 +548,7 @@
             })
         })
 
-        $('.leave-btn').on('click', function(){
+        $(document).on('click', '.leave-btn', function(){
             $('#leave-modal').show();
             
             let leaveId = $(this).attr('leave-id');
@@ -577,7 +577,7 @@
             })
         })
 
-        $(document).on('.ot-btn', 'click', function(){
+        $(document).on('click', '.ot-btn', function(){
             $('#overtime-modal').show();
             
             let otId = $(this).attr('ot-id');
