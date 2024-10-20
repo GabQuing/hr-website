@@ -577,7 +577,7 @@
             })
         })
 
-        $('.ot-btn').on('click', function(){
+        $(document).on('.ot-btn', 'click', function(){
             $('#overtime-modal').show();
             
             let otId = $(this).attr('ot-id');
