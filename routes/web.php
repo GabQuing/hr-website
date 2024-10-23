@@ -222,7 +222,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/employee_informations/downloadEditProfileTemplate', [EmployeeInformationsController::class, 'downloadEditProfileTemplate'])->name('downloadEditProfileTemplate');
     Route::post('/employee_informations/getSchedule', [ProfileController::class, 'getSchedule'])->name('getSchedule');
     Route::post('/employee_informations/addContract', [ProfileController::class, 'addContract'])->name('employee_contract_add');
+    Route::post('/employee_informations/addResume/{id}', [ProfileController::class, 'addResume'])->name('employee_resume_add');
     Route::get('/employee_informations/showContract/{file_name}', [ProfileController::class, 'showContract'])->name('show_contract');
+    Route::get('/employee_informations/showResume/{file_name}', [ProfileController::class, 'showResume'])->name('show_resume');
     Route::get('/employee_informations/download', [ProfileController::class, 'downloadPDF'])->name('employee_contract_download');
 
 
