@@ -289,8 +289,34 @@ class ProfileController extends Controller
         return redirect()->back()->with('successContract', 'Contract successfully added.');
     }
 
+    public function addResume(Request $request, int $id)
+    {
+        // Handle the file upload
+        $return_input = $request->all();
+        $file = $return_input['resume_pdf'];
+        $file_name = "$id." . $file->getClientOriginalExtension();
+        $file->storeAs('employee-resume', $file_name);
+    
+        $user = User::find($id);
+
+        $user->update([
+            'resume_path' => storage_path('app/employee-resume') . "/$file_name",
+        ]);
+    
+        return redirect()->back()->with('successUpdated', 'Resume successfully added.');
+    }
+
     public function showContract($file_name){
         $fileContents = Storage::get("employee-contract/$file_name");
+
+        return Response::make($fileContents, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $file_name . '"'
+        ]);
+    }
+
+    public function showResume($file_name){
+        $fileContents = Storage::get("employee-resume/$file_name");
 
         return Response::make($fileContents, 200, [
             'Content-Type' => 'application/pdf',

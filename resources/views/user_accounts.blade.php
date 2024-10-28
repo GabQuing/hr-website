@@ -1,6 +1,6 @@
-@extends('layouts.side_top_content', ['title' => 'User Accounts'])
+@extends('layouts.side_top_content', ['title' => 'Employee Accounts'])
 
-@section('module_name', 'User Accounts')
+@section('module_name', 'Employee Accounts')
 
 @section('content')
 <style>

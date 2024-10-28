@@ -87,6 +87,7 @@
     </div>
 </div>
 @role('hr|admin')
+    {{-- Employee Contract --}}
     <div class="modal-center employee-contract" style="display: none;">
         <div class="modal-box employee-contract-div">
             <div class="modal-content">
@@ -107,7 +108,7 @@
                                 </td>
                                 <td>
                                     <p>Upload/Edit PDF</p>
-                                    <input class="u-input" id="pdfInput" name="pr_pdf" type="file" accept=".pdf" required>
+                                    <input class="u-input" id="resumeInput" name="pr_pdf" type="file" accept=".pdf" required>
                                 </td>
                             </tr>
                         </tbody>
@@ -117,12 +118,50 @@
                         <button class="u-t-white u-fw-b u-btn u-bg-primary u-m-10 u-border-1-default btn-close" id="modal-btn-submit" type="submit">Submit</button>
                     </div>
                     @if($employee_contract)
-                    <div class="u-m-10">
-                        <div class="u-bg-primary u-fw-b u-t-white" style="padding: 20px 10px">
-                            Uploaded Employee Contract
+                        <div class="u-m-10">
+                            <div class="u-bg-primary u-fw-b u-t-white" style="padding: 20px 10px">
+                                Uploaded Employee Contract
+                            </div>
+                                <embed src="{{ route('show_contract', $employee_contract->file_name) }}" width="100%" height="700px"></embed>
                         </div>
-                            <embed src="{{ route('show_contract', $employee_contract->file_name) }}" width="100%" height="700px"></embed>
+                    @endif
+                </form>
+            </div>
+        </div>
+    </div>
+    {{-- Resume --}}
+    <div class="modal-center employee-resume" style="display: none;">
+        <div class="modal-box employee-contract-div">
+            <div class="modal-content">
+                <form method="POST" action="{{ route('employee_resume_add', $user_info->id)}}" enctype="multipart/form-data">
+                    @csrf
+                    <table class="custom_normal_table">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <h3 class="f-weight-bold">Employee Resume</h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Upload/Edit PDF</p>
+                                    <input class="u-input" id="pdfInput" name="resume_pdf" type="file" accept=".pdf" required>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="u-flex-space-between u-flex-wrap">
+                        <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" id="btn-close-resume" type="button">Close</button>
+                        <button class="u-t-white u-fw-b u-btn u-bg-primary u-m-10 u-border-1-default btn-close" id="modal-btn-submit" type="submit">Submit</button>
                     </div>
+                    @if($user_info->resume_path)
+                        <div class="u-m-10">
+                            <div class="u-bg-primary u-fw-b u-t-white" style="padding: 20px 10px">
+                                Uploaded Employee Resume
+                            </div>
+                            <embed src="{{ route('show_resume', "$user_info->id.pdf") }}" width="100%" height="700px"></embed>
+                        </div>
                     @endif
                 </form>
             </div>
@@ -154,6 +193,7 @@
             <label class="my_profile_employee_info" for="">User ID: {{ $basic_information->user_id }}</label>
             <br>
             <button class="u-btn u-mt-5 u-bg-default u-t-dark u-border-1-gray u-box-shadow-default update-contract-modal">Employee Contract</button>
+            <button class="u-btn u-mt-5 u-ml-15 u-bg-default u-t-dark u-border-1-gray u-box-shadow-default update-resume-modal">Employee Resume</button>
         @endif
     @endrole
     {{-- My Profile Content --}}
@@ -176,6 +216,9 @@
             @endif
             @if (session('success'))
                 <span style="color: green; display:block;">{{ session('success') }}</span>
+            @endif
+            @if (session('successUpdated'))
+                <span style="color: green; display:block;">{{ session('successUpdated') }}</span>
             @endif
             @if (session('successContract'))
                 <span style="color: green; display:block;">{{ session('successContract') }}</span>
@@ -851,6 +894,13 @@
         })
         $('#btn-close-contract').on('click', function(){
             $('.employee-contract').hide();
+        })
+
+        $('.update-resume-modal').on('click', function(){
+            $('.employee-resume').show();
+        })
+        $('#btn-close-resume').on('click', function(){
+            $('.employee-resume').hide();
         })
 
         $('#modal-btn-close').on('click', function(){

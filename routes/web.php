@@ -135,7 +135,8 @@ Route::middleware(['auth'])->group(function () {
     //Employee Payroll
     Route::get('/employee_payroll', [EmployeePayrollController::class, 'index'])->name('employee_payroll');
     Route::get('/employee_payroll/edit/{id}', [EmployeePayrollController::class, 'edit'])->name('employee_payroll_edit');
-    Route::post('/employee_payroll/store', [EmployeePayrollController::class, 'add'])->name('employee_payroll_add');
+    Route::get('/employee_payroll/view/{id}', [EmployeePayrollController::class, 'view'])->name('employee_payroll_view');
+    Route::post('/employee_payroll/store/{id}', [EmployeePayrollController::class, 'add'])->name('employee_payroll_add');
     Route::post('/employee_payroll/update/{id}', [EmployeePayrollController::class, 'update'])->name('employee_payroll_update');
     Route::get('/employee_payroll/pdfShow/{file_name}', [EmployeePayrollController::class, 'showPDF'])->name('showPDF');
     Route::get('/employee_payroll/delete', [EmployeePayrollController::class, 'deletePayroll'])->name('employee_payroll_delete');
@@ -221,7 +222,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/employee_informations/downloadEditProfileTemplate', [EmployeeInformationsController::class, 'downloadEditProfileTemplate'])->name('downloadEditProfileTemplate');
     Route::post('/employee_informations/getSchedule', [ProfileController::class, 'getSchedule'])->name('getSchedule');
     Route::post('/employee_informations/addContract', [ProfileController::class, 'addContract'])->name('employee_contract_add');
+    Route::post('/employee_informations/addResume/{id}', [ProfileController::class, 'addResume'])->name('employee_resume_add');
     Route::get('/employee_informations/showContract/{file_name}', [ProfileController::class, 'showContract'])->name('show_contract');
+    Route::get('/employee_informations/showResume/{file_name}', [ProfileController::class, 'showResume'])->name('show_resume');
     Route::get('/employee_informations/download', [ProfileController::class, 'downloadPDF'])->name('employee_contract_download');
 
 

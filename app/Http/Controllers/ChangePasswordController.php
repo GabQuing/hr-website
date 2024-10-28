@@ -20,8 +20,6 @@ class ChangePasswordController extends Controller
         $data = [];
         $data['user_info'] = User::where('id', $id)->first();
 
-
-
         return view('/change_password', $data);
     }
 

@@ -336,8 +336,8 @@
             $('.shift-date').on('change', function() {
                 const value = $(this).val();
                 const form = $(this).parents('form');
-                const date = new Date(value);
-                const dayName = date.toLocaleString('en-us', { weekday: 'long' });
+                const date = new Date(`${value}`);
+                const dayName = date.toLocaleString('en-us', { weekday: 'long', timeZone: 'UTC' });
                 const sched = userSchedules.find(sched => sched.work_day === dayName);
                 const isRestDay = sched.rest_day;
                 const workFrom = sched.work_from;

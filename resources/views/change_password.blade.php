@@ -21,7 +21,7 @@
     <!-- Register Content -->
     <section class="register-section">
         <div class="register-box">
-            <form method="POST" action="{{ !session('success') ? route('new_password', $user_info->id) : '' }}">
+            <form method="POST" action="{{ route('new_password', $user_info->id) }}">
                 @csrf
                 <div class="register-header {{ session('success') ? 'rh-active1' : '' }}">
                     <div class="register-header-process u-fw-b {{ session('success') ? 'rh-not-active' : 'rh-active' }}">

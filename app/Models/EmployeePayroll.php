@@ -10,4 +10,9 @@ class EmployeePayroll extends Model
     use HasFactory;
     
     protected $guarded = [];
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 }
