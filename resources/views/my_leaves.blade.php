@@ -235,7 +235,7 @@
                             </tr>
                         @endif
                         <tr class="">
-                            <td><h5 class="u-fw-b">My Request - Pending</h5></td>
+                            <td><h5 class="u-fw-b">My Request - <span id="status-label">Pending</span></h5></td>
                         </tr>
                     </tbody>
                 </table>
@@ -352,16 +352,19 @@
         $('#mob-pending').on('click', function(){
             hideTable($(this), 'Pending');
             $('.mob-pending-table').show();
+            $('#status-label').text('Pending');
         })
 
         $('#mob-approve').on('click', function(){
             hideTable($(this), 'Approved');
             $('.mob-approve-table').show();
+            $('#status-label').text('Approved');
         })
 
         $('#mob-rejected').on('click', function(){
             hideTable($(this), 'Rejected');
             $('.mob-rejected-table').show();
+            $('#status-label').text('Rejected/Canceled');
         })
 
         $('#my_official_business_add').on('click', function(){
