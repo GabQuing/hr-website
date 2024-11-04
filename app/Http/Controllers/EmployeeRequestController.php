@@ -31,6 +31,7 @@ class EmployeeRequestController extends Controller
                 'official_businesses.*'
             )
             ->orderBy(DB::raw('status = "PENDING"'), 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate(10, ['*'], 'official_businesses');
 
         $data['overtimes'] = Overtime::leftJoin('users', 'users.id', 'overtimes.created_by')
@@ -40,6 +41,7 @@ class EmployeeRequestController extends Controller
                 'overtimes.*'
             )
             ->orderBy(DB::raw('status = "PENDING"'), 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate(10, ['*'], 'overtimes');
         $data['leaves'] = Leave::leftJoin('users', 'users.id', 'leaves.created_by')
             ->select(
@@ -48,6 +50,7 @@ class EmployeeRequestController extends Controller
                 'leaves.*'
             )
             ->orderBy(DB::raw('status = "PENDING"'), 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate(10, ['*'], 'leaves');
         $data['pending_ob'] = OfficialBusiness::where('status', 'PENDING')->count();
         $data['pending_ot'] = Overtime::where('status', 'PENDING')->count();
