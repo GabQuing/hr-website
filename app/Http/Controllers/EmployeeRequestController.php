@@ -20,6 +20,9 @@ class EmployeeRequestController extends Controller
      */
     public function index()
     {
+        $queryParams = request()->all();
+        $openTab = sizeof($queryParams) ? array_keys($queryParams)[0] : ['official_businesses'];
+        $openTab = in_array($openTab, ['official_businesses', 'overtimes', 'leaves']) ? $openTab : 'official_businesses';
         $data = [];
         $data['official_businesses'] = OfficialBusiness::leftJoin('users', 'users.id', 'official_businesses.created_by')
             ->select(
@@ -28,7 +31,8 @@ class EmployeeRequestController extends Controller
                 'official_businesses.*'
             )
             ->orderBy(DB::raw('status = "PENDING"'), 'desc')
-            ->get();
+            ->paginate(10, ['*'], 'official_businesses');
+
         $data['overtimes'] = Overtime::leftJoin('users', 'users.id', 'overtimes.created_by')
             ->select(
                 'users.*',
@@ -36,7 +40,7 @@ class EmployeeRequestController extends Controller
                 'overtimes.*'
             )
             ->orderBy(DB::raw('status = "PENDING"'), 'desc')
-            ->get();
+            ->paginate(10, ['*'], 'overtimes');
         $data['leaves'] = Leave::leftJoin('users', 'users.id', 'leaves.created_by')
             ->select(
                 'users.*',
@@ -44,10 +48,11 @@ class EmployeeRequestController extends Controller
                 'leaves.*'
             )
             ->orderBy(DB::raw('status = "PENDING"'), 'desc')
-            ->get();
+            ->paginate(10, ['*'], 'leaves');
         $data['pending_ob'] = OfficialBusiness::where('status', 'PENDING')->count();
         $data['pending_ot'] = Overtime::where('status', 'PENDING')->count();
         $data['pending_leaves'] = Leave::where('status', 'PENDING')->count();
+        $data['openTab'] = $openTab;
 
         return view('employee_request', $data);
     }
@@ -96,7 +101,7 @@ class EmployeeRequestController extends Controller
                 'rejected_by' => auth()->user()->id
             ]);
         }
-        return redirect()->back()->with('ob-success', 'The request has been updated.');
+        return redirect()->route('employee_request', ['official_businesses' => 1])->with('ob-success', 'The request has been updated.');
     }
 
     public function otForm(Request $request)
@@ -121,7 +126,7 @@ class EmployeeRequestController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('ot-success', 'The request has been updated.');
+        return redirect()->route('employee_request', ['overtimes' => 1])->with('ot-success', 'The request has been updated.');
     }
 
     public function leaveForm(Request $request)
@@ -156,7 +161,7 @@ class EmployeeRequestController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('ot-success', 'The request has been updated.');
+        return redirect()->route('employee_request', ['leaves' => 1])->with('ot-success', 'The request has been updated.');
     }
 
     public function adjustUserLog($request_type, $request_item)

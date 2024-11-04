@@ -9,7 +9,7 @@
         }
     </style>
 
-    <div>
+    <div x-data="{ openTab: '{{ $openTab }}' }">
         {{-- Modals --}}
         <div class="modal-center" id="official-business-modal" style="display: none;">
             <div class="modal-box">
@@ -234,7 +234,7 @@
 
         <div class="u-flex">
             <div class="u-mr-16" style="position: relative" id="official_business-btn">
-                <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default" href="">Official Business</button>
+                <button @click="openTab = 'official_businesses'" :class="openTab == 'official_businesses' ? 'u-btn-active' : ''" class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default" href="">Official Business</button>
                 @if ($pending_ob)
                     <div class="u-record u-t-white">
                         <span style="position: relative; top: -1px;">
@@ -245,7 +245,7 @@
             </div>
             
             <div class="u-mr-16" style="position: relative" id="overtimes-btn">
-                <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default" href="">Overtimes</button>
+                <button @click="openTab = 'overtimes'" :class="openTab == 'overtimes' ? 'u-btn-active' : ''" class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default" href="">Overtimes</button>
                 @if ($pending_ot)
                     <div class="u-record u-t-white">
                         <span style="position: relative; top: -1px;">
@@ -255,7 +255,7 @@
                 @endif
             </div>
             <div class="u-mr-16" style="position: relative" id="leaves-btn">
-                <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default" href="">Leaves</button>
+                <button @click="openTab = 'leaves'" :class="openTab == 'leaves' ? 'u-btn-active' : ''" class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default" href="">Leaves</button>
                 @if ($pending_leaves)
                     <div class="u-record u-t-white">
                         <span style="position: relative; top: -1px;">
@@ -278,7 +278,7 @@
             @endif
         </div>
 
-        <div class="official-business-table" style="display: none;">
+        <div class="official-business-table" x-show="openTab === 'official_businesses'" x-transition>
             <div class="u-mt-10">
                 <table class="myTable" class="display" style="width:100%;">
                     <thead>
@@ -341,10 +341,11 @@
                         </tr>
                     </tfoot>
                 </table>
+                {{ $official_businesses->links() }}
             </div>
         </div>
 
-        <div class="overtimes-table" style="display: none;">
+        <div class="overtimes-table" x-show="openTab === 'overtimes'" x-transition>
             <div class="u-mt-10">
                 <table class="myTable" class="display" style="width:100%;">
                     <thead>
@@ -423,10 +424,11 @@
                         </tr>
                     </tfoot>
                 </table>
+                {{ $overtimes->links() }}
             </div>
         </div>
 
-        <div class="leaves-table" style="display: none;">
+        <div class="leaves-table" x-show="openTab === 'leaves'" x-transition>
             <div class="u-mt-10">
                 <table class="myTable" class="display" style="width:100%;">
                     <thead>
@@ -486,6 +488,7 @@
                         </tr>
                     </tfoot>
                 </table>
+                {{ $leaves->links() }}
             </div>
         </div>
     </div>
@@ -500,26 +503,26 @@
             $('.modal-center').hide();
         })
 
-        $('#official_business-btn').on('click', function(){
-            removeBtnClassActive();
-            hideTables();
-            $(this).find('button').addClass('u-btn-active');
-            $('.official-business-table').fadeIn('slow');
-        });
+        // $('#official_business-btn').on('click', function(){
+        //     removeBtnClassActive();
+        //     hideTables();
+        //     $(this).find('button').addClass('u-btn-active');
+        //     $('.official-business-table').fadeIn('slow');
+        // });
 
-        $('#overtimes-btn').on('click', function(){
-            removeBtnClassActive();
-            hideTables();
-            $(this).find('button').addClass('u-btn-active');
-            $('.overtimes-table').fadeIn('slow');
-        })
+        // $('#overtimes-btn').on('click', function(){
+        //     removeBtnClassActive();
+        //     hideTables();
+        //     $(this).find('button').addClass('u-btn-active');
+        //     $('.overtimes-table').fadeIn('slow');
+        // })
 
-        $('#leaves-btn').on('click', function(){
-            removeBtnClassActive();
-            hideTables();
-            $(this).find('button').addClass('u-btn-active');
-            $('.leaves-table').fadeIn('slow');
-        })
+        // $('#leaves-btn').on('click', function(){
+        //     removeBtnClassActive();
+        //     hideTables();
+        //     $(this).find('button').addClass('u-btn-active');
+        //     $('.leaves-table').fadeIn('slow');
+        // })
 
 
         $(document).on('click','.ob-btn', function(){
@@ -618,12 +621,12 @@
             $('input[name="leave_form_btn"]').val($(event.target).text().toLowerCase());
         });
 
-        // session success
-        if ("{{ session('ob-success') }}"){
-            $('.official-business-table').fadeIn('slow');
-        }else if ("{{ session('ot-success') }}"){
-            $('.overtimes-table').fadeIn('slow');
-        }
+        // // session success
+        // if ("{{ session('ob-success') }}"){
+        //     $('.official-business-table').fadeIn('slow');
+        // }else if ("{{ session('ot-success') }}"){
+        //     $('.overtimes-table').fadeIn('slow');
+        // }
 
 
         function removeBtnClassActive(){
@@ -635,13 +638,14 @@
             $('.overtimes-table').hide();
             $('.leaves-table').hide();
         }
-        $('#official_business-btn').click();
+        // $('#official_business-btn').click();
         
     });
 
     // DataTable 
     $('.myTable').DataTable({
         responsive: true,
+        "paging":   false,
         order: [],
         "columnDefs": [
             { "className": "dt-center", "targets": "_all" }
