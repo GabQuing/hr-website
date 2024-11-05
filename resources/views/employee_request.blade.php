@@ -342,6 +342,7 @@
                     </tfoot>
                 </table>
                 {{ $official_businesses->links() }}
+            <p>Showing {{ $official_businesses->firstItem() ?? 0 }} to {{ $official_businesses->lastItem() ?? 0 }} of {{ $official_businesses->total() }} items.</p>
             </div>
         </div>
 
@@ -425,6 +426,8 @@
                     </tfoot>
                 </table>
                 {{ $overtimes->links() }}
+                <p>Showing {{ $overtimes->firstItem() ?? 0 }} to {{ $overtimes->lastItem() ?? 0 }} of {{ $overtimes->total() }} items.</p>
+
             </div>
         </div>
 
@@ -489,6 +492,7 @@
                     </tfoot>
                 </table>
                 {{ $leaves->links() }}
+                <p>Showing {{ $leaves->firstItem() ?? 0 }} to {{ $leaves->lastItem() ?? 0 }} of {{ $leaves->total() }} items.</p>
             </div>
         </div>
     </div>
@@ -642,10 +646,11 @@
         
     });
 
-    // DataTable 
+    DataTable 
     $('.myTable').DataTable({
         responsive: true,
         "paging":   false,
+        "info":     false,
         order: [],
         "columnDefs": [
             { "className": "dt-center", "targets": "_all" }
