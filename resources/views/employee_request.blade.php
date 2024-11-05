@@ -646,7 +646,7 @@
         
     });
 
-    DataTable 
+    // DataTable 
     $('.myTable').DataTable({
         responsive: true,
         "paging":   false,
