@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\OfficialBusiness;
 use Illuminate\Http\Request;
-use App\Models\schedule_type; 
+use App\Models\schedule_type;
 
 class OfficialBusinessController extends Controller
 {
     public function index()
     {
 
+        $queryParams = request()->all();
+        $openTab = sizeof($queryParams) ? array_keys($queryParams)[0] : ['pending'];
+        $openTab = in_array($openTab, ['pending', 'approved', 'rejected_canceled']) ? $openTab : 'pending';
         $user_id = auth()->user()->id;
         $server_datetime_today = now();
         $datetime_object = new \DateTime($server_datetime_today);
@@ -20,18 +23,19 @@ class OfficialBusinessController extends Controller
         $data['pending_logs'] = OfficialBusiness::where('created_by', $user_id)
             ->where('status', 'PENDING')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10, ['*'], 'pending');
         $data['approved_logs'] = OfficialBusiness::where('created_by', $user_id)
             ->where('status', 'APPROVED')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10, ['*'], 'approved');
         $data['rejected_canceled_logs'] = OfficialBusiness::where('created_by', $user_id)
             ->whereIn('status', ['REJECTED', 'CANCELED'])
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10, ['*'], 'rejected_canceled');
 
         $data['serverCurrentDay'] = $server_day;
         $data['serverFormattedDate'] = $formatted_date;
+        $data['openTab'] = $openTab;
 
         return view('my_official_business', $data);
     }
@@ -53,7 +57,7 @@ class OfficialBusinessController extends Controller
             'created_by' => $employee_id,
             'created_at' => now(),
         ]);
-        return redirect()->back()->with('success', 'Official Business Generated Successfully!');
+        return redirect()->route('officialbusiness')->with('success', 'Official Business Generated Successfully!');
     }
 
     public function edit($id)
@@ -80,7 +84,7 @@ class OfficialBusinessController extends Controller
 
         ]);
 
-        return redirect()->back()->with('success', 'Official Business Has Been Edited!');
+        return redirect()->route('officialbusiness')->with('success', 'Official Business Has Been Edited!');
     }
 
     public function deleteOB($id)
