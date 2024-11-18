@@ -13,6 +13,9 @@ class OvertimesController extends Controller
 
     public function index()
     {
+        $queryParams = request()->all();
+        $openTab = sizeof($queryParams) ? array_keys($queryParams)[0] : ['pending'];
+        $openTab = in_array($openTab, ['pending', 'approved', 'rejected_canceled']) ? $openTab : 'pending';
         $data = [];
         $user_id = auth()->user()->id;
         $server_datetime_today = now();
@@ -42,15 +45,15 @@ class OvertimesController extends Controller
         $data['pending_logs'] = Overtime::where('created_by', $user_id)
             ->where('status', 'PENDING')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10, ['*'], 'pending');
         $data['approved_logs'] = Overtime::where('created_by', $user_id)
             ->where('status', 'APPROVED')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10, ['*'], 'approved');
         $data['rejected_canceled_logs'] = Overtime::where('created_by', $user_id)
             ->whereIn('status', ['REJECTED', 'CANCELED'])
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10, ['*'], 'rejected_canceled');
         $data['has_clock_in_today'] = UserLog::where('log_date', $server_date)
             ->where('log_type_id', 1)
             ->where('user_id', $user_id)
@@ -62,6 +65,7 @@ class OvertimesController extends Controller
         $data['serverDateTime'] = $server_datetime_today;
         $data['server_date'] = $server_date;
         $data['employee_schedule'] = $user_sched;
+        $data['openTab'] = $openTab;
 
         return view('my_overtimes', $data);
     }
@@ -85,7 +89,7 @@ class OvertimesController extends Controller
             'created_by' => $employee_id,
         ]);
 
-        return redirect()->back()->with('success', 'Overtime Generated Successfully!');
+        return redirect()->route('overtimes')->with('success', 'Overtime Generated Successfully!');
     }
 
     public function edit($id)
@@ -111,11 +115,10 @@ class OvertimesController extends Controller
             'status' => 'PENDING',
             'ot_classification' => $request->input('ot_classification'),
             'reason' => $request->input('reason'),
-            'created_at' => now(),
             'created_by' => $employee_id,
         ]);
 
-        return redirect()->back()->with('success', 'Overtime Form Has Been Edited!');
+        return redirect()->route('overtimes')->with('success', 'Official Business Has Been Edited!');
     }
 
     public function deleteOT($id)
