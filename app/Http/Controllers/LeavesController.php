@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\EmployeeLeaves;
 use Illuminate\Http\Request;
-use App\Models\Leave; 
+use App\Models\Leave;
 
 class LeavesController extends Controller
 {
     public function index()
     {
-        $data=[];
+        $queryParams = request()->all();
+        $openTab = sizeof($queryParams) ? array_keys($queryParams)[0] : ['pending'];
+        $openTab = in_array($openTab, ['pending', 'approved', 'rejected_canceled']) ? $openTab : 'pending';
+        $data = [];
 
         $user_id = auth()->user()->id;
         $server_datetime_today = now();
@@ -19,26 +22,25 @@ class LeavesController extends Controller
         $server_day = $server_datetime_today->format('l');
 
 
-        $data['pending_logs'] = Leave::where('created_by',$user_id)
+        $data['pending_logs'] = Leave::where('created_by', $user_id)
             ->where('status', 'PENDING')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10, ['*'], 'pending');
 
-        $data['approved_logs'] = Leave::where('created_by',$user_id)
+        $data['approved_logs'] = Leave::where('created_by', $user_id)
             ->where('status', 'APPROVED')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10, ['*'], 'approved');
 
-        $data['rejected_canceled_logs'] = Leave::where('created_by',$user_id)
-            ->whereIn('status', ['REJECTED','CANCELED'])
+        $data['rejected_canceled_logs'] = Leave::where('created_by', $user_id)
+            ->whereIn('status', ['REJECTED', 'CANCELED'])
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10, ['*'], 'rejected_canceled');
 
         $data['employee_leaves'] = EmployeeLeaves::where('user_id', $user_id)->first();
-        
         $data['serverCurrentDay'] = $server_day;
-
         $data['serverFormattedDate'] = $formatted_date;
+        $data['openTab'] = $openTab;
 
         return view('my_leaves', $data);
     }
@@ -50,7 +52,7 @@ class LeavesController extends Controller
 
         $employee_leaves = EmployeeLeaves::where('user_id', $employee_id)->first();
 
-        if (($request->input('leave_type') == 'BIRTHDAY' && $employee_leaves->sick_credit == 0) || ($request->input('leave_type') == 'VACATION' && $employee_leaves->vacation_credit == 0)){
+        if (($request->input('leave_type') == 'BIRTHDAY' && $employee_leaves->sick_credit == 0) || ($request->input('leave_type') == 'VACATION' && $employee_leaves->vacation_credit == 0)) {
             return redirect()->back()->with('failed', 'No more credits!');
         }
 
@@ -63,13 +65,13 @@ class LeavesController extends Controller
             'status' => 'PENDING',
             'created_at' => now(),
             'created_by' => $employee_id,
-            
+
         ]);
 
-        return redirect()->back()->with('success', 'Leave Generated Successfully!');
+        return redirect()->route('leaves')->with('success', 'Leave Generated Successfully!');
     }
 
-    public function edit ($id)
+    public function edit($id)
     {
         $showLeave = Leave::leftJoin('employee_leaves', 'employee_leaves.user_id', 'leaves.created_by')
             ->where('leaves.id', $id)
@@ -97,7 +99,8 @@ class LeavesController extends Controller
             'updated_by' => $employee_id,
             'updated_at' => now(),
         ]);
-        return redirect()->back()->with('success', 'Overtime Form Has Been Edited!');
+
+        return redirect()->route('leaves')->with('success', 'Leave Updated Successfully!');
     }
 
     public function deleteLeave($id)
