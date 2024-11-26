@@ -291,7 +291,7 @@
                         @foreach ($approved_logs as $approved_log)
                             <tr>
                                 <td><h5>{{ $approved_log->status }}</h5></td>
-                                <td><h5>{{ date('F d Y', strtotime($pending_log->created_at))}}</h5></td>
+                                <td><h5>{{ date('F d Y', strtotime($approved_log->created_at))}}</h5></td>
                                 <td><h5>{{ date('F d Y', strtotime($approved_log->shift_date)) }}</h5></td>
                                 <td><h5>{{ $approved_log->shift_from ? date('g:ia', strtotime($approved_log->shift_from)) : ''}}</h5></td>
                                 <td><h5>{{ $approved_log->shift_to ? date('g:ia', strtotime($approved_log->shift_to)) : ''}}</h5></td>
@@ -325,7 +325,7 @@
                         @foreach ($rejected_canceled_logs as $rejected_canceled_log)
                         <tr>
                             <td><h5>{{ $rejected_canceled_log->status }}</h5></td>
-                            <td><h5>{{ date('F d Y', strtotime($pending_log->created_at))}}</h5></td>
+                            <td><h5>{{ date('F d Y', strtotime($rejected_canceled_log->created_at))}}</h5></td>
                             <td><h5>{{ date('F d Y', strtotime($rejected_canceled_log->shift_date)) }}</h5></td>
                             <td><h5>{{ $rejected_canceled_log->shift_from ? date('g:ia', strtotime($rejected_canceled_log->shift_from)) : ''}}</h5></td>
                             <td><h5>{{ $rejected_canceled_log->shift_to ? date('g:ia', strtotime($rejected_canceled_log->shift_to)) : ''}}</h5></td>
