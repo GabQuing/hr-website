@@ -74,6 +74,106 @@ textarea {
     background: #02718A; /* Color of the scrollbar thumb on hover */
 }
 
+.mh-500{
+    max-height: 500px !important;
+}
+.mh-200{
+    height: 110px !important;
+}
+
+/* Grid container */
+.attendance-graph {
+    display: grid;
+    grid-template-columns: repeat(7, 15px); /* 7 columns for days of the week */
+    gap: 4px;
+    padding: 10px;
+    max-width: fit-content;
+}
+
+/* Each square (day) */
+.day {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background-color: #ebedf0; /* Default color (no attendance) */
+}
+.on-time-sq {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background-color: #196127;
+}
+.late-sq{
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background-color: red;
+}
+.vacation-sq{
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background-color: yellow;
+}
+.absent-sq{
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background-color: black;
+}
+.no-sched-sq{
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background-color: #ebedf0;
+}
+
+/* Attendance levels (shades of green) */
+.level-1 { background-color: #c6e48b; }
+.level-2 { background-color: #7bc96f; }
+.level-3 { background-color: #239a3b; }
+.level-4 { background-color: #196127; }
+
+/* Hover effect */
+.day:hover, .on-time-sq:hover, .late-sq:hover, .vacation-sq:hover,
+.absent-sq:hover,.no-sched-sq:hover
+{
+    transform: scale(1.2);
+    opacity: 0.8;
+}
+
+.custom-grid-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 10px;
+}
+
+.custom-detail-btn{
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: small;
+    font-weight: bold;
+    color: #02718A;
+    padding: 5px;
+    text-decoration: underline;
+}
+.custom-detail-btn:hover{
+    opacity: 75%;
+}
+
+.notes-container{
+    border: 1px solid #02718A;
+    padding: 10px;
+}
+
 @media (max-width: 1492px) {
     .blue-border {
         width: 100%;
@@ -339,6 +439,90 @@ textarea {
             </table>
         </div>
     </div>
+    <div class="container container_my_store_location">
+        <div class="container_title">
+            <p class="header_title_h2">Attendance Tracker</p>
+        </div>
+        <div class="dashboard_table scrollable-container mh-500 u-flex u-p-10 custom-grid-container ">
+            @php
+                $year = now()->year; // Get the current year
+                $all_months = [
+                    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+                ];
+            @endphp
+
+            @foreach($all_months as $index => $month)
+                @php
+                    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $index + 1, $year); // Get number of days in month
+                @endphp
+                <div class="u-flex-center-column ">
+                    <span class="u-fs-small u-fw-b">{{ $month }} ({{ $year }})</span>
+                    <div class="attendance-graph mh-200">
+                        @for($day = 1; $day <= $daysInMonth; $day++)
+                            <div class="day"></div>
+                        @endfor
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        <div class="u-flex-center-row u-m-10">
+            <button class="custom-detail-btn">View Details</button>
+        </div>
+        <div class="u-flex-center-row u-gap-5 u-p-20">
+            <div>
+                <div class="u-flex u-gap-1 u-align-items-center">
+                    <div class="on-time-sq"></div>
+                    <span>On Time</span>
+                </div>
+                <div class="u-flex u-gap-1 u-align-items-center">
+                    <div class="late-sq"></div>
+                    <span>Late</span>
+                </div>
+                <div class="u-flex u-gap-1 u-align-items-center">
+                    <div class="vacation-sq"></div>
+                    <span>Vacation/Birthday Leave</span>
+                </div>
+                <div class="u-flex u-gap-1 u-align-items-center">
+                    <div class="absent-sq"></div>
+                    <span>Absent</span>
+                </div>
+                <div class="u-flex u-gap-1 u-align-items-center">
+                    <div class="no-sched-sq"></div>
+                    <span>PH Holiday/No Work Day "File an OB if working</span>
+                </div>
+                <div class="u-flex u-gap-1 u-align-items-center">
+                    <div class="no-sched-sq"></div>
+                    <span>Paid Over Time</span>
+                </div>
+                <div class="u-flex u-gap-1 u-align-items-center">
+                    <div class="no-sched-sq"></div>
+                    <span>Over Break</span>
+                </div>
+                <div class="u-flex u-gap-1 u-align-items-center">
+                    <div class="no-sched-sq"></div>
+                    <span>No Schedule</span>
+                </div>
+            </div>
+            <div class="notes-container">
+                <div><span>NOTES:</span></div>
+                <div>
+                    <div>
+                        <span>1.On-Time and Late Policy</span>
+                        <p>
+                            • An Employee is considered on time if they clock in before or exactly at 8:00am.
+                        </p>
+                        <p>
+                            • Clocking in at 8:06 AM or later is considered late.
+                        </p>
+                        <p>
+                            • Clocking in at 8:06 AM or later is considered late.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container container_today">
         <div class="container_title">
             <p class="header_title_h2">Announcement</p>
@@ -536,6 +720,15 @@ textarea {
             });
         });
 
+        // let graph = $(".attendance-graph");
+        //     for (let i = 0; i < 42; i++) { // 6 weeks × 7 days
+        //         let level = Math.floor(Math.random() * 5); // Random attendance level (0-4)
+        //         let div = $("<div></div>").addClass("day");
+        //         if (level > 0) {
+        //             div.addClass(`level-${level}`);
+        //         }
+        //         graph.append(div);
+        //     }
                 
     });
 </script>
