@@ -133,6 +133,10 @@ textarea {
     transition: transform 0.2s ease, opacity 0.2s ease;
     background-color: #ebedf0;
 }
+.details-container{
+    display:none;
+    gap: 20px !important;
+}
 
 /* Attendance levels (shades of green) */
 .level-1 { background-color: #c6e48b; }
@@ -171,8 +175,25 @@ textarea {
 
 .notes-container{
     border: 1px solid #02718A;
+    padding: 15px 30px;
+    border-radius: 15px;
+}
+
+.legend-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, auto); /* Ensures 2 rows */
+    gap: 20px;
     padding: 10px;
 }
+
+.notes-title
+{
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
 
 @media (max-width: 1492px) {
     .blue-border {
@@ -182,6 +203,31 @@ textarea {
         padding: 0px 30px;
     }
 }
+
+
+/* Adjust to 2 columns on tablets */
+@media (max-width: 768px) {
+    .legend-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+
+    }
+}
+
+/* Stack into 1 column on smaller screens */
+@media (max-width: 480px) {
+    .legend-container {
+        /* grid-template-columns: repeat(1, 1fr); */
+        font-size: 14px;
+        gap: 17px;
+        padding: 2px;
+    }
+
+    .notes-container{
+    padding: 10px 20px;
+}
+}
+
 
 
 </style>
@@ -469,8 +515,8 @@ textarea {
         <div class="u-flex-center-row u-m-10">
             <button class="custom-detail-btn">View Details</button>
         </div>
-        <div class="u-flex-center-row u-gap-5 u-p-20">
-            <div>
+        <div class="u-flex-center-column u-p-20 details-container">
+            <div class="legend-container">
                 <div class="u-flex u-gap-1 u-align-items-center">
                     <div class="on-time-sq"></div>
                     <span>On Time</span>
@@ -489,7 +535,7 @@ textarea {
                 </div>
                 <div class="u-flex u-gap-1 u-align-items-center">
                     <div class="no-sched-sq"></div>
-                    <span>PH Holiday/No Work Day "File an OB if working</span>
+                    <span>PH Holiday/No Work Day</span>
                 </div>
                 <div class="u-flex u-gap-1 u-align-items-center">
                     <div class="no-sched-sq"></div>
@@ -505,19 +551,48 @@ textarea {
                 </div>
             </div>
             <div class="notes-container">
-                <div><span>NOTES:</span></div>
+                <div class="notes-title"><span> NOTES:</span></div>
                 <div>
-                    <div>
-                        <span>1.On-Time and Late Policy</span>
-                        <p>
-                            • An Employee is considered on time if they clock in before or exactly at 8:00am.
-                        </p>
-                        <p>
-                            • Clocking in at 8:06 AM or later is considered late.
-                        </p>
-                        <p>
-                            • Clocking in at 8:06 AM or later is considered late.
-                        </p>
+                    <div class="u-mb-5">
+                        <span class="u-fw-600">1. On-Time and Late Policy</span>
+                        <div class="u-pl-16 ">
+                            <p>
+                                • An Employee is considered on time if they clock in before or exactly at 8:00am.
+                            </p>
+                            <p>
+                                • A grace period of 5 minutes is allowed, meaning clocking in at 8:05 Am or earlier is still considered on time.
+                            </p>
+                            <p>
+                                • Clocking in at 8:06 AM or later is considered late.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="u-mb-5">
+                        <span class="u-fw-600">2. Public Holidays and No Work Days</span>
+                        <div class="u-pl-16">
+                            <p>
+                                • On PH holidays or company-declared no work days, if you are requred to work, you must file an OB request to have your attendance marked as 'GREEN'.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="u-mb-5">
+                        <span class="u-fw-600">3. Vacation and Birthday Leave Policy</span>
+                        <div class="u-pl-16">
+                            <p>
+                                • Employees must file a Paid Time Off (PTO) request at least one week before the planned leave date to allow for scheduling adjustments.
+                            </p>
+                            <p>
+                                • PTO request can also be filed months in advance to secure approval ahead of time, especially for extended leaves.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="u-mb-5">
+                        <span class="u-fw-600">4. Over Break</span>
+                        <div class="u-pl-16">
+                            <p>
+                                • Coverage Must be provided on the same day as the shift.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -718,6 +793,18 @@ textarea {
                     location.assign("{{ route('announcement.delete') }}");
                 }
             });
+        });
+
+        $('.custom-detail-btn').click(function(){
+            $('.details-container').slideToggle('fast', function() {
+                // Ensures display: flex is applied after slideToggle
+                if ($(this).is(':visible')) {
+                    $(this).css('display', 'flex');
+                }
+            });
+
+            let buttonText = $(this).text() === "View Details" ? "Hide Details" : "View Details";
+            $(this).text(buttonText);
         });
 
         // let graph = $(".attendance-graph");
