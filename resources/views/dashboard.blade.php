@@ -73,9 +73,26 @@ textarea {
 .scrollable-container::-webkit-scrollbar-thumb:hover {
     background: #02718A; /* Color of the scrollbar thumb on hover */
 }
+/* Custom scrollbar styles */
+.custom-grid-container::-webkit-scrollbar {
+    width: 2px; /* Width of the scrollbar */
+}
+
+.custom-grid-container::-webkit-scrollbar-track {
+    background: #f3eeee; /* Background of the scrollbar track */
+}
+
+.custom-grid-container::-webkit-scrollbar-thumb {
+    background: #02718A; /* Color of the scrollbar thumb */
+    border-radius: 3px; /* Rounded corners for the scrollbar thumb */
+}
+
+.custom-grid-container::-webkit-scrollbar-thumb:hover {
+    background: #02718A; /* Color of the scrollbar thumb on hover */
+}
 
 .mh-500{
-    max-height: 500px !important;
+    height: 400px !important;
 }
 .mh-200{
     height: 110px !important;
@@ -84,11 +101,42 @@ textarea {
 /* Grid container */
 .attendance-graph {
     display: grid;
-    grid-template-columns: repeat(7, 15px); /* 7 columns for days of the week */
+    grid-template-columns: repeat(7, 15px); /* 7 columns for days */
     gap: 4px;
     padding: 10px;
     max-width: fit-content;
 }
+
+/* Header row for days */
+.day-label {
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Days container */
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 15px);
+    gap: 4px;
+}
+
+/* Each day box */
+.day {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background-color: #0000009d;
+}
+
+/* Empty placeholders for alignment */
+.day.empty {
+    background-color: transparent;
+}
+
 
 /* Each square (day) */
 .day {
@@ -246,6 +294,7 @@ textarea {
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(2, auto);
     gap: 10px;
+    overflow-y: auto;
 }
 
 .custom-detail-btn{
@@ -578,29 +627,45 @@ textarea {
         <div class="container_title">
             <p class="header_title_h2">Attendance Tracker</p>
         </div>
-        <div class="dashboard_table scrollable-container mh-500 u-flex u-p-10 custom-grid-container ">
+        <div class="dashboard_table mh-500 u-flex u-p-10 custom-grid-container">
             @php
                 $year = now()->year; // Get the current year
                 $all_months = [
                     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
                     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
                 ];
+                $daysOfWeek = ['Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr'];
             @endphp
-
+        
             @foreach($all_months as $index => $month)
                 @php
-                    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $index + 1, $year); // Get number of days in month
+                    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $index + 1, $year);
+                    $firstDayOfMonth = \Carbon\Carbon::create($year, $index + 1, 1)->dayOfWeek; // Get first day (0 = Sunday, 6 = Saturday)
                 @endphp
-                <div class="u-flex-center-column ">
+                <div class="u-flex u-align-items-center u-flex-direction-column">
                     <span class="u-fs-small u-fw-b">{{ $month }} ({{ $year }})</span>
                     <div class="attendance-graph mh-200">
-                        @for($day = 1; $day <= $daysInMonth; $day++)
-                            <div class="day"></div>
-                        @endfor
+                        <!-- Weekday headers -->
+                        @foreach($daysOfWeek as $day)
+                            <div class="day-label">{{ $day }}</div>
+                        @endforeach
+                        <!-- Days grid -->
+                        <div class="days-grid">
+                            <!-- Empty spaces for proper alignment -->
+                            @if ($firstDayOfMonth != 6) 
+                                <div class="day empty" style="grid-column-start: {{ $firstDayOfMonth + 1 }};"></div>
+                            @endif
+                            <!-- Days of the month -->
+                            @for($day = 1; $day <= $daysInMonth; $day++)
+                                <div class="day"></div>
+                            @endfor
+                        </div>
                     </div>
                 </div>
             @endforeach
         </div>
+        
+        
         <div class="u-flex-center-row u-m-10">
             <button class="custom-detail-btn">View Details</button>
         </div>
