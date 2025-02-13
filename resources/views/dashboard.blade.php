@@ -98,13 +98,38 @@ textarea {
     transition: transform 0.2s ease, opacity 0.2s ease;
     background-color: #ebedf0; /* Default color (no attendance) */
 }
-.on-time-sq {
+
+.on-time-sq{
     width: 15px;
     height: 15px;
     border-radius: 3px;
     transition: transform 0.2s ease, opacity 0.2s ease;
-    background-color: #196127;
+    background-color: green;
 }
+/* .on-time-sq {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background: conic-gradient(#FF00FF 0deg 120deg, green 120deg 240deg, blue 240deg 360deg);
+} */
+
+/* .on-time-sq {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    position: relative;
+    background-color: #ebedf0;
+}
+
+.on-time-sq::after {
+    content: "";
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    background-color: #196127;
+} */
 .late-sq{
     width: 15px;
     height: 15px;
@@ -133,6 +158,70 @@ textarea {
     transition: transform 0.2s ease, opacity 0.2s ease;
     background-color: #ebedf0;
 }
+.no-work-sq {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background-color: #00FFFF;
+    /* background: linear-gradient(to bottom right, #00FFFF 50%, #ebedf0 50%); */
+}
+.over-time-sq {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background: linear-gradient(to bottom right, #FF00FF 50%, #ebedf0 50%);
+}
+.over-break-sq {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background: linear-gradient(to bottom right, blue 50%, #ebedf0 50%);
+}
+.on-time-ot {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background: linear-gradient(to bottom right, #FF00FF 50%, green 50%);
+}
+.on-time-ob {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background: linear-gradient(to bottom right, blue 50%, green 50%);
+}
+.on-time-ot-ob {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background: conic-gradient(blue 0deg 120deg, green 120deg 240deg, #FF00FF 240deg 360deg);
+}
+.on-late-ot {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background: linear-gradient(to bottom right, #FF00FF 50%, red 50%);
+}
+.on-late-ob {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background: linear-gradient(to bottom right, blue 50%, red 50%);
+}
+.on-late-ot-ob {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    background: conic-gradient(blue 0deg 120deg, red 120deg 240deg, #FF00FF 240deg 360deg);
+}
 .details-container{
     display:none;
     gap: 20px !important;
@@ -146,7 +235,7 @@ textarea {
 
 /* Hover effect */
 .day:hover, .on-time-sq:hover, .late-sq:hover, .vacation-sq:hover,
-.absent-sq:hover,.no-sched-sq:hover
+.absent-sq:hover,.no-sched-sq:hover,.no-work-sq:hover,.over-time-sq:hover,.over-break-sq:hover
 {
     transform: scale(1.2);
     opacity: 0.8;
@@ -534,15 +623,15 @@ textarea {
                     <span>Absent</span>
                 </div>
                 <div class="u-flex u-gap-1 u-align-items-center">
-                    <div class="no-sched-sq"></div>
+                    <div class="no-work-sq"></div>
                     <span>PH Holiday/No Work Day</span>
                 </div>
                 <div class="u-flex u-gap-1 u-align-items-center">
-                    <div class="no-sched-sq"></div>
+                    <div class="over-time-sq"></div>
                     <span>Paid Over Time</span>
                 </div>
                 <div class="u-flex u-gap-1 u-align-items-center">
-                    <div class="no-sched-sq"></div>
+                    <div class="over-break-sq"></div>
                     <span>Over Break</span>
                 </div>
                 <div class="u-flex u-gap-1 u-align-items-center">
@@ -552,10 +641,10 @@ textarea {
             </div>
             <div class="notes-container">
                 <div class="notes-title"><span> NOTES:</span></div>
-                <div>
+                <div class="u-fs-15">
                     <div class="u-mb-5">
                         <span class="u-fw-600">1. On-Time and Late Policy</span>
-                        <div class="u-pl-16 ">
+                        <div class="u-pl-16">
                             <p>
                                 • An Employee is considered on time if they clock in before or exactly at 8:00am.
                             </p>
@@ -567,7 +656,7 @@ textarea {
                             </p>
                         </div>
                     </div>
-                    <div class="u-mb-5">
+                    <div class="u-mb-5 ">
                         <span class="u-fw-600">2. Public Holidays and No Work Days</span>
                         <div class="u-pl-16">
                             <p>
