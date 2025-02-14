@@ -337,6 +337,34 @@ textarea {
     margin-bottom: 5px;
     color: #02718A;
 }
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: left;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+    font-size: 8px;
+    min-width: 70px;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
 
 
 @media (max-width: 1492px) {
@@ -375,6 +403,43 @@ textarea {
 
 
 </style>
+<div class="modal-center create-holiday-form" style="display: none" >
+    <div class="modal-box ">
+        <div class="modal-content">
+            <form method="POST" action="" enctype="multipart/form-data">
+                @csrf
+                <table class="custom_normal_table">
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                                <h3 class="f-weight-bold">Add Holiday</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Select Date:</p>
+                                <input class="u-input" name="holiday-date" type="date" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <p>Reason:</p>
+                                <textarea class="u-textarea" name="holiday-reason" required></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="u-flex-space-between u-flex-wrap">
+                    <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" id="holiday-btn-close" type="button">Close</button>
+                    <button class="u-t-white u-fw-b u-btn u-bg-primary u-m-10 u-border-1-default btn-close" id="holiday-btn-submit" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="modal-center create-ann-form" style="display:none;">
     <div class="modal-box">
         <div class="modal-content">
@@ -642,7 +707,6 @@ textarea {
                 ];
                 $daysOfWeek = ['Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr'];
             @endphp
-        
             @foreach($all_months as $index => $month)
                 @php
                     $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $index + 1, $year);
@@ -663,17 +727,24 @@ textarea {
                             @endif
                             <!-- Days of the month -->
                             @for($day = 1; $day <= $daysInMonth; $day++)
-                                <div class="day"></div>
-                            @endfor
+                            <div class="day tooltip" data-date="{{ $month }}-{{ $day }}-{{ $year }}">
+                                <span class="tooltiptext">
+                                    <strong>{{ $month }}-{{ $day }}-{{ $year }}</strong><br>
+                                    Clock In: <span class="">08:00</span><br>
+                                    Clock Out: <span class="">08:00</span><br>
+                                </span>
+                            </div>
+                        @endfor
                         </div>
                     </div>
                 </div>
             @endforeach
         </div>
-        
-        
-        <div class="u-flex-center-row u-m-10">
-            <button class="custom-detail-btn">View Details</button>
+        <div class="u-flex-center-row u-m-10 u-gap-2">
+            <button class="custom-detail-btn view-detail-btn">View Details</button>
+            @role('admin||hr')
+            <button class="custom-detail-btn" id="add-holiday-btn">Add Holiday</button>
+            @endrole
         </div>
         <div class="u-flex-center-column u-p-20 details-container">
             <div class="legend-container">
@@ -871,6 +942,9 @@ textarea {
         $('#modal-btn-close').on('click', function(){
             $('.create-ann-form').hide();
         });
+        $('#holiday-btn-close').on('click', function(){
+            $('.create-holiday-form').hide();
+        });
         $('#btn-close-edit').on('click', function(){
             $('.edit-ann-form').hide();
         });
@@ -879,6 +953,9 @@ textarea {
         });
         $('.create-ann').on('click', function(){
             $('.create-ann-form').show();
+        });
+        $('#add-holiday-btn').on('click', function(){
+            $('.create-holiday-form').show();
         });
 
         function refreshButtons(logToday) {
@@ -955,7 +1032,7 @@ textarea {
             });
         });
 
-        $('.custom-detail-btn').click(function(){
+        $('.view-detail-btn').click(function(){
             $('.details-container').slideToggle('fast', function() {
                 // Ensures display: flex is applied after slideToggle
                 if ($(this).is(':visible')) {
