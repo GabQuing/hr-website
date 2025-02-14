@@ -180,6 +180,10 @@
 .u-pl-16 {
     padding-left: 1rem;
 }
+.u-px-10{
+    padding-left: 0.625rem;
+    padding-right: 0.625rem;
+}
 
 .u-mt-5 {
     margin-top: 0.5rem;

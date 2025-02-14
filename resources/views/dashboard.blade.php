@@ -17,14 +17,19 @@ textarea {
 
 
 .text-red {
-        color: red;
-        font-weight: bold
-    }
-    .text-green {
-        color: green;
-        font-weight: bold
-
-    }
+    color: red;
+    font-weight: bold
+}
+.text-green {
+    color: green;
+    font-weight: bold
+}
+.text-sky-blue{
+    color:#02718A;
+}
+.text-gray{
+    color:#4D4B4B;
+}
 .text-cetner{
     text-align: center;
 }
@@ -330,6 +335,7 @@ textarea {
     font-size: 17px;
     font-weight: bold;
     margin-bottom: 5px;
+    color: #02718A;
 }
 
 
@@ -642,12 +648,12 @@ textarea {
                     $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $index + 1, $year);
                     $firstDayOfMonth = \Carbon\Carbon::create($year, $index + 1, 1)->dayOfWeek; // Get first day (0 = Sunday, 6 = Saturday)
                 @endphp
-                <div class="u-flex u-align-items-center u-flex-direction-column">
-                    <span class="u-fs-small u-fw-b">{{ $month }} ({{ $year }})</span>
+                <div class="u-flex u-align-items-center u-flex-direction-column ">
+                    <span class="u-fs-small u-fw-b text-sky-blue">{{ $month }} ({{ $year }})</span>
                     <div class="attendance-graph mh-200">
                         <!-- Weekday headers -->
                         @foreach($daysOfWeek as $day)
-                            <div class="day-label">{{ $day }}</div>
+                            <div class="day-label text-sky-blue">{{ $day }}</div>
                         @endforeach
                         <!-- Days grid -->
                         <div class="days-grid">
@@ -693,7 +699,7 @@ textarea {
                 </div>
                 <div class="u-flex u-gap-1 u-align-items-center">
                     <div class="over-time-sq"></div>
-                    <span>Paid Over Time</span>
+                    <span >Paid Over Time</span>
                 </div>
                 <div class="u-flex u-gap-1 u-align-items-center">
                     <div class="over-break-sq"></div>
@@ -708,7 +714,7 @@ textarea {
                 <div class="notes-title"><span> NOTES:</span></div>
                 <div class="u-fs-15">
                     <div class="u-mb-5">
-                        <span class="u-fw-600">1. On-Time and Late Policy</span>
+                        <span class="u-fw-600 text-gray u-fw-b">1. On-Time and Late Policy</span>
                         <div class="u-pl-16">
                             <p>
                                 • An Employee is considered on time if they clock in before or exactly at 8:00am.
@@ -722,7 +728,7 @@ textarea {
                         </div>
                     </div>
                     <div class="u-mb-5 ">
-                        <span class="u-fw-600">2. Public Holidays and No Work Days</span>
+                        <span class="u-fw-600 text-gray u-fw-b">2. Public Holidays and No Work Days</span>
                         <div class="u-pl-16">
                             <p>
                                 • On PH holidays or company-declared no work days, if you are requred to work, you must file an OB request to have your attendance marked as 'GREEN'.
@@ -730,7 +736,7 @@ textarea {
                         </div>
                     </div>
                     <div class="u-mb-5">
-                        <span class="u-fw-600">3. Vacation and Birthday Leave Policy</span>
+                        <span class="u-fw-600 text-gray u-fw-b">3. Vacation and Birthday Leave Policy</span>
                         <div class="u-pl-16">
                             <p>
                                 • Employees must file a Paid Time Off (PTO) request at least one week before the planned leave date to allow for scheduling adjustments.
@@ -741,7 +747,7 @@ textarea {
                         </div>
                     </div>
                     <div class="u-mb-5">
-                        <span class="u-fw-600">4. Over Break</span>
+                        <span class="u-fw-600 text-gray u-fw-b">4. Over Break</span>
                         <div class="u-pl-16">
                             <p>
                                 • Coverage Must be provided on the same day as the shift.
