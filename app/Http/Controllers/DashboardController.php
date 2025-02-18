@@ -16,6 +16,70 @@ use Illuminate\Support\Facades\DB;
 class DashboardController extends Controller
 {
     //
+    // public function index()
+    // {
+    //     $today = Carbon::today()->toDateString(); // Get today's date
+    //     $now = date('Y-m-d H:i:s');
+    //     $user_id = auth()->user()->id;
+    //     $sched_type = auth()->user()->schedule_types_id;
+    //     $day_name = date('l');
+    //     $is_rest_day = WorkSchedule::where('schedule_types_id', $sched_type)
+    //         ->where('work_day', $day_name)
+    //         ->first()
+    //         ->rest_day;
+    //     $date = date('Y-m-d');
+    //     $data = [];
+    //     $data['is_rest_day'] = $is_rest_day;
+    //     $data['serverDateTime'] = now();
+    //     $data['today_log'] = (new AttendanceSummary())->getByDate(date('Y-m-d'), auth()->user()->id);
+    //     $data['team_logs'] = User::leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
+    //         ->leftJoin(DB::raw("
+    //             (SELECT user_logs.user_id, user_logs.log_type_id, user_logs.log_time 
+    //             FROM user_logs 
+    //             WHERE user_logs.log_date = '$today'  
+    //             AND user_logs.log_at < '$now'  
+    //             AND user_logs.log_at = (
+    //                 SELECT MAX(log_at) 
+    //                 FROM user_logs ul 
+    //                 WHERE ul.user_id = user_logs.user_id
+    //                 AND ul.log_at < '$now' 
+    //                 AND ul.log_date = '$today'
+    //             )
+    //         ) as latest_user_logs"), function($join) {
+    //             $join->on('latest_user_logs.user_id', '=', 'users.id');
+    //         })
+    //         ->leftJoin('log_types', 'log_types.id', '=', 'latest_user_logs.log_type_id') // Join with log_types
+    //         ->whereNull('users.deleted_at')
+    //         ->where('users.approval_status', 'APPROVED')
+    //         ->where('model_has_roles.role_id', 2)
+    //         ->where('users.id','!=',$user_id)
+    //         ->where('users.email','!=','dummyaccount@gmail.com')
+    //         ->select(
+    //             'users.*',
+    //             'latest_user_logs.log_type_id', // Selecting log_type_id
+    //             'latest_user_logs.log_time',
+    //             'log_types.description' // Selecting the description from log_types
+    //         )
+    //         ->orderBy('users.name', 'ASC')
+    //         ->get();
+    
+    //     // dd($data['team_logs']);
+    
+    //     $num_rows = $data['team_logs']->count();
+    //     $data['user_logs'] = (new UserLog())
+    //     ->getByUserId($user_id)
+    //     ->orderByDesc('log_date')
+    //     ->take($num_rows)
+    //     ->get();
+
+    //     $data['announcement'] = Announcement::whereNull('deleted_at')
+    //         ->where('start_date', '<=', $date)
+    //         ->where('end_date', '>', $date)
+    //         ->first();
+
+    //     return view('dashboard', $data);
+    // }
+
     public function index()
     {
         $today = Carbon::today()->toDateString(); // Get today's date
@@ -77,8 +141,16 @@ class DashboardController extends Controller
             ->where('end_date', '>', $date)
             ->first();
 
+        $data['all_months'] = [
+            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+        $data['year'] = date('Y');
+        $data['daysOfWeek'] = ['Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr'];
+
         return view('dashboard', $data);
     }
+
 
     public function log_action(Request $request)
     {

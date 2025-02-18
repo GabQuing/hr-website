@@ -699,14 +699,6 @@ textarea {
             <p class="header_title_h2">Attendance Tracker</p>
         </div>
         <div class="dashboard_table mh-500 u-flex u-p-10 custom-grid-container">
-            @php
-                $year = now()->year; // Get the current year
-                $all_months = [
-                    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-                ];
-                $daysOfWeek = ['Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr'];
-            @endphp
             @foreach($all_months as $index => $month)
                 @php
                     $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $index + 1, $year);
@@ -727,14 +719,14 @@ textarea {
                             @endif
                             <!-- Days of the month -->
                             @for($day = 1; $day <= $daysInMonth; $day++)
-                            <div class="day tooltip" data-date="{{ $month }}-{{ $day }}-{{ $year }}">
-                                <span class="tooltiptext">
-                                    <strong>{{ $month }}-{{ $day }}-{{ $year }}</strong><br>
-                                    Clock In: <span class="">08:00</span><br>
-                                    Clock Out: <span class="">08:00</span><br>
-                                </span>
-                            </div>
-                        @endfor
+                                <div class="day tooltip" data-date="{{ $month }}-{{ $day }}-{{ $year }}">
+                                    <span class="tooltiptext">
+                                        <strong>{{ $month }}-{{ $day }}-{{ $year }}</strong><br>
+                                        Clock In: <span class="">08:00</span><br>
+                                        Clock Out: <span class="">08:00</span><br>
+                                    </span>
+                                </div>
+                            @endfor
                         </div>
                     </div>
                 </div>
