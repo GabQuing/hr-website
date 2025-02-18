@@ -46,17 +46,17 @@
                                     @endforeach
                                 </select>  
                             </td>
-                        </tr>
-                        <tr>
                             <td>
                                 <p>Healthcare Benefit:</p>
                                 <input class="u-input" name="health_care" type="number" min="0" step="0.01" required>
                             </td>
+                        </tr>
+                        {{-- <tr>
                             <td>
                                 <p>Vision Benefit:</p>
                                 <input class="u-input" name="vision" type="number" min="0" step="0.01" required>
                             </td>
-                        </tr>
+                        </tr> --}}
                         <tr>
                             <td>
                                 <p>Dental Benefit:</p>
@@ -95,26 +95,26 @@
                                 <input class="u-input" name="health_care" id="edit_health_care" type="number" min="0" step="0.01" required>
                             </td>
                             <td>
-                                <p>Vision Benefit:</p>
-                                <input class="u-input" name="vision" id="edit_vision"type="number" min="0" step="0.01" required>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
                                 <p>Dental Benefit:</p>
                                 <input class="u-input " name="dental" id="edit_dental" type="number" min="0" step="0.01" required>
                             </td>
+                            {{-- <td>
+                                <p>Vision Benefit:</p>
+                                <input class="u-input" name="vision" id="edit_vision"type="number" min="0" step="0.01" required>
+                            </td> --}}
+                        </tr>
+                        <tr>
                             <td>
                                 <p>Pregnancy And Maternity Care:</p>
                                 <input class="u-input" name="pregnancy" id="edit_pregnancy" type="number" min="0" step="0.01" required>
                             </td>
-                        </tr>
-                        <tr>
                             <td>
                                 <p>Upload Receipt / Image:</p>
                                 <input class="u-input " name="file" id="edit_file" type="file" accept=".jpg,.jpeg,.png" />
                             </td>
-                            <td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
                                 <p>Notes:</p>
                                 <input class="u-input" name="note" id="edit_note" type="text" />
                             </td>
@@ -148,7 +148,7 @@
             <tr>
                 <th>Employee Name</th>
                 <th>Healthcare Benefits</th>
-                <th>Vision Benefits</th>
+                {{-- <th>Vision Benefits</th> --}}
                 <th>Dental Benefits</th>
                 <th>Pregnancy and Maternity Care</th>
                 <th>Created By</th>
@@ -163,7 +163,7 @@
                 <tr>
                     <td>{{$user->employee_name}}</td>
                     <td>₱{{number_format($user->health_care, 2)}}</td>
-                    <td>₱{{number_format($user->vision, 2)}}</td>
+                    {{-- <td>₱{{number_format($user->vision, 2)}}</td> --}}
                     <td>₱{{number_format($user->dental, 2)}}</td>
                     <td>₱{{number_format($user->pregnancy, 2)}}</td>
                     <td>{{$user->employee_benefits_created_by}}</td>
@@ -191,7 +191,7 @@
             <tr>
                 <th>Employee Name</th>
                 <th>Healthcare Benefits</th>
-                <th>Vision Benefits</th>
+                {{-- <th>Vision Benefits</th> --}}
                 <th>Dental Benefits</th>
                 <th>Pregnancy and Maternity Care</th>
                 <th>Created By</th>
