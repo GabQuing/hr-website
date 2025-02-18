@@ -56,14 +56,14 @@
                             <h5 class="u-fw-b u-t-gray">{{ number_format($employee_benefits?->health_care, 2) }}</h5>
                         </td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <td>
                             <h5 class="u-fw-b u-t-gray">Vision Benefits:</h5>
                         </td>
                         <td>
                             <h5 class="u-fw-b u-t-gray">{{ number_format($employee_benefits?->vision, 2) }}</h5>
                         </td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <td>
                             <h5 class="u-fw-b u-t-gray">Dental Benefits:</h5>
@@ -74,7 +74,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <h5 class="u-fw-b u-t-gray">Pregnancy and Maternity Care	:</h5>
+                            <h5 class="u-fw-b u-t-gray">Pregnancy and Maternity Care:</h5>
                         </td>
                         <td>
                             <h5 class="u-fw-b u-t-gray">{{ number_format($employee_benefits?->pregnancy, 2) }}</h5>
@@ -111,7 +111,7 @@
                         <tr class="f-weight-bold u-t-gray">
                           <td rowspan="2"><h5 class="f-weight-bold u-t-center">Created Date</h5></td>
                             <td colspan="2"><h5 class="f-weight-bold u-t-center">Health Care</h5></td>
-                            <td colspan="2"><h5 class="f-weight-bold u-t-center">Vision</h5></td>
+                            {{-- <td colspan="2"><h5 class="f-weight-bold u-t-center">Vision</h5></td> --}}
                             <td colspan="2"><h5 class="f-weight-bold u-t-center">Dental</h5></td>
                             <td colspan="2"><h5 class="f-weight-bold u-t-center">Pregnancy and Maternity Care</h5></td>
                             <td rowspan="2"><h5 class="f-weight-bold u-t-center">Created By</h5></td>
@@ -121,8 +121,8 @@
                         <tr class="f-weight-bold u-t-gray">
                             <td><h5 class="f-weight-bold u-t-center">Before</h5></td>
                             <td><h5 class="f-weight-bold u-t-center">After</h5></td>
-                            <td><h5 class="f-weight-bold u-t-center">Before</h5></td>
-                            <td><h5 class="f-weight-bold u-t-center">After</h5></td>
+                            {{-- <td><h5 class="f-weight-bold u-t-center">Before</h5></td>
+                            <td><h5 class="f-weight-bold u-t-center">After</h5></td> --}}
                             <td><h5 class="f-weight-bold u-t-center">Before</h5></td>
                             <td><h5 class="f-weight-bold u-t-center">After</h5></td>
                             <td><h5 class="f-weight-bold u-t-center">Before</h5></td>
@@ -135,8 +135,8 @@
                             <td class="u-t-center">{{ $history->created_at}} </td>
                             <td class="u-t-center">{{ number_format($history->before_health_care, 2) }}</td>
                             <td class="u-t-center">{{ number_format($history->after_health_care, 2) }}</td>
-                            <td class="u-t-center">{{ number_format($history->before_vision, 2) }}</td>
-                            <td class="u-t-center">{{ number_format($history->after_vision, 2) }}</td>
+                            {{-- <td class="u-t-center">{{ number_format($history->before_vision, 2) }}</td>
+                            <td class="u-t-center">{{ number_format($history->after_vision, 2) }}</td> --}}
                             <td class="u-t-center">{{ number_format($history->before_dental, 2) }}</td>
                             <td class="u-t-center">{{ number_format($history->after_dental, 2) }}</td>
                             <td class="u-t-center">{{ number_format($history->before_pregnancy, 2) }}</td>
