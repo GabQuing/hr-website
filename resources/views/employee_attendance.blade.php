@@ -390,7 +390,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="dashboard_table mh-500 u-flex u-p-10 custom-grid-container">
+        {{-- <div class="dashboard_table mh-500 u-flex u-p-10 custom-grid-container">
             @php
                 $year = now()->year; // Get the current year
                 $all_months = [
@@ -431,7 +431,7 @@
                     </div>
                 </div>
             @endforeach
-        </div>
+        </div> --}}
         <div class="u-flex-end u-mt-10 u-mr-10">
         <a class="u-t-dark" style="text-decoration: none;" href="{{ route('export') . '?' . http_build_query($params) }}" target="_blank">
             <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default">
