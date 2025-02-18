@@ -28,6 +28,12 @@ class EmployeeAttendanceController extends Controller
     public function employeeDaysPresent(Request $request)
     {
         try {
+            $data['year'] = now()->year;
+            $data['all_months'] = [
+                'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+            ];
+            $data['daysOfWeek'] = ['Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr'];
             $data['usernames'] = (new User())
             ->getAllActiveUsers()
             ->select(

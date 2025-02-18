@@ -390,48 +390,46 @@
                 </tbody>
             </table>
         </div>
-        {{-- <div class="dashboard_table mh-500 u-flex u-p-10 custom-grid-container">
-            @php
-                $year = now()->year; // Get the current year
-                $all_months = [
-                    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-                ];
-                $daysOfWeek = ['Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr'];
-            @endphp
-            @foreach($all_months as $index => $month)
-                @php
-                    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $index + 1, $year);
-                    $firstDayOfMonth = \Carbon\Carbon::create($year, $index + 1, 1)->dayOfWeek; // Get first day (0 = Sunday, 6 = Saturday)
-                @endphp
-                <div class="u-flex u-align-items-center u-flex-direction-column ">
-                    <span class="u-fs-small u-fw-b text-sky-blue">{{ $month }} ({{ $year }})</span>
-                    <div class="attendance-graph mh-200">
-                        <!-- Weekday headers -->
-                        @foreach($daysOfWeek as $day)
-                            <div class="day-label text-sky-blue">{{ $day }}</div>
-                        @endforeach
-                        <!-- Days grid -->
-                        <div class="days-grid">
-                            <!-- Empty spaces for proper alignment -->
-                            @if ($firstDayOfMonth != 6) 
-                                <div class="day empty" style="grid-column-start: {{ $firstDayOfMonth + 1 }};"></div>
-                            @endif
-                            <!-- Days of the month -->
-                            @for($day = 1; $day <= $daysInMonth; $day++)
-                            <div class="day tooltip" data-date="{{ $month }}-{{ $day }}-{{ $year }}">
-                                <span class="tooltiptext">
-                                    <strong>{{ $month }}-{{ $day }}-{{ $year }}</strong><br>
-                                    Clock In: <span class="">08:00</span><br>
-                                    Clock Out: <span class="">08:00</span><br>
-                                </span>
+        <div class="u-mt-32 u-p-10 ">
+            <div>
+                <span class="text-sky-blue u-fw-b u-fs-small">FILL GUNIO:</span>
+            </div>
+            <div class="dashboard_table mh-500 u-flex u-p-10 custom-grid-container u-mt-5">
+                @foreach($all_months as $index => $month)
+                    @php
+                        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $index + 1, $year);
+                        $firstDayOfMonth = \Carbon\Carbon::create($year, $index + 1, 1)->dayOfWeek; // Get first day (0 = Sunday, 6 = Saturday)
+                    @endphp
+                    <div class="u-flex u-align-items-center u-flex-direction-column ">
+                        <span class="u-fs-small u-fw-b text-sky-blue">{{ $month }} ({{ $year }})</span>
+                        <div class="attendance-graph mh-200">
+                            <!-- Weekday headers -->
+                            @foreach($daysOfWeek as $day)
+                                <div class="day-label text-sky-blue">{{ $day }}</div>
+                            @endforeach
+                            <!-- Days grid -->
+                            <div class="days-grid">
+                                <!-- Empty spaces for proper alignment -->
+                                @if ($firstDayOfMonth != 6) 
+                                    <div class="day empty" style="grid-column-start: {{ $firstDayOfMonth + 1 }};"></div>
+                                @endif
+                                <!-- Days of the month -->
+                                @for($day = 1; $day <= $daysInMonth; $day++)
+                                <div class="day tooltip" data-date="{{ $month }}-{{ $day }}-{{ $year }}">
+                                    <span class="tooltiptext">
+                                        <strong>{{ $month }}-{{ $day }}-{{ $year }}</strong><br>
+                                        Clock In: <span class="">08:00</span><br>
+                                        Clock Out: <span class="">08:00</span><br>
+                                    </span>
+                                </div>
+                            @endfor
                             </div>
-                        @endfor
                         </div>
                     </div>
-                </div>
-            @endforeach
-        </div> --}}
+                @endforeach
+            </div>
+        </div>
+
         <div class="u-flex-end u-mt-10 u-mr-10">
         <a class="u-t-dark" style="text-decoration: none;" href="{{ route('export') . '?' . http_build_query($params) }}" target="_blank">
             <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default">
