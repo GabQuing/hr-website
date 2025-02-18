@@ -700,10 +700,10 @@ textarea {
         </div>
         <div class="dashboard_table mh-500 u-flex u-p-10 custom-grid-container">
             @foreach($all_months as $index => $month)
-                @php
-                    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $index + 1, $year);
-                    $firstDayOfMonth = \Carbon\Carbon::create($year, $index + 1, 1)->dayOfWeek; // Get first day (0 = Sunday, 6 = Saturday)
-                @endphp
+            @php
+                $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $index + 1, $year);
+                $firstDayOfMonth = (\Carbon\Carbon::create($year, $index + 1, 1)->dayOfWeek + 6) % 7;
+            @endphp
                 <div class="u-flex u-align-items-center u-flex-direction-column ">
                     <span class="u-fs-small u-fw-b text-sky-blue">{{ $month }} ({{ $year }})</span>
                     <div class="attendance-graph mh-200">

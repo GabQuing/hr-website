@@ -146,7 +146,8 @@ class DashboardController extends Controller
             'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
         ];
         $data['year'] = date('Y');
-        $data['daysOfWeek'] = ['Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr'];
+        $data['daysOfWeek'] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'];
+        
 
         return view('dashboard', $data);
     }
