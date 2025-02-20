@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 
 class UserLog extends Model
@@ -121,5 +122,15 @@ class UserLog extends Model
             ->whereBetween('log_date', [$from_date, $to_date])
             ->where('user_logs.log_type_id', 2)
             ->where('work_schedules.rest_day', 0);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function logType(): BelongsTo
+    {
+        return $this->belongsTo(LogType::class);
     }
 }
