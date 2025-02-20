@@ -100,6 +100,10 @@ Route::middleware(['auth'])->group(function () {
     //Clock in, Clock Out, Break Start, Break End
     Route::post('/dashboard/log-action', [DashboardController::class, 'log_action'])->middleware(['auth'])->name('dashboard.log-action');
 
+
+    // Attendance Tracker
+    Route::get('/daily-logs/{user_id}/{month}', [DashboardController::class, 'fetchDailyLog'])->name('tracker.log');
+
     // Attendance
     Route::get('/my_attendance', [AttendanceController::class, 'index'])->name('attendance');
     Route::post('/my_attendance/show', [AttendanceController::class, 'daysPresent'])->name('generateTable');
