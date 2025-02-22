@@ -1174,17 +1174,19 @@
         const year = "{{ $year }}";
         const calendar = $(`#calendar-${year}-${month}`);
         data.logs.forEach(daylog => {
-            // console.log(daylog);
             const tooltip = calendar.find(`.day-${daylog.log_date}`);
-            console.log(tooltip);
+            const clockIn = new Date(`1970-01-01T${daylog.clock_in}Z`);
+            const clockInSched = new Date(`1970-01-01T${daylog.work_schedule.work_from}Z`);
+            if (daylog.clock_in && daylog.clock_out && (clockIn <= clockInSched || daylog.work_schedule.rest_day)) {
+                tooltip.addClass('on-time-sq');
+            } else {
+                tooltip.addClass('late-sq');
+            }
             tooltip.find('.tooltip-clock-in').text(formatTime(daylog.clock_in))
             tooltip.find('.tooltip-break-start').text(formatTime(daylog.break_start))
             tooltip.find('.tooltip-break-end').text(formatTime(daylog.break_end))
             tooltip.find('.tooltip-clock-out').text(formatTime(daylog.clock_out))
         })
-        console.log(month, data);
-        $(`#loader-${month}`).hide();
-        $(`#graph-${month}`).show();
     }
 
 
@@ -1198,7 +1200,9 @@
         const response = await fetch("{{ route('tracker.log', ['user_id' => auth()->user()->id,'month' => '__MONTH__']) }}".replace('__MONTH__', formattedDate));
         const data = await response.json();
         console.log(data);
-        populateCalendar(month, data)
+        populateCalendar(month, data);
+        $(`#loader-${month}`).hide();
+        $(`#graph-${month}`).show();
     });
 
 </script>

@@ -6,13 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 
 class AttendanceSummary extends Model
 {
     use HasFactory;
     protected $table = 'attendance_summary';
-
+    protected $fillable = [
+        'user_id',
+        'schedule_types_id',
+        'log_date',
+        'day_name',
+    ];
 
     public function getByDate($date, $user_id)
     {
@@ -89,6 +95,7 @@ class AttendanceSummary extends Model
 
     public function workSchedule(): HasMany
     {
-        return $this->hasMany(WorkSchedule::class, 'schedule_types_id', 'schedule_types_id');
+        return $this
+            ->hasMany(WorkSchedule::class, 'schedule_types_id', 'schedule_types_id');
     }
 }

@@ -90,7 +90,7 @@ class DashboardController extends Controller
             'Nov',
             'Dec'
         ];
-        $data['year'] = date('Y');
+        $data['year'] = 2024;
         $data['daysOfWeek'] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
 
@@ -183,7 +183,12 @@ class DashboardController extends Controller
         // return ['request' => $request->all(), 'user_id' => $user_id, 'month' => $month];
         // return UserLog::where('log_date', $date)->where('user_id', $user_id)->with('logType')->get();
         $logs = AttendanceSummary::where('user_id', $user_id)
-            ->where('log_date', 'like', "$month%")->get();
+            ->with('workSchedule')
+            ->where('log_date', 'like', "$month%")
+            ->get()
+            ->each(function ($log) {
+                $log->setRelation('workSchedule', $log->workSchedule->where('work_day', $log->day_name)->first());
+            });
         return [
             'user' => $user_id,
             'month' => $month,
