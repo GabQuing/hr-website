@@ -1159,6 +1159,10 @@
 
 
     // attendace tracker
+    const WORK_SCHEDULE = {!! json_encode(auth()->user()->workSchedule) !!};
+    const WORK_DAYS = WORK_SCHEDULE.filter(wokSchedule => !wokSchedule.rest_day);
+    const GRACE_PERIOD_IN_MINS = 5;
+
     function formatTime(timeString) {
         if (!timeString) return;
         const [hours, minutes] = timeString.split(":"); // Extract hours and minutes
@@ -1170,11 +1174,66 @@
         return formattedTime;
     }
 
-    function populateCalendar(month, data) {
+    function isValidDate(dateString) {
+        const date = new Date(dateString);
+        
+        // Check if the date object is valid
+        if (isNaN(date.getTime())) {
+            return false;
+        }
+
+        // Extract the year, month, and day from the input
+        const [year, month, day] = dateString.split('-').map(Number);
+
+        // Check if the reconstructed date matches the input
+        return (
+            date.getFullYear() === year &&
+            date.getMonth() + 1 === month && // Months are 0-based in JS
+            date.getDate() === day
+        ) ? date : false;
+    }
+
+    function populateCalendar(month, data, formattedDate) {
+        console.log(month, data, formattedDate);
         const year = "{{ $year }}";
         const calendar = $(`#calendar-${year}-${month}`);
-        data.logs.forEach(daylog => {
-            const tooltip = calendar.find(`.day-${daylog.log_date}`);
+
+        for (let i=1; i<=31; i++) {
+            const dateString = `${formattedDate}-${i.toString().padStart(2, '0')}`;
+            const date = isValidDate(dateString);
+            if (!date) continue;
+            const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+            const daylog = data.logs.find(e => e.log_date === dateString);
+            const workSchedule = daylog?.work_schedule.work_from ?? WORK_SCHEDULE.find(e => e.work_day === dayName);
+            const tooltip = calendar.find(`.day-${dateString}`);
+
+            if (daylog) {
+                tooltip.find('.tooltip-clock-in').text(formatTime(daylog.clock_in))
+                tooltip.find('.tooltip-break-start').text(formatTime(daylog.break_start))
+                tooltip.find('.tooltip-break-end').text(formatTime(daylog.break_end))
+                tooltip.find('.tooltip-clock-out').text(formatTime(daylog.clock_out))
+            }
+
+            // checking if absent
+            if (!daylog || !daylog.clock_in || !daylog.clock_out) {
+                if (!workSchedule.rest_day) {
+                    tooltip.addClass('absent-sq');
+                }
+                continue;
+            }
+        
+            // checking if overbreak
+            if (daylog.break_start && daylog.break_end) {
+                const breakStart = new Date(`1970-01-01T${daylog.break_start}Z`);
+                const breakEnd = new Date(`1970-01-01T${daylog.break_end}Z`);
+                const totalBreakMinutes = (breakEnd - breakStart) / (1000 * 60);
+
+                if (totalBreakMinutes > 60) {
+                    tooltip.addClass('on-time-ob');
+                }
+            }
+
+            // checking if ontime or late
             const clockIn = new Date(`1970-01-01T${daylog.clock_in}Z`);
             const clockInSched = new Date(`1970-01-01T${daylog.work_schedule.work_from}Z`);
             if (daylog.clock_in && daylog.clock_out && (clockIn <= clockInSched || daylog.work_schedule.rest_day)) {
@@ -1182,11 +1241,7 @@
             } else {
                 tooltip.addClass('late-sq');
             }
-            tooltip.find('.tooltip-clock-in').text(formatTime(daylog.clock_in))
-            tooltip.find('.tooltip-break-start').text(formatTime(daylog.break_start))
-            tooltip.find('.tooltip-break-end').text(formatTime(daylog.break_end))
-            tooltip.find('.tooltip-clock-out').text(formatTime(daylog.clock_out))
-        })
+        }
     }
 
 
@@ -1199,8 +1254,7 @@
         const formattedDate = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit' }).format(date);
         const response = await fetch("{{ route('tracker.log', ['user_id' => auth()->user()->id,'month' => '__MONTH__']) }}".replace('__MONTH__', formattedDate));
         const data = await response.json();
-        console.log(data);
-        populateCalendar(month, data);
+        populateCalendar(month, data, formattedDate);
         $(`#loader-${month}`).hide();
         $(`#graph-${month}`).show();
     });

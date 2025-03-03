@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Announcement;
 use App\Models\AttendanceSummary;
+use App\Models\Leave;
 use App\Models\LogType;
+use App\Models\Overtime;
 use App\Models\User;
 use App\Models\UserLog;
 use App\Models\WorkSchedule;
@@ -189,10 +191,25 @@ class DashboardController extends Controller
             ->each(function ($log) {
                 $log->setRelation('workSchedule', $log->workSchedule->where('work_day', $log->day_name)->first());
             });
+
+        $leaves = Leave::where([
+            'created_by' => $user_id,
+            'status' => 'APPROVED'
+        ])->where('leave_from', 'like', "$month%")
+            ->get();
+
+        $overtimes = Overtime::where([
+            'created_by' => $user_id,
+            'status' => 'APPROVED'
+        ])->where('shift_date', 'like', "$month")
+            ->get();
+
         return [
             'user' => $user_id,
             'month' => $month,
             'logs' => $logs,
+            'leaves' => $leaves,
+            'overtimes' => $overtimes,
         ];
     }
 }
