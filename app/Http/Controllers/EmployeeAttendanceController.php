@@ -65,7 +65,7 @@ class EmployeeAttendanceController extends Controller
     // {
     //     try {
     //         $data['year'] = date('Y');
-    //         $data['daysOfWeek'] = ['Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr'];
+    //         $data['daysOfWeek'] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
     //         $data['usernames'] = (new User())
     //             ->getAllActiveUsers()
     //             ->select('users.id', 'users.name')
@@ -105,7 +105,7 @@ class EmployeeAttendanceController extends Controller
     //         $data['summary_data'] = $summary_data;
     //         $data['filtered_months'] = $filteredMonths; // Pass dynamically generated months
     
-    //         dd($data['summary_data'], $data['filtered_months']);
+    //         // dd($data['summary_data'], $data['filtered_months']);
     //         return view('employee_attendance', $data);
     //     } catch (Throwable $e) {
     //         return 'Something went wrong. Please check if the users have a schedule.';
