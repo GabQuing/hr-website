@@ -390,7 +390,7 @@
                 </tbody>
             </table>
         </div>
-        {{-- <div class="u-mt-32 u-p-10">
+        <div class="u-mt-32 u-p-10">
             @foreach($summary_data as $summary)
                 <div>
                     <span class="text-sky-blue u-fw-b u-fs-small">{{ $summary['user'] }}</span>
@@ -432,7 +432,7 @@
                     @endforeach
                 </div>
             @endforeach
-        </div> --}}
+        </div>
         
         
 
