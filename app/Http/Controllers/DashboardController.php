@@ -182,8 +182,6 @@ class DashboardController extends Controller
     public function fetchDailyLog(Request $request, $user_id, $month)
     {
         sleep(rand(0, 5));
-        // return ['request' => $request->all(), 'user_id' => $user_id, 'month' => $month];
-        // return UserLog::where('log_date', $date)->where('user_id', $user_id)->with('logType')->get();
         $logs = AttendanceSummary::where('user_id', $user_id)
             ->with('workSchedule')
             ->where('log_date', 'like', "$month%")
@@ -201,7 +199,7 @@ class DashboardController extends Controller
         $overtimes = Overtime::where([
             'created_by' => $user_id,
             'status' => 'APPROVED'
-        ])->where('shift_date', 'like', "$month")
+        ])->where('shift_date', 'like', "$month%")
             ->get();
 
         return [

@@ -1205,6 +1205,8 @@
             const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
             const daylog = data.logs.find(e => e.log_date === dateString);
             const workSchedule = daylog?.work_schedule.work_from ?? WORK_SCHEDULE.find(e => e.work_day === dayName);
+            const overtime = data.overtimes.length ? data.overtimes.find(e => e.shift_date === dateString) : null;
+            const leave = data.leaves.length ? data.leaves.find(e => e.leave_from === dateString) : null;
             const tooltip = calendar.find(`.day-${dateString}`);
 
             if (daylog) {
@@ -1221,6 +1223,14 @@
                 }
                 continue;
             }
+
+            if (leave) {
+                tooltip.addClass('vacation-sq');
+            }
+
+            let isOverBreak = false;
+            let isOnTime = true;
+            let isOverTime = overtime ? true : false;
         
             // checking if overbreak
             if (daylog.break_start && daylog.break_end) {
@@ -1229,7 +1239,7 @@
                 const totalBreakMinutes = (breakEnd - breakStart) / (1000 * 60);
 
                 if (totalBreakMinutes > 60) {
-                    tooltip.addClass('on-time-ob');
+                    isOverBreak = true;
                 }
             }
 
@@ -1237,9 +1247,31 @@
             const clockIn = new Date(`1970-01-01T${daylog.clock_in}Z`);
             const clockInSched = new Date(`1970-01-01T${daylog.work_schedule.work_from}Z`);
             if (daylog.clock_in && daylog.clock_out && (clockIn <= clockInSched || daylog.work_schedule.rest_day)) {
-                tooltip.addClass('on-time-sq');
+                isOnTime = true;
             } else {
-                tooltip.addClass('late-sq');
+                isOnTime = false;
+            }
+
+            if (isOnTime) {
+                if (isOverTime && isOverBreak) {
+                    tooltip.addClass('on-time-ot-ob');
+                } else if (isOverTime) {
+                    tooltip.addClass('on-time-ot');
+                } else if (isOverBreak) {
+                    tooltip.addClass('on-time-ob');
+                } else {
+                    tooltip.addClass('on-time-sq');
+                }
+            } else {
+                if (isOverTime && isOverBreak) {
+                    tooltip.addClass('late-ot-ob');
+                } else if (isOverTime) {
+                    tooltip.addClass('late-ot');
+                } else if (isOverBreak) {
+                    tooltip.addClass('late-ob');
+                } else {
+                    tooltip.addClass('late-sq');
+                }
             }
         }
     }
