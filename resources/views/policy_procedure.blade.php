@@ -514,13 +514,13 @@
                                 <tr>
                                     <td>Healthcare Benefits</td>
                                     <td>Medical Checkups and laboratories</td>
-                                    <td>PHP 6,000.00</td>
+                                    <td>PHP 10,000.00</td>
                                 </tr>
-                                <tr>
+                                {{-- <tr>
                                     <td>Vision Benefits</td>
                                     <td>Eye tests or eyeglass</td>
                                     <td>PHP 3,500.00</td>
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <td>Dental Benefits</td>
                                     <td>Dental Checkups and others</td>
