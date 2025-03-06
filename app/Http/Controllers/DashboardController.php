@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Announcement;
 use App\Models\AttendanceSummary;
+use App\Models\Holiday;
 use App\Models\Leave;
 use App\Models\LogType;
 use App\Models\Overtime;
@@ -64,8 +65,6 @@ class DashboardController extends Controller
             ->orderBy('users.name', 'ASC')
             ->get();
 
-        // dd($data['team_logs']);
-
         $num_rows = $data['team_logs']->count();
         $data['user_logs'] = (new UserLog())
             ->getByUserId($user_id)
@@ -95,6 +94,8 @@ class DashboardController extends Controller
         $data['year'] = 2024;
         $data['daysOfWeek'] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
+        $data['holidays'] = Holiday::where('holiday_date', 'like', $data['year'] . '%')
+            ->orderBy('holiday_date', 'asc')->get();
 
         return view('dashboard', $data);
     }
@@ -209,5 +210,24 @@ class DashboardController extends Controller
             'leaves' => $leaves,
             'overtimes' => $overtimes,
         ];
+    }
+
+    public function createHoliday(Request $request)
+    {
+        $request->validate([
+            'holiday_date' => 'required|date',
+            'holiday_name' => 'required|string',
+        ]);
+
+        $holiday_date = $request->holiday_date;
+        $holiday_name = $request->holiday_name;
+
+        Holiday::create([
+            'holiday_date' => $holiday_date,
+            'holiday_name' => $holiday_name,
+            'user_id' => auth()->user()->id,
+        ]);
+
+        return redirect()->back()->with('success-holiday', 'Holiday created successfully.');
     }
 }

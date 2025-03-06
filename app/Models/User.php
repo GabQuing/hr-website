@@ -77,4 +77,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(WorkSchedule::class, 'schedule_types_id', 'schedule_types_id');
     }
+
+    public function holidays(): HasMany
+    {
+        return $this->hasMany(Holiday::class);
+    }
 }

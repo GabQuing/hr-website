@@ -482,7 +482,7 @@
 <div class="modal-center create-holiday-form" style="display: none">
     <div class="modal-box ">
         <div class="modal-content">
-            <form method="POST" action="" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('holiday.create') }}" enctype="multipart/form-data">
                 @csrf
                 <table class="custom_normal_table">
                     <tbody>
@@ -494,13 +494,13 @@
                         <tr>
                             <td>
                                 <p>Select Date:</p>
-                                <input class="u-input" name="holiday-date" type="date" required>
+                                <input class="u-input" name="holiday_date" type="date" required>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="4">
-                                <p>Reason:</p>
-                                <textarea class="u-textarea" name="holiday-reason" required></textarea>
+                                <p>Holiday Name:</p>
+                                <input type="text" class="u-input" name="holiday_name" required></input>
                             </td>
                         </tr>
                     </tbody>
@@ -850,9 +850,6 @@
     </div>
     <div class="u-flex-center-row u-m-10 u-gap-2">
         <button class="custom-detail-btn view-detail-btn">View Details</button>
-        @role('admin||hr')
-        <button class="custom-detail-btn" id="add-holiday-btn">Add Holiday</button>
-        @endrole
     </div>
     <div class="u-flex-center-column u-p-20 details-container">
         <div class="legend-container">
@@ -993,6 +990,57 @@
         @endrole
     </div>
 </div>
+<div class="container container_today">
+    <div class="container_title">
+        <p class="header_title_h2">Holidays ({{ $year }})</p>
+    </div>
+    <div class="dashboard_table scrollable-container ">
+        <table class="myTable" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Holiday</th>
+                    @role('admin||hr')
+                    <th>Action</th>
+                    @endrole
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($holidays as $holiday)
+                <tr>
+                    <td>{{ date('M d Y', strtotime($holiday->holiday_date)) }}</td>
+                    <td class="pad-left">{{ $holiday->holiday_name }}</td>
+                    @role('admin||hr')
+                    <td style="display: flex; gap: 10px;">
+                        <button type="button" class="edit-holiday-btn" data-holiday-id="{{ $holiday->id }}"
+                            style="display: flex; color: white; border: none; cursor: pointer; background: #238c7c; padding: 5px; border-radius: 5px;">
+                            <span class="material-symbols-outlined">edit</span>
+                        </button>
+                        <button type="button" class="edit-holiday-btn" data-holiday-id="{{ $holiday->id }}"
+                            style="display: flex; color: white; border: none; cursor: pointer; background: #882c03; padding: 5px; border-radius: 5px;">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                        @endrole
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    @role('admin||hr')
+    <div>
+        <div class="today_attendance_btns u-p-10" style="display: flex; justify-content: center;">
+            <button type="button" class="add_holiday_btn" id="add-holiday-btn"
+                style="display: flex; color: white; border: none; cursor: pointer">
+                <span class="material-symbols-outlined">wysiwyg</span>
+                <p>Add a holiday</p>
+            </button>
+        </div>
+        <h5 class="u-fw-b" style="color: green; display:block; margin: 15px 0; text-align: center;">
+            {{session('success-holiday')}}
+        </h5>
+    </div>
+    @endrole
 </div>
 
 @section('script_content')
