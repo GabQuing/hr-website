@@ -390,7 +390,7 @@
                 </tbody>
             </table>
         </div>
-        {{-- <div class="u-mt-32 u-p-10">
+        <div class="u-mt-32 u-p-10">
             @foreach($summary_data as $summary)
                 <div>
                     <span class="text-sky-blue u-fw-b u-fs-small">{{ $summary['user'] }}</span>
@@ -398,7 +398,7 @@
                 <div class="dashboard_table mh-500 u-flex u-p-10 custom-grid-container u-mt-5">
                     @foreach($filtered_months as $monthData)
                         @php
-                            $month = $monthData['month']; // "Jan", "Feb", etc.
+                            $month = $monthData['month'];
                             $year = $monthData['year'];
                             $daysInMonth = $monthData['daysInMonth'];
                             $firstDayOfMonth = $monthData['firstDayOfMonth'];
@@ -413,8 +413,8 @@
                                 <!-- Days grid -->
                                 <div class="days-grid">
                                     <!-- Empty spaces for proper alignment -->
-                                    @if ($firstDayOfMonth != 6)
-                                        <div class="day empty" style="grid-column-start: {{ $firstDayOfMonth + 1 }};"></div>
+                                    @if ($firstDayOfMonth != 0) 
+                                        <div class="day empty" style="grid-column-start: {{ ($firstDayOfMonth == 0) ? 1 : $firstDayOfMonth }};"></div>
                                     @endif
                                     <!-- Days of the month -->
                                     @for($day = 1; $day <= $daysInMonth; $day++)
@@ -432,7 +432,8 @@
                     @endforeach
                 </div>
             @endforeach
-        </div> --}}
+        </div>
+        
         
 
         <div class="u-flex-end u-mt-10 u-mr-10">
