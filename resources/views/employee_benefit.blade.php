@@ -5,15 +5,17 @@
 @section('content')
 
 <style>
-    .modal-box{
+    .modal-box {
         max-width: 75rem !important;
     }
+
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
         -webkit-appearance: none;
-        margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+        margin: 0;
+        /* <-- Apparently some margin are still there even though it's hidden */
     }
-    
+
     input[type=number] {
         appearance: textfield;
         -moz-appearance: textfield;
@@ -35,28 +37,27 @@
                         <tr>
                             <td>
                                 <p>Employee Name</p>
-                                <select class="u-input" name="users_id" id="users_id" required >
+                                <select class="u-input" name="users_id" id="users_id" required>
                                     <option value="" selected disabled>None selected</option>
                                     @foreach ( $usernames as $username )
-                                        <option value="{{ $username->id }}"
-                                            @if ($username->employee_benefits_id)
-                                                disabled
-                                            @endif
+                                    <option value="{{ $username->id }}" @if ($username->employee_benefits_id)
+                                        disabled
+                                        @endif
                                         >{{ $username->name }}</option>
                                     @endforeach
-                                </select>  
+                                </select>
                             </td>
                             <td>
                                 <p>Healthcare Benefit:</p>
                                 <input class="u-input" name="health_care" type="number" min="0" step="0.01" required>
                             </td>
                         </tr>
-                        {{-- <tr>
-                            <td>
+                        <tr>
+                            {{-- <td>
                                 <p>Vision Benefit:</p>
                                 <input class="u-input" name="vision" type="number" min="0" step="0.01" required>
-                            </td>
-                        </tr> --}}
+                            </td> --}}
+                        </tr>
                         <tr>
                             <td>
                                 <p>Dental Benefit:</p>
@@ -92,25 +93,30 @@
                         <tr>
                             <td>
                                 <p>Healthcare Benefit:</p>
-                                <input class="u-input" name="health_care" id="edit_health_care" type="number" min="0" step="0.01" required>
-                            </td>
-                            <td>
-                                <p>Dental Benefit:</p>
-                                <input class="u-input " name="dental" id="edit_dental" type="number" min="0" step="0.01" required>
+                                <input class="u-input" name="health_care" id="edit_health_care" type="number" min="0"
+                                    step="0.01" required>
                             </td>
                             {{-- <td>
                                 <p>Vision Benefit:</p>
-                                <input class="u-input" name="vision" id="edit_vision"type="number" min="0" step="0.01" required>
+                                <input class="u-input" name="vision" id="edit_vision" type="number" min="0" step="0.01"
+                                    required>
                             </td> --}}
                         </tr>
                         <tr>
                             <td>
+                                <p>Dental Benefit:</p>
+                                <input class="u-input " name="dental" id="edit_dental" type="number" min="0" step="0.01"
+                                    required>
+                            </td>
+                            <td>
                                 <p>Pregnancy And Maternity Care:</p>
-                                <input class="u-input" name="pregnancy" id="edit_pregnancy" type="number" min="0" step="0.01" required>
+                                <input class="u-input" name="pregnancy" id="edit_pregnancy" type="number" min="0"
+                                    step="0.01" required>
                             </td>
                             <td>
                                 <p>Upload Receipt / Image:</p>
-                                <input class="u-input " name="file" id="edit_file" type="file" accept=".jpg,.jpeg,.png" />
+                                <input class="u-input " name="file" id="edit_file" type="file"
+                                    accept=".jpg,.jpeg,.png" />
                             </td>
                         </tr>
                         <tr>
@@ -122,8 +128,10 @@
                     </tbody>
                 </table>
                 <div class="u-flex-space-between u-flex-wrap">
-                    <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" id="edit-btn-close" type="button">Close</button>
-                    <button class="u-t-white u-fw-b u-btn u-bg-primary u-m-10 u-border-1-default btn-close" id="edit-btn-submit" type="submit">Submit</button>
+                    <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close"
+                        id="edit-btn-close" type="button">Close</button>
+                    <button class="u-t-white u-fw-b u-btn u-bg-primary u-m-10 u-border-1-default btn-close"
+                        id="edit-btn-submit" type="submit">Submit</button>
                 </div>
             </form>
         </div>
@@ -132,14 +140,14 @@
 
 <div class="u-flex">
     <div class="u-mr-16" style="position: relative" id="add-payroll-btn">
-        <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default"  href="">Add Benefit</button>
+        <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default" href="">Add Benefit</button>
     </div>
 </div>
 
 @if (session('success'))
-    <div class="u-mt-10">
-        <span class="u-t-success">{{ session('success') }}</span>
-    </div>
+<div class="u-mt-10">
+    <span class="u-t-success">{{ session('success') }}</span>
+</div>
 @endif
 
 <div class="u-mt-10 user_accounts_table2">
@@ -160,31 +168,35 @@
         </thead>
         <tbody>
             @foreach ($users as $user)
-                <tr>
-                    <td>{{$user->employee_name}}</td>
-                    <td>₱{{number_format($user->health_care, 2)}}</td>
-                    {{-- <td>₱{{number_format($user->vision, 2)}}</td> --}}
-                    <td>₱{{number_format($user->dental, 2)}}</td>
-                    <td>₱{{number_format($user->pregnancy, 2)}}</td>
-                    <td>{{$user->employee_benefits_created_by}}</td>
-                    <td>{{$user->employee_benefits_created_at}}</td>
-                    <td>{{$user->employee_benefits_updated_by}}</td>
-                    <td>{{$user->employee_benefits_updated_at}}</td>
-                    <td>
-                        <div class="d-flex" style="gap: 5px">
-                            <button class="ob-btn u-action-btn u-bg-primary view-benefit-btn"  data-entry-id="{{ $user->id }}" data-href="{{ route('employee_benefit.view', $user->id) }}">
-                                <span class="material-symbols-outlined"  style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
-                                    visibility
-                                </span>
-                            </button>
-                            <button class="ob-btn u-action-btn u-bg-primary edit-modal" type="button"  data-entry-id="{{ $user->id }}" data-href="{{ route('editEmployeeBenefit', $user->id) }}">
-                                <span class="material-symbols-outlined"  style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
-                                    edit
-                                </span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+            <tr>
+                <td>{{$user->employee_name}}</td>
+                <td>₱{{number_format($user->health_care, 2)}}</td>
+                {{-- <td>₱{{number_format($user->vision, 2)}}</td> --}}
+                <td>₱{{number_format($user->dental, 2)}}</td>
+                <td>₱{{number_format($user->pregnancy, 2)}}</td>
+                <td>{{$user->employee_benefits_created_by}}</td>
+                <td>{{$user->employee_benefits_created_at}}</td>
+                <td>{{$user->employee_benefits_updated_by}}</td>
+                <td>{{$user->employee_benefits_updated_at}}</td>
+                <td>
+                    <div class="d-flex" style="gap: 5px">
+                        <button class="ob-btn u-action-btn u-bg-primary view-benefit-btn"
+                            data-entry-id="{{ $user->id }}" data-href="{{ route('employee_benefit.view', $user->id) }}">
+                            <span class="material-symbols-outlined"
+                                style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                visibility
+                            </span>
+                        </button>
+                        <button class="ob-btn u-action-btn u-bg-primary edit-modal" type="button"
+                            data-entry-id="{{ $user->id }}" data-href="{{ route('editEmployeeBenefit', $user->id) }}">
+                            <span class="material-symbols-outlined"
+                                style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                edit
+                            </span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
             @endforeach
         </tbody>
         <tfoot>
@@ -202,15 +214,14 @@
             </tr>
         </tfoot>
     </table>
-    {{  $users->links() }}
+    {{ $users->links() }}
 </div>
 
 
 
 @section('script_content')
-    <script>
-
-        DataTable 
+<script>
+    DataTable 
         $('.myTable').DataTable({
             responsive: true,
             "columnDefs": [
@@ -279,7 +290,6 @@
                     });
             });
         });
-    </script>
+</script>
 @endsection
 @endsection
-
