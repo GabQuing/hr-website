@@ -290,7 +290,23 @@
     visibility: visible;
     opacity: 1;
 }
+.loader {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #ccc;
+        border-top: 5px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
 
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 
 @media (max-width: 1492px) {
     .blue-border {
@@ -421,14 +437,19 @@
                                         <div class="day tooltip" data-date="{{ $month }}-{{ $day }}-{{ $year }}">
                                             <span class="tooltiptext">
                                                 <strong>{{ $month }}-{{ $day }}-{{ $year }}</strong><br>
-                                                Clock In: <span class="">08:00</span><br>
-                                                Clock Out: <span class="">08:00</span><br>
+                                                Clock In: <span class="">--</span><br>
+                                                Break Start: <span class="tooltip-break-start">--</span><br>
+                                                Break End: <span class="tooltip-break-end">--</span><br>
+                                                Clock Out: <span class="tooltip-clock-out">--</span><br>
                                             </span>
                                         </div>
                                     @endfor
                                 </div>
                             </div>
                         </div>
+                        {{-- <div style="margin-top: 2rem" id="loader-{{ $month }}">
+                            <div class="loader"></div>
+                        </div> --}}
                     @endforeach
                 </div>
             @endforeach
@@ -448,12 +469,20 @@
 
 @section('script_content')
     <script>
-
-    $('.s-single').select2({
-            width: '100%',
-        });
+        $('.s-single').select2({
+                width: '100%',
+            });
 
         $('.attendance_summary_content').fadeIn('slow');
+
+        // const filtered_months = {!! json_encode($filtered_months ?? []) !!};
+        // const year = "{{ $year ?? date('Y') }}";
+        // const userId = "{{ auth()->user()->id }}";
+        // console.log(filtered_months , year , userId);
+
+
+
+
     </script>
 @endsection
 @endsection
