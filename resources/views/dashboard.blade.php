@@ -186,6 +186,47 @@
         background-color: green;
     }
 
+    .late-sq {
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+        background-color: red;
+    }
+
+    .vacation-sq {
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+        background-color: yellow;
+    }
+
+    .absent-sq {
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+        background-color: black;
+    }
+
+    .no-sched-sq {
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+        background-color: #ebedf0;
+    }
+
+    .no-work-sq {
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+        background-color: #00FFFF;
+        /* background: linear-gradient(to bottom right, #00FFFF 50%, #ebedf0 50%); */
+    }
+
     .over-time-sq {
         width: 15px;
         height: 15px;
