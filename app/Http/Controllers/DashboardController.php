@@ -13,6 +13,7 @@ use App\Models\UserLog;
 use App\Models\WorkSchedule;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
@@ -229,5 +230,38 @@ class DashboardController extends Controller
         ]);
 
         return redirect()->back()->with('success-holiday', 'Holiday created successfully.');
+    }
+
+    public function updateHoliday(Request $request)
+    {
+        $request->validate([
+            'holiday_date' => 'required|date',
+            'holiday_name' => 'required|string',
+            'holiday_id' => 'required|integer',
+        ]);
+
+        $holiday = Holiday::find($request->holiday_id);
+        if (!$holiday) {
+            return redirect()->back()->with('error', 'Holiday not found.');
+        }
+
+        $holiday->holiday_date = $request->holiday_date;
+        $holiday->holiday_name = $request->holiday_name;
+        $holiday->save();
+        return redirect()->back()->with('success-holiday', 'Holiday updated successfully.');
+    }
+
+    public function deleteHoliday(Request $request)
+    {
+        // check if the user is an admin
+        if (!User::find(auth()->user()->id)->isAdmin()) {
+            return redirect()->back()->with('error', 'You are not authorized to delete holidays.');
+        }
+        $holiday = Holiday::find($request->holiday_id);
+        if (!$holiday) {
+            return redirect()->back()->with('error', 'Holiday not found.');
+        }
+        $holiday->delete();
+        return redirect()->back()->with('success-holiday', 'Holiday deleted successfully.');
     }
 }

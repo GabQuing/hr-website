@@ -52,6 +52,11 @@ class User extends Authenticatable
         'deleted_at',
     ];
 
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('admin');
+    }
+
     public function basic_information()
     {
         return $this->hasOne(BasicInformation::class);

@@ -186,71 +186,6 @@
         background-color: green;
     }
 
-    /* .on-time-sq {
-    width: 15px;
-    height: 15px;
-    border-radius: 3px;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-    background: conic-gradient(#FF00FF 0deg 120deg, green 120deg 240deg, blue 240deg 360deg);
-} */
-
-    /* .on-time-sq {
-    width: 15px;
-    height: 15px;
-    border-radius: 3px;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-    position: relative;
-    background-color: #ebedf0;
-}
-
-.on-time-sq::after {
-    content: "";
-    position: absolute;
-    width: 50%;
-    height: 50%;
-    background-color: #196127;
-} */
-    .late-sq {
-        width: 15px;
-        height: 15px;
-        border-radius: 3px;
-        transition: transform 0.2s ease, opacity 0.2s ease;
-        background-color: red;
-    }
-
-    .vacation-sq {
-        width: 15px;
-        height: 15px;
-        border-radius: 3px;
-        transition: transform 0.2s ease, opacity 0.2s ease;
-        background-color: yellow;
-    }
-
-    .absent-sq {
-        width: 15px;
-        height: 15px;
-        border-radius: 3px;
-        transition: transform 0.2s ease, opacity 0.2s ease;
-        background-color: black;
-    }
-
-    .no-sched-sq {
-        width: 15px;
-        height: 15px;
-        border-radius: 3px;
-        transition: transform 0.2s ease, opacity 0.2s ease;
-        background-color: #ebedf0;
-    }
-
-    .no-work-sq {
-        width: 15px;
-        height: 15px;
-        border-radius: 3px;
-        transition: transform 0.2s ease, opacity 0.2s ease;
-        background-color: #00FFFF;
-        /* background: linear-gradient(to bottom right, #00FFFF 50%, #ebedf0 50%); */
-    }
-
     .over-time-sq {
         width: 15px;
         height: 15px;
@@ -515,8 +450,43 @@
         </div>
     </div>
 </div>
-
-
+<div class="modal-center edit-holiday-form" style="display: none">
+    <div class="modal-box ">
+        <div class="modal-content">
+            <form method="POST" action="{{ route('holiday.update') }}" enctype="multipart/form-data">
+                @csrf
+                <input type="text" name="holiday_id" value="0" hidden>
+                <table class="custom_normal_table">
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                                <h3 class="f-weight-bold">Add Holiday</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Select Date:</p>
+                                <input class="u-input" name="holiday_date" type="date" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <p>Holiday Name:</p>
+                                <input type="text" class="u-input" name="holiday_name" required></input>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="u-flex-space-between u-flex-wrap">
+                    <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close"
+                        id="edit-holiday-btn-close" type="button">Close</button>
+                    <button class="u-t-white u-fw-b u-btn u-bg-primary u-m-10 u-border-1-default btn-close"
+                        type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <div class="modal-center create-ann-form" style="display:none;">
     <div class="modal-box">
@@ -1013,10 +983,14 @@
                     @role('admin||hr')
                     <td style="display: flex; gap: 10px;">
                         <button type="button" class="edit-holiday-btn" data-holiday-id="{{ $holiday->id }}"
+                            data-holiday-date="{{ $holiday->holiday_date }}"
+                            data-holiday-name="{{ $holiday->holiday_name }}"
                             style="display: flex; color: white; border: none; cursor: pointer; background: #238c7c; padding: 5px; border-radius: 5px;">
                             <span class="material-symbols-outlined">edit</span>
                         </button>
-                        <button type="button" class="edit-holiday-btn" data-holiday-id="{{ $holiday->id }}"
+                        <button type="button" class="delete-holiday-btn" data-holiday-id="{{ $holiday->id }}"
+                            data-holiday-date="{{ $holiday->holiday_date }}"
+                            data-holiday-name="{{ $holiday->holiday_name }}"
                             style="display: flex; color: white; border: none; cursor: pointer; background: #882c03; padding: 5px; border-radius: 5px;">
                             <span class="material-symbols-outlined">delete</span>
                         </button>
@@ -1338,6 +1312,45 @@
         $(`#loader-${month}`).hide();
         $(`#graph-${month}`).show();
     });
+
+
+    // holidays
+    $('.edit-holiday-btn').on('click', function() {
+        const holidayId = $(this).data('holiday-id');
+        const holidayDate = $(this).data('holiday-date');
+        const holidayName = $(this).data('holiday-name');
+        const form = $('.edit-holiday-form');
+        form.find('input[name="holiday_id"]').val(holidayId);
+        form.find('input[name="holiday_date"]').val(holidayDate);
+        form.find('input[name="holiday_name"]').val(holidayName);
+        form.show();
+    });
+
+    $('#edit-holiday-btn-close').on('click', function() {
+        $('.edit-holiday-form').hide();
+    });
+
+    $('.delete-holiday-btn').on('click', function() {
+        const holidayId = $(this).data('holiday-id');
+        const holidayDate = $(this).data('holiday-date');
+        const holidayName = $(this).data('holiday-name');
+        // create a swal dialog
+        Swal.fire({
+
+            title: 'Are you sure?',
+            html: `You are about to delete <strong>${holidayName}</strong> on <strong>${holidayDate}</strong>.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.assign("{{ route('holiday.delete') }}" + '?holiday_id=' + holidayId);
+            }
+        });
+    });
+
 
 </script>
 @endsection

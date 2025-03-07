@@ -106,6 +106,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Holidays 
     Route::post('/holidays/create', [DashboardController::class, 'createHoliday'])->name('holiday.create');
+    Route::post('/holidays/update', [DashboardController::class, 'updateHoliday'])->name('holiday.update');
+    Route::get('/holidays/delete', [DashboardController::class, 'deleteHoliday'])->name('holiday.delete');
 
     // Attendance
     Route::get('/my_attendance', [AttendanceController::class, 'index'])->name('attendance');
