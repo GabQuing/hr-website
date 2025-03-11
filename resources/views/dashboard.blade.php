@@ -805,37 +805,39 @@
             <p class="header_title_h2">Attendance Tracker</p>
         </div>
         <div class="dashboard_table mh-500 u-flex u-p-10 custom-grid-container">
-            @foreach($all_months as $monthIndex => $month)
-            @php
-            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $monthIndex + 1, $year);
-            $firstDayOfMonth = (\Carbon\Carbon::create($year, $monthIndex + 1, 1)->dayOfWeek + 6) % 7;
-            @endphp
-            <div id="calendar-{{ $year }}-{{ $month }}" class="u-flex u-align-items-center u-flex-direction-column ">
-                <span class="u-fs-small u-fw-b text-sky-blue">{{ $month }} ({{ $year }})</span>
-                <div class="attendance-graph mh-200" id="graph-{{ $month }}" style="display: none">
-                    <!-- Weekday headers -->
-                    @foreach($daysOfWeek as $day)
-                    <div class="day-label text-sky-blue">{{ $day }}</div>
-                    @endforeach
-                    <!-- Days grid -->
-                    <div class="days-grid">
-                        <!-- Empty spaces for proper alignment -->
-                        @if ($firstDayOfMonth != 6)
-                        <div class="day empty" style="grid-column-start: {{ $firstDayOfMonth + 1 }};"></div>
-                        @endif
-                        <!-- Days of the month -->
-                        @for($day = 1; $day <= $daysInMonth; $day++) <div
-                            class="day tooltip day-{{ $year }}-{{ str_pad($monthIndex + 1, 2, '0', STR_PAD_LEFT) }}-{{ str_pad($day, 2, '0', STR_PAD_LEFT) }}"
-                            data-date="{{ $month }}-{{ $day }}-{{ $year }}">
+            @for ($i=1; $i<=12; $i++) @php $daysInMonth=cal_days_in_month(CAL_GREGORIAN, $i, $year); $monthIndex=$i;
+                $firstDayOfMonth=(\Carbon\Carbon::create($year, $monthIndex, 1)->dayOfWeek + 6) % 7;
+                $month = "$year-$monthIndex-01";
+                $month = new DateTime($month);
+                $month = $month->format('M');
+                @endphp
+                <div id="calendar-{{ $year }}-{{ $month }}"
+                    class="u-flex u-align-items-center u-flex-direction-column ">
+                    <span class="u-fs-small u-fw-b text-sky-blue">{{ $month }} ({{ $year }})</span>
+                    <div class="attendance-graph mh-200" id="graph-{{ $month }}" style="display: none">
+                        <!-- Weekday headers -->
+                        @foreach($daysOfWeek as $day)
+                        <div class="day-label text-sky-blue">{{ $day }}</div>
+                        @endforeach
+                        <!-- Days grid -->
+                        <div class="days-grid">
+                            <!-- Empty spaces for proper alignment -->
+                            @if ($firstDayOfMonth != 6)
+                            <div class="day empty" style="grid-column-start: {{ $firstDayOfMonth + 1 }};"></div>
+                            @endif
+                            <!-- Days of the month -->
+                            @for($day = 1; $day <= $daysInMonth; $day++) <div
+                                class="day tooltip day-{{ $year }}-{{ str_pad($monthIndex, 2, '0', STR_PAD_LEFT) }}-{{ str_pad($day, 2, '0', STR_PAD_LEFT) }}"
+                                data-date="{{ $month }}-{{ $day }}-{{ $year }}">
+                        </div>
+                        @endfor
                     </div>
-                    @endfor
                 </div>
-            </div>
-            <div style="margin-top: 2rem" id="loader-{{ $month }}">
-                <div class="loader"></div>
-            </div>
+                <div style="margin-top: 2rem" id="loader-{{ $month }}">
+                    <div class="loader"></div>
+                </div>
         </div>
-        @endforeach
+        @endfor
     </div>
     <div class="u-flex-center-row u-m-10 u-gap-2">
         <button class="custom-detail-btn view-detail-btn">View Details</button>
@@ -1355,7 +1357,7 @@
     }
 
 
-    const allMonths = {!! json_encode($all_months) !!};
+    const allMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     const year = "{{ $year }}";
     const userId = "{{ auth()->user()->id }}";
     allMonths.forEach(async month => {

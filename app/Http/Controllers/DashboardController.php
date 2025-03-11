@@ -78,20 +78,6 @@ class DashboardController extends Controller
             ->where('end_date', '>', $date)
             ->first();
 
-        $data['all_months'] = [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec'
-        ];
         $data['year'] = 2024;
         $data['daysOfWeek'] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
