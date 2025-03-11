@@ -856,7 +856,7 @@
             </div>
             <div class="u-flex u-gap-1 u-align-items-center">
                 <div class="absent-sq"></div>
-                <span>Absent</span>
+                <span>Absent/No logs</span>
             </div>
             <div class="u-flex u-gap-1 u-align-items-center">
                 <div class="no-work-sq"></div>
