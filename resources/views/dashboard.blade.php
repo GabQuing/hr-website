@@ -1346,7 +1346,7 @@
                 if (isOverTime && isOverBreak) {
                     tooltip.addClass('late-ot-ob');
                 } else if (isOverTime) {
-                    tooltip.addClass('late-ot');
+                    tooltip.addClass('on-late-ot');
                 } else if (isOverBreak) {
                     tooltip.addClass('late-ob');
                 } else {
