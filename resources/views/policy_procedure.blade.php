@@ -32,13 +32,86 @@
     .t-underline{
         text-decoration: underline;
     }
+
+    .modal-box{
+        max-width: 75rem !important;
+    }
 </style>
 @section('content')
+    <div>
+        <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default open-modal new-policy-btn" >Create New Policy</button>
+    </div>
     <div>
         <br>
         @if (session('success'))
             <h5 class="u-fw-b" style="color: green; display:block;">{{ session('success') }}</h5>
         @endif
+    </div>
+    <div class="modal-center" id="new-policy-modal" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-content">
+                <form id="new-policy-form" method="POST" action="{{route('policy_procedure.new_policy')}}">
+                    @csrf
+                    <div style="overflow-x: auto; width: 100%;">
+                        <table class="custom_normal_table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>Policy Title</p>
+                                        <input class="u-input" type="text" name="policy_title" id="policy_title" value="" required>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <p>Policy Content:</p>
+                                        <!-- CKEditor Textarea -->
+                                        <textarea name="details" id="editor" required>
+                                            {{ $attendance_related->details ?? '' }}
+                                        </textarea>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="u-flex-space-between u-flex-wrap">
+                        <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" type="button">Close</button>
+                        <div class="u-flex-space-between">
+                            <button class="ob-btns u-t-white u-fw-b u-btn u-bg-accent u-m-5 u-border-1-default" type="submit">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-center" id="attendance-related-modal" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-content">
+                <form id="attendance-form" method="POST" action="">
+                    @csrf
+                    <div style="overflow-x: auto; width: 100%;">
+                        <table class="custom_normal_table">
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <p>Attendance Related:</p>
+                                        <!-- CKEditor Textarea -->
+                                        <textarea name="details" id="editor">
+                                            {{ $attendance_related->details ?? '' }}
+                                        </textarea>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="u-flex-space-between u-flex-wrap">
+                        <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" type="button">Close</button>
+                        <div class="u-flex-space-between">
+                            <button class="ob-btns u-t-white u-fw-b u-btn u-bg-accent u-m-5 u-border-1-default" type="submit">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     <div class="modal-center" id="payroll-calendar-modal" style="display: none;">
         <div class="modal-box">
@@ -84,6 +157,19 @@
                     <p>Attendance Related</p>
                 </div>
                 <div class="profile_info_content show_content info_padding">
+                    @role('hr|admin')
+                    <div class="u-flex-end">
+                        <button type="button" class="u-action-btn u-bg-primary btn-edit edit-attendance-related">
+                            <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
+                                edit
+                            </span>
+                        </button>
+                    </div>
+                    @endrole
+                    {{-- <div class="pic_input_main_table">
+                        {!! $attendance_related ? $attendance_related->details : '<p>No details available.</p>' !!}
+                    </div> --}}
+                    
                     <div class="pic">
                         <h5>Policy on Punctuality</h5>
                     </div>
@@ -953,14 +1039,28 @@
 
     @section('script_content')
         <script>
-            $('.attendance_summary_content').fadeIn('slow');
-            $('.btn-close').on('click', function(){
-                $('.modal-center').hide();
-            })
+            $(document).ready(function () {
+                 // Initialize CKEditor
+                CKEDITOR.replace('editor', { 
+                    height: 300,
+                    versionCheck: false
+                });
 
-            $('.edit-payroll-calendar').on('click', function() {
-                $('#payroll-calendar-modal').show();
-            });
+            
+                $('.attendance_summary_content').fadeIn('slow');
+                $('.btn-close').on('click', function(){
+                    $('.modal-center').hide();
+                })
+
+                $('.new-policy-btn').on('click', function() {
+                    $('#new-policy-modal').show();
+                });
+                $('.edit-payroll-calendar').on('click', function() {
+                    $('#payroll-calendar-modal').show();
+                });
+                $('.edit-attendance-related').on('click', function() {
+                    $('#attendance-related-modal').show();
+                });
 
 
                 $('.info_header').click(function(){
@@ -1012,6 +1112,10 @@
                     placeholder: 'None Selected',
                     width: '100%',
                 });
+
+
+            });
+
 
 
 

@@ -248,6 +248,8 @@ Route::middleware(['auth'])->group(function () {
     //Policy & Procedure
     Route::get('/policy_procedure', [PolicyProcedureController::class, 'index'])->name('policy_procedure');
     Route::post('/policy_procedure/payroll-calendar/add', [PolicyProcedureController::class, 'addPayrollCalendar'])->name('policy_procedure.add_payroll_calendar');
+    Route::post('/policy_procedure/new-policy/add', [PolicyProcedureController::class, 'addNewPolicy'])->name('policy_procedure.new_policy');
+    // Route::post('/policy_procedure/attendance-related/add', [PolicyProcedureController::class, 'addAttendanceRelated'])->name('policy_procedure.add_attendance_related');
 
 
     // SideTopContent
