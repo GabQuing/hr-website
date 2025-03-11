@@ -35,6 +35,10 @@
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.1/dist/quill.js"></script>
     {{-- Alpine Js --}}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {{-- CKEditor--}}
+    <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+
+
 
 </head>
 @yield('css')
