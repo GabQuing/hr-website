@@ -224,7 +224,7 @@
         border-radius: 3px;
         transition: transform 0.2s ease, opacity 0.2s ease;
         background-color: #00FFFF;
-        /* background: linear-gradient(to bottom right, #00FFFF 50%, #ebedf0 50%); */
+        background: linear-gradient(to bottom right, #00FFFF 50%, #ebedf0 50%);
     }
 
     .over-time-sq {
@@ -257,6 +257,15 @@
         border-radius: 3px;
         transition: transform 0.2s ease, opacity 0.2s ease;
         background: linear-gradient(to bottom right, blue 50%, green 50%);
+    }
+
+    .on-time-no-work {
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+        background-color: #00FFFF;
+        background: linear-gradient(to bottom right, #00FFFF 50%, green 50%);
     }
 
     .on-time-ot-ob {
@@ -375,30 +384,6 @@
     .tooltip {
         position: relative;
         display: inline-block;
-    }
-
-    .tooltip .tooltiptext {
-        visibility: hidden;
-        background-color: black;
-        color: #fff;
-        text-align: left;
-        border-radius: 5px;
-        padding: 5px;
-        position: absolute;
-        z-index: 1;
-        bottom: 125%;
-        left: 50%;
-        transform: translateX(-50%);
-        opacity: 0;
-        transition: opacity 0.3s;
-        white-space: nowrap;
-        font-size: 8px;
-        min-width: 70px;
-    }
-
-    .tooltip:hover .tooltiptext {
-        visibility: visible;
-        opacity: 1;
     }
 
 
@@ -842,13 +827,6 @@
                         @for($day = 1; $day <= $daysInMonth; $day++) <div
                             class="day tooltip day-{{ $year }}-{{ str_pad($monthIndex + 1, 2, '0', STR_PAD_LEFT) }}-{{ str_pad($day, 2, '0', STR_PAD_LEFT) }}"
                             data-date="{{ $month }}-{{ $day }}-{{ $year }}">
-                            <span class="tooltiptext">
-                                <strong>{{ $month }}-{{ $day }}-{{ $year }}</strong><br>
-                                Clock In: <span class="tooltip-clock-in">--</span><br>
-                                Break Start: <span class="tooltip-break-start">--</span><br>
-                                Break End: <span class="tooltip-break-end">--</span><br>
-                                Clock Out: <span class="tooltip-clock-out">--</span><br>
-                            </span>
                     </div>
                     @endfor
                 </div>
@@ -1059,6 +1037,9 @@
 </div>
 
 @section('script_content')
+<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+<script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+</script>
 <script>
     $(document).ready(function(){
         function showLogDetails(logDetails) {
@@ -1270,33 +1251,67 @@
             const workSchedule = daylog?.work_schedule.work_from ?? WORK_SCHEDULE.find(e => e.work_day === dayName);
             const overtime = data.overtimes.length ? data.overtimes.find(e => e.shift_date === dateString) : null;
             const leave = data.leaves.length ? data.leaves.find(e => e.leave_from === dateString) : null;
+            const holiday = data.holidays.length ? data.holidays.find(e => e.holiday_date === dateString) : null;
             const tooltip = calendar.find(`.day-${dateString}`);
 
-            if (daylog) {
-                tooltip.find('.tooltip-clock-in').text(formatTime(daylog.clock_in))
-                tooltip.find('.tooltip-break-start').text(formatTime(daylog.break_start))
-                tooltip.find('.tooltip-break-end').text(formatTime(daylog.break_end))
-                tooltip.find('.tooltip-clock-out').text(formatTime(daylog.clock_out))
+            let isOverBreak = false;
+            let isOnTime = true;
+            let isOverTime = overtime ? true : false;
+            let isHoliday = holiday ? true : false;
+
+            const dateFormat = { month: 'short', day: '2-digit', year: 'numeric' };
+            let tooltipContent = `<p style="font-weight: bold; color: yellow;">${date.toLocaleDateString('en-US', dateFormat)}</p>`
+
+            if (isHoliday) {
+                tooltipContent += `<p style="color: #76fcfe">${holiday.holiday_name}</p>`;
             }
 
+            if (isOverTime) {
+                const timeFormat = {hour: '2-digit', minute: '2-digit', hour12: true}
+                tooltipContent += `<p style="color: #f84bfd">Overtime: ${formatTime(overtime.time_start)} - ${formatTime(overtime.time_end)} (${overtime.reason})</p>`;
+            }
+
+            if (leave) {
+                tooltipContent += `<p style="color: yellow">Leave: ${leave.leave_type} (${leave.reason})</p>`;
+            }
+
+            if (daylog) {
+                if (daylog.clock_in) tooltipContent += `<p>Clock in: ${formatTime(daylog.clock_in)}</p>`;
+                if (daylog.break_start) tooltipContent += `<p>Break start: ${formatTime(daylog.break_start)}</p>`;
+                if (daylog.break_end) tooltipContent += `<p>Break end: ${formatTime(daylog.break_end)}</p>`;
+                if (daylog.clock_out) tooltipContent += `<p>Clock out: ${formatTime(daylog.clock_out)}</p>`;
+            }
+
+            tippy(`#calendar-${year}-${month} .day-${dateString}`, {
+                content: tooltipContent,
+                allowHTML: true,
+                trigger: 'mouseenter focus click',
+            });
+
+
             // checking if absent
-            if (!daylog || !daylog.clock_in || !daylog.clock_out) {
+            if (!isHoliday && (!daylog || !daylog.clock_in || !daylog.clock_out)) {
                 if (!workSchedule.rest_day) {
                     tooltip.addClass('absent-sq');
+                    continue;
+                }
+                continue;
+            } else if (isHoliday) {
+                if (daylog?.clock_in && daylog?.clock_out) {
+                    tooltip.addClass('on-time-no-work');
+                } else {
+                    tooltip.addClass('no-work-sq');
                 }
                 continue;
             }
 
             if (leave) {
                 tooltip.addClass('vacation-sq');
+                continue;
             }
-
-            let isOverBreak = false;
-            let isOnTime = true;
-            let isOverTime = overtime ? true : false;
         
             // checking if overbreak
-            if (daylog.break_start && daylog.break_end) {
+            if (daylog?.break_start && daylog?.break_end) {
                 const breakStart = new Date(`1970-01-01T${daylog.break_start}Z`);
                 const breakEnd = new Date(`1970-01-01T${daylog.break_end}Z`);
                 const totalBreakMinutes = (breakEnd - breakStart) / (1000 * 60);
@@ -1309,7 +1324,7 @@
             // checking if ontime or late
             const clockIn = new Date(`1970-01-01T${daylog.clock_in}Z`);
             const clockInSched = new Date(`1970-01-01T${daylog.work_schedule.work_from}Z`);
-            if (daylog.clock_in && daylog.clock_out && (clockIn <= clockInSched || daylog.work_schedule.rest_day)) {
+            if (daylog?.clock_in && daylog?.clock_out && (clockIn <= clockInSched || daylog.work_schedule.rest_day)) {
                 isOnTime = true;
             } else {
                 isOnTime = false;

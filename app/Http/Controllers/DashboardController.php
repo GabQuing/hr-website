@@ -204,12 +204,16 @@ class DashboardController extends Controller
         ])->where('shift_date', 'like', "$month%")
             ->get();
 
+        $holidays = Holiday::where('holiday_date', 'like', "$month%")
+            ->get();
+
         return [
             'user' => $user_id,
             'month' => $month,
             'logs' => $logs,
             'leaves' => $leaves,
             'overtimes' => $overtimes,
+            'holidays' => $holidays
         ];
     }
 
