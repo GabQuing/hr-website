@@ -3,8 +3,8 @@
 @section('module_name', 'Employee Attendance')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('dashboard.css') }}" />
-<link rel="stylesheet" href="{{ asset('attendance-tracker.css') }}" />
+<link rel="stylesheet" type='text/css' property='stylesheet' href="{{ asset('css/dashboard.css') }}" />
+<link rel="stylesheet" type='text/css' property='stylesheet' href="{{ asset('css/attendance-tracker.css') }}" />
 @endsection
 
 @section('content')
@@ -112,11 +112,6 @@
                         <!-- Days of the month -->
                         @for($day = 1; $day <= $daysInMonth; $day++) <div class="day tooltip"
                             data-date="{{ $month }}-{{ $day }}-{{ $year }}">
-                            <span class="tooltiptext">
-                                <strong>{{ $month }}-{{ $day }}-{{ $year }}</strong><br>
-                                Clock In: <span class="">08:00</span><br>
-                                Clock Out: <span class="">08:00</span><br>
-                            </span>
                     </div>
                     @endfor
                 </div>
@@ -143,8 +138,8 @@
 @section('script_content')
 <script>
     $('.s-single').select2({
-            width: '100%',
-        });
+                width: '100%',
+            });
 
         $('.attendance_summary_content').fadeIn('slow');
 </script>
