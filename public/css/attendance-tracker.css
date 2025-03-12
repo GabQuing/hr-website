@@ -1,0 +1,311 @@
+.attendance-graph {
+  display: grid;
+  grid-template-columns: repeat(7, 15px);
+  /* 7 columns for days */
+  gap: 4px;
+  padding: 10px;
+  max-width: fit-content;
+}
+
+/* Header row for days */
+.day-label {
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Days container */
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 15px);
+  gap: 4px;
+}
+
+/* Each day box */
+.day {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  text-align: center;
+  font-size: 10px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background-color: #0000009d;
+}
+
+/* Empty placeholders for alignment */
+.day.empty {
+  background-color: transparent;
+}
+
+
+/* Each square (day) */
+.day {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background-color: #ebedf0;
+  /* Default color (no attendance) */
+}
+
+.on-time-sq {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background-color: green;
+}
+
+.late-sq {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background-color: red;
+}
+
+.vacation-sq {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background-color: yellow;
+}
+
+.absent-sq {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background-color: black;
+}
+
+.no-sched-sq {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background-color: #ebedf0;
+}
+
+.no-work-sq {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background-color: #00FFFF;
+  background: linear-gradient(to bottom right, #00FFFF 50%, #ebedf0 50%);
+}
+
+.over-time-sq {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background: linear-gradient(to bottom right, #FF00FF 50%, #ebedf0 50%);
+}
+
+.over-break-sq {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background: linear-gradient(to bottom right, blue 50%, #ebedf0 50%);
+}
+
+.on-time-ot {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background: linear-gradient(to bottom right, #FF00FF 50%, green 50%);
+}
+
+.on-time-ob {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background: linear-gradient(to bottom right, blue 50%, green 50%);
+}
+
+.on-time-no-work {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background-color: #00FFFF;
+  background: linear-gradient(to bottom right, #00FFFF 50%, green 50%);
+}
+
+.on-time-ot-ob {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background: conic-gradient(blue 0deg 120deg, green 120deg 240deg, #FF00FF 240deg 360deg);
+}
+
+.on-late-ot {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background: linear-gradient(to bottom right, #FF00FF 50%, red 50%);
+}
+
+.on-late-ob {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background: linear-gradient(to bottom right, blue 50%, red 50%);
+}
+
+.on-late-ot-ob {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  background: conic-gradient(blue 0deg 120deg, red 120deg 240deg, #FF00FF 240deg 360deg);
+}
+
+.details-container {
+  display: none;
+  gap: 20px !important;
+}
+
+/* Attendance levels (shades of green) */
+.level-1 {
+  background-color: #c6e48b;
+}
+
+.level-2 {
+  background-color: #7bc96f;
+}
+
+.level-3 {
+  background-color: #239a3b;
+}
+
+.level-4 {
+  background-color: #196127;
+}
+
+/* Hover effect */
+.day:hover,
+.on-time-sq:hover,
+.late-sq:hover,
+.vacation-sq:hover,
+.absent-sq:hover,
+.no-sched-sq:hover,
+.no-work-sq:hover,
+.over-time-sq:hover,
+.over-break-sq:hover {
+  transform: scale(1.2);
+  opacity: 0.8;
+}
+
+.custom-grid-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.custom-detail-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: small;
+  font-weight: bold;
+  color: #02718A;
+  padding: 5px;
+  text-decoration: underline;
+}
+
+.custom-detail-btn:hover {
+  opacity: 75%;
+}
+
+.notes-container {
+  border: 1px solid #02718A;
+  padding: 15px 30px;
+  border-radius: 15px;
+}
+
+.legend-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, auto);
+  /* Ensures 2 rows */
+  gap: 20px;
+  padding: 10px;
+}
+
+.notes-title {
+  font-size: 17px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #02718A;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+
+@media (max-width: 1492px) {
+  .blue-border {
+      width: 100%;
+  }
+
+  .message_container {
+      padding: 0px 30px;
+  }
+}
+
+
+/* Adjust to 2 columns on tablets */
+@media (max-width: 768px) {
+  .legend-container {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+
+  }
+}
+
+/* Stack into 1 column on smaller screens */
+@media (max-width: 480px) {
+  .legend-container {
+      /* grid-template-columns: repeat(1, 1fr); */
+      font-size: 14px;
+      gap: 17px;
+      padding: 2px;
+  }
+
+  .notes-container {
+      padding: 10px 20px;
+  }
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #ccc;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+      transform: rotate(0deg);
+  }
+
+  100% {
+      transform: rotate(360deg);
+  }
+}
