@@ -1268,11 +1268,11 @@
 
             if (isOverTime) {
                 const timeFormat = {hour: '2-digit', minute: '2-digit', hour12: true}
-                tooltipContent += `<p style="color: #f84bfd">Overtime: ${formatTime(overtime.time_start)} - ${formatTime(overtime.time_end)} (${overtime.reason})</p>`;
+                tooltipContent += `<p style="color: #f84bfd">${formatTime(overtime.time_start)} - ${formatTime(overtime.time_end)} (${overtime.reason})</p>`;
             }
 
             if (leave) {
-                tooltipContent += `<p style="color: yellow">Leave: ${leave.leave_type} (${leave.reason})</p>`;
+                tooltipContent += `<p style="color: yellow">${leave.leave_type} (${leave.reason})</p>`;
             }
 
             if (daylog) {
