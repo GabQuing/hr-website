@@ -61,12 +61,13 @@
     }
 
 
-
 </style>
 @section('content')
-    <div>
-        <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default open-modal new-policy-btn" >Generate Policy</button>
-    </div>
+    @role('hr|admin')
+        <div>
+            <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default open-modal new-policy-btn" >Generate Policy</button>
+        </div>
+    @endrole
     <div>
         <br>
         @if (session('success'))
