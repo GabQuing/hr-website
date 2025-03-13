@@ -5,11 +5,11 @@
     .profile_info_section{
         padding: 20px;
     }
-    .policy_paragraph{
+    /* .policy_paragraph{
         padding-left: 10px;
         text-indent: 40px;
         margin-top: 5px;
-    }
+    } */
     .policy_bullet {
         display: flex;
     }
@@ -22,12 +22,6 @@
         margin: 0 3rem;
     }
 
-    .table_schedule,
-    .table_schedule td,
-    .table_schedule th
-    {
-        text-align: left !important;
-    }
 
     .t-underline{
         text-decoration: underline;
@@ -36,11 +30,44 @@
     .modal-box{
         max-width: 75rem !important;
     }
+
+
+
+    /* .pic_input_main_table table {
+    font-size: small;
+    border: 2px solid #e2e1e1;
+    border-collapse: collapse;
+    padding: 20px !important;
+    } */
+
+    .policy_table, .policy_table td, .policy_table th {
+        font-size: small;
+        border: 2px solid #e2e1e1;
+        border-collapse: collapse;
+        padding: 20px !important;
+    }
+
+    .policy_paragraph {
+        margin-top: 5px !important;
+    }
+
+    .policy_ul{
+        margin-left:40px;
+        margin-top:13px;
+    }
+
+    .policy_img{
+        width: 100%;
+    }
+
+
 </style>
 @section('content')
-    <div>
-        <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default open-modal new-policy-btn" >Generate Policy</button>
-    </div>
+    @role('hr|admin')
+        <div>
+            <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default open-modal new-policy-btn" >Generate Policy</button>
+        </div>
+    @endrole
     <div>
         <br>
         @if (session('success'))
@@ -258,7 +285,7 @@
                                         timer: 2000,
                                         showConfirmButton: false,
                                     }).then(() => {
-                                        location.reload(); // Reload page to update the list
+                                        location.reload(); 
                                     });
                                 },
                                 error: function (xhr) {
@@ -273,7 +300,11 @@
                     });
                 });
 
-            
+                $(".pic_input_main_table table").addClass("policy_table");
+                $(".pic_input_main_table p").addClass("policy_paragraph");
+                $(".pic_input_main_table ul").addClass("policy_ul");
+                $(".pic_input_main_table img").addClass("policy_img");
+
                 $('.attendance_summary_content').fadeIn('slow');
                 $('.btn-close').on('click', function(){
                     $('.modal-center').hide();
