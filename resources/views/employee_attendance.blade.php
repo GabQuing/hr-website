@@ -54,6 +54,14 @@
         </div>
     </form>
     @if ($summary_data ?? false)
+    <div class="u-flex-end u-mt-10 u-mr-10">
+        <a class="u-t-dark" style="text-decoration: none;"
+            href="{{ route('export') . '?' . http_build_query($params) }}" target="_blank">
+            <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default">
+                Export
+            </button>
+        </a>
+    </div>
     <div class="u-mt-10" style="overflow-x: auto;">
         <table class="u-responsive-table">
             <thead>
@@ -82,66 +90,208 @@
             </tbody>
         </table>
     </div>
-    <div class="u-mt-32 u-p-10">
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
         @foreach($summary_data as $summary)
-        <div>
-            <span class="text-sky-blue u-fw-b u-fs-small">{{ $summary['user'] }}</span>
-        </div>
-        <div class="dashboard_table mh-500 u-flex u-p-10 custom-grid-container u-mt-5">
-            @foreach($filtered_months as $monthData)
-            @php
-            $month = $monthData['month'];
-            $year = $monthData['year'];
-            $daysInMonth = $monthData['daysInMonth'];
-            $firstDayOfMonth = $monthData['firstDayOfMonth'];
-            @endphp
-            <div class="u-flex u-align-items-center u-flex-direction-column">
-                <span class="u-fs-small u-fw-b text-sky-blue">{{ $month }} ({{ $year }})</span>
-                <div class="attendance-graph mh-200">
-                    <!-- Weekday headers -->
-                    @foreach($daysOfWeek as $day)
-                    <div class="day-label text-sky-blue">{{ $day }}</div>
-                    @endforeach
-                    <!-- Days grid -->
-                    <div class="days-grid">
-                        <!-- Empty spaces for proper alignment -->
-                        @if ($firstDayOfMonth != 0)
-                        <div class="day empty"
-                            style="grid-column-start: {{ ($firstDayOfMonth == 0) ? 1 : $firstDayOfMonth }};"></div>
-                        @endif
-                        <!-- Days of the month -->
-                        @for($day = 1; $day <= $daysInMonth; $day++) <div class="day tooltip"
-                            data-date="{{ $month }}-{{ $day }}-{{ $year }}">
+        <hr>
+        <div class="u-mt-32 u-p-10">
+            <div>
+                <span class="text-sky-blue u-fw-b u-fs-small">{{ $summary['user'] }}</span>
+            </div>
+            <div class="dashboard_table mh-500 u-flex u-p-10 custom-grid-container u-mt-5">
+                @foreach($filtered_months as $monthData)
+                @php
+                $month = $monthData['month'];
+                $monthNumber = $monthData['monthNumber'];
+                $year = $monthData['year'];
+                $daysInMonth = $monthData['daysInMonth'];
+                $firstDayOfMonth = $monthData['firstDayOfMonth'];
+                @endphp
+                <div class="u-flex u-align-items-center u-flex-direction-column">
+                    <span class="u-fs-small u-fw-b text-sky-blue">{{ $month }} ({{ $year }})</span>
+                    <div class="attendance-graph mh-200" data-user="{{ $summary['user_id'] }}"
+                        data-month-number="{{ $monthNumber }}" data-month="{{ $month }}" data-year="{{ $year }}"
+                        style="display: none">
+                        <!-- Weekday headers -->
+                        @foreach($daysOfWeek as $day)
+                        <div class="day-label text-sky-blue">{{ $day }}</div>
+                        @endforeach
+                        <!-- Days grid -->
+                        <div class="days-grid">
+                            <!-- Empty spaces for proper alignment -->
+                            @if ($firstDayOfMonth != 0)
+                            <div class="day empty"
+                                style="grid-column-start: {{ ($firstDayOfMonth == 0) ? 1 : $firstDayOfMonth }};"></div>
+                            @endif
+                            <!-- Days of the month -->
+                            @for($day = 1; $day <= $daysInMonth; $day++) <div
+                                class="day tooltip user-{{ $summary['user_id'] }} day-{{ $year }}-{{ str_pad($monthNumber, 2, '0', STR_PAD_LEFT) }}-{{ str_pad($day, 2, '0', STR_PAD_LEFT) }}"
+                                data-user="{{ $summary['user_id'] }}" data-date="{{ $month }}-{{ $day }}-{{ $year }}">
+                        </div>
+                        @endfor
                     </div>
-                    @endfor
+                </div>
+                <div style="margin-top: 2rem"
+                    class="calendar-loader loader-{{ $month }} user-{{ $summary['user_id'] }} year-{{ $year }} month-{{ $month }}">
+                    <div class="loader"></div>
                 </div>
             </div>
+            @endforeach
         </div>
         @endforeach
     </div>
-    @endforeach
-</div>
-
-
-
-<div class="u-flex-end u-mt-10 u-mr-10">
-    <a class="u-t-dark" style="text-decoration: none;" href="{{ route('export') . '?' . http_build_query($params) }}"
-        target="_blank">
-        <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default">
-            Export
-        </button>
-    </a>
 </div>
 @endif
 </div>
 
 @section('script_content')
+<script src="{{ asset('js/attendance-tracker.js') }}"></script>
 <script>
     $('.s-single').select2({
-                width: '100%',
+        width: '100%',
+    });
+
+    $('.attendance_summary_content').fadeIn('slow');
+
+    @if ($summary_data ?? false)
+    // attendance graph
+    const WORK_SCHEDULES = {!! json_encode($workSchedules) !!};
+
+    function populateCalendar(month, data, formattedDate, attendanceGraph) {
+        const year = "{{ $year }}";
+        const calendar = $(attendanceGraph);
+        const userId = attendanceGraph.dataset?.user;
+
+        for (let i=1; i<=31; i++) {
+            const dateString = `${formattedDate}-${i.toString().padStart(2, '0')}`;
+            const date = isValidDate(dateString);
+            if (!date) continue;
+            const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+            const daylog = data.logs.find(e => e.log_date === dateString);
+            const workSchedule = daylog?.work_schedule.work_from ?? WORK_SCHEDULES[userId].find(e => e.work_day === dayName);
+            const overtime = data.overtimes.length ? data.overtimes.find(e => e.shift_date === dateString) : null;
+            const leave = data.leaves.length ? data.leaves.find(e => e.leave_from === dateString) : null;
+            const holiday = data.holidays.length ? data.holidays.find(e => e.holiday_date === dateString) : null;
+            const tooltip = calendar.find(`.day-${dateString}`);
+
+            let isOverBreak = false;
+            let isOnTime = true;
+            let isOverTime = overtime ? true : false;
+            let isHoliday = holiday ? true : false;
+
+            const dateFormat = { month: 'short', day: '2-digit', year: 'numeric' };
+            let tooltipContent = `<p style="font-weight: bold; color: yellow;">${date.toLocaleDateString('en-US', dateFormat)}</p>`
+
+            if (isHoliday) {
+                tooltipContent += `<p style="color: #76fcfe">${holiday.holiday_name}</p>`;
+            }
+
+            if (isOverTime) {
+                const timeFormat = {hour: '2-digit', minute: '2-digit', hour12: true}
+                tooltipContent += `<p style="color: #f84bfd">${formatTime(overtime.time_start)} - ${formatTime(overtime.time_end)} (${overtime.reason})</p>`;
+            }
+
+            if (leave) {
+                tooltipContent += `<p style="color: yellow">${leave.leave_type} (${leave.reason})</p>`;
+            }
+
+            if (daylog) {
+                if (daylog.clock_in) tooltipContent += `<p>Clock in: ${formatTime(daylog.clock_in)}</p>`;
+                if (daylog.break_start) tooltipContent += `<p>Break start: ${formatTime(daylog.break_start)}</p>`;
+                if (daylog.break_end) tooltipContent += `<p>Break end: ${formatTime(daylog.break_end)}</p>`;
+                if (daylog.clock_out) tooltipContent += `<p>Clock out: ${formatTime(daylog.clock_out)}</p>`;
+            }
+
+            tippy(`.user-${userId}.day-${dateString}`, {
+                content: tooltipContent,
+                allowHTML: true,
+                trigger: 'mouseenter focus click',
             });
 
-        $('.attendance_summary_content').fadeIn('slow');
+
+            // checking if absent
+            if (!isHoliday && (!daylog || !daylog.clock_in || !daylog.clock_out)) {
+                if (!workSchedule.rest_day) {
+                    tooltip.addClass('absent-sq');
+                    continue;
+                }
+                continue;
+            } else if (isHoliday) {
+                if (daylog?.clock_in && daylog?.clock_out) {
+                    tooltip.addClass('on-time-no-work');
+                } else {
+                    tooltip.addClass('no-work-sq');
+                }
+                continue;
+            }
+
+            if (leave) {
+                tooltip.addClass('vacation-sq');
+                continue;
+            }
+        
+            // checking if overbreak
+            if (daylog?.break_start && daylog?.break_end) {
+                const breakStart = new Date(`1970-01-01T${daylog.break_start}Z`);
+                const breakEnd = new Date(`1970-01-01T${daylog.break_end}Z`);
+                const totalBreakMinutes = (breakEnd - breakStart) / (1000 * 60);
+
+                if (totalBreakMinutes > 60) {
+                    isOverBreak = true;
+                }
+            }
+
+            // checking if ontime or late
+            const clockIn = new Date(`1970-01-01T${daylog.clock_in}Z`);
+            const clockInSched = new Date(`1970-01-01T${daylog.work_schedule.work_from}Z`);
+            if (daylog?.clock_in && daylog?.clock_out && (clockIn <= clockInSched || daylog.work_schedule.rest_day)) {
+                isOnTime = true;
+            } else {
+                isOnTime = false;
+            }
+
+            if (isOnTime) {
+                if (isOverTime && isOverBreak) {
+                    tooltip.addClass('on-time-ot-ob');
+                } else if (isOverTime) {
+                    tooltip.addClass('on-time-ot');
+                } else if (isOverBreak) {
+                    tooltip.addClass('on-time-ob');
+                } else {
+                    tooltip.addClass('on-time-sq');
+                }
+            } else {
+                if (isOverTime && isOverBreak) {
+                    tooltip.addClass('late-ot-ob');
+                } else if (isOverTime) {
+                    tooltip.addClass('on-late-ot');
+                } else if (isOverBreak) {
+                    tooltip.addClass('late-ob');
+                } else {
+                    tooltip.addClass('late-sq');
+                }
+            }
+        }
+    }
+
+    $('.attendance-graph').each(async function() {
+        const year = this.dataset.year;
+        const monthNumber = this.dataset.monthNumber;
+        const month = this.dataset.month;
+        const user = this.dataset.user;
+
+        let yearMonth = `${year}-${month}`;
+        const date = new Date(yearMonth);
+        const formattedDate = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit' }).format(date);
+        const response = await fetch("{{ route('tracker.log', ['user_id' => '__USER_ID__','month' => '__MONTH__']) }}"
+            .replace('__USER_ID__', user)
+            .replace('__MONTH__', formattedDate)
+        );
+        const data = await response.json();
+        populateCalendar(month, data, formattedDate, this);
+        $(`.calendar-loader.user-${user}.month-${month}.year-${year}`).hide();
+        $(this).show();
+    })
+    @endif
 </script>
 @endsection
 @endsection

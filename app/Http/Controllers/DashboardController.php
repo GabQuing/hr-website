@@ -169,7 +169,7 @@ class DashboardController extends Controller
 
     public function fetchDailyLog(Request $request, $user_id, $month)
     {
-        sleep(1);
+        // sleep(1);
         $logs = AttendanceSummary::where('user_id', $user_id)
             ->with('workSchedule')
             ->where('log_date', 'like', "$month%")
