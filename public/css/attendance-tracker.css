@@ -94,7 +94,7 @@
   border-radius: 3px;
   transition: transform 0.2s ease, opacity 0.2s ease;
   background-color: #00FFFF;
-  background: linear-gradient(to bottom right, #00FFFF 50%, black 50%);
+  background: linear-gradient(to bottom right, #00FFFF 50%, #ebedf0 50%);
 }
 
 .over-time-sq {
