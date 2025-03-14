@@ -69,7 +69,7 @@
             </tbody>
         </table>
     </div>
-    <div class="u-flex-end u-mt-10 u-mr-10">
+    <div class="u-flex-end u-mt-10 u-mr-10" style="padding-bottom: 10px;">
         <a class="u-t-dark" style="text-decoration: none;"
             href="{{ route('export') . '?' . http_build_query($params) }}" target="_blank">
             <button class="u-btn u-bg-default u-t-dark u-border-1-gray u-box-shadow-default">
