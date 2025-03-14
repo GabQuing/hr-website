@@ -52,6 +52,7 @@ class AttendanceController extends Controller
         }
 
         $data['daysOfWeek'] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+        $data['year'] = date('Y');
         $data['params'] = $request->all();
         $data['summary_data'] = [$summary_data];
         $data['filtered_months'] = $filteredMonths;
