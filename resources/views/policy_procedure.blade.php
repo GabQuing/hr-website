@@ -202,7 +202,7 @@
                                     edit
                                 </span>
                             </button>
-                            <button type="button" class="u-action-btn u-bg-primary btn-edit delete-policy" data-id="{{ $policy->id }}">
+                            <button type="button" class="u-action-btn u-bg-delete btn-edit delete-policy" data-id="{{ $policy->id }}">
                                 <span class="material-symbols-outlined" style="vertical-align: bottom; font-size: 20px; font-weight: bold;">
                                     delete
                                 </span>

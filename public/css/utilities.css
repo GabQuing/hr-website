@@ -126,6 +126,9 @@
 .u-bg-success {
     background-color: var(--success);
 }
+.u-bg-delete {
+    background-color: var(--delete-btn-color);
+}
 
 .u-bg-warning {
     background-color: var(--warning);
