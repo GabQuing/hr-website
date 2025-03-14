@@ -78,7 +78,7 @@ class DashboardController extends Controller
             ->where('end_date', '>', $date)
             ->first();
 
-        $data['year'] = 2024;
+        $data['year'] = date('Y');
         $data['daysOfWeek'] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
         $data['holidays'] = Holiday::where('holiday_date', 'like', $data['year'] . '%')
