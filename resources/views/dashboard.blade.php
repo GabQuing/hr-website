@@ -8,6 +8,43 @@
 @endsection
 
 @section('content')
+<div>
+
+</div>
+
+
+<div class="modal-center edit-notes-form" style="display: none">
+    <div class="modal-box ">
+        <div class="modal-content">
+            <form method="POST" action="{{ route('notes.edit') }}" enctype="multipart/form-data">
+                @csrf
+                <table class="custom_normal_table">
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                                <h3 class="f-weight-bold">Edit Notes</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Note:</p>
+                                <textarea class="ckeditor" id="note-input" name="note" type="date"
+                                    required>{!! $notes?->note !!}</textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="u-flex-space-between u-flex-wrap">
+                    <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close"
+                        id="notes-btn-close" type="button">Close</button>
+                    <button class="u-t-white u-fw-b u-btn u-bg-primary u-m-10 u-border-1-default btn-close"
+                        id="notes-btn-submit" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="modal-center create-holiday-form" style="display: none">
     <div class="modal-box ">
         <div class="modal-content">
@@ -445,54 +482,19 @@
                 <span>No Schedule</span>
             </div>
         </div>
-        <div class="notes-container">
-            <div class="notes-title"><span> NOTES:</span></div>
+        <div class="notes-container" style="min-width: min(95%, 800px);">
+            <div style="display: flex; justify-content: space-between; align-items: center">
+                <div class="notes-title"><span> NOTES:</span></div>
+                @role('admin||hr') <div>
+                    <button type="button" id="edit-notes-btn"
+                        style="display: flex; color: white; border: none; cursor: pointer; background: #238c7c; padding: 5px; border-radius: 5px;">
+                        <span class="material-symbols-outlined">edit</span>
+                    </button>
+                </div>
+                @endrole
+            </div>
             <div class="u-fs-15">
-                <div class="u-mb-5">
-                    <span class="u-fw-600 text-gray u-fw-b">1. On-Time and Late Policy</span>
-                    <div class="u-pl-16">
-                        <p>
-                            • An Employee is considered on time if they clock in before or exactly at 8:00am.
-                        </p>
-                        <p>
-                            • A grace period of 5 minutes is allowed, meaning clocking in at 8:05 Am or earlier is still
-                            considered on time.
-                        </p>
-                        <p>
-                            • Clocking in at 8:06 AM or later is considered late.
-                        </p>
-                    </div>
-                </div>
-                <div class="u-mb-5 ">
-                    <span class="u-fw-600 text-gray u-fw-b">2. Public Holidays and No Work Days</span>
-                    <div class="u-pl-16">
-                        <p>
-                            • On PH holidays or company-declared no work days, if you are requred to work, you must file
-                            an OB request to have your attendance marked as 'GREEN'.
-                        </p>
-                    </div>
-                </div>
-                <div class="u-mb-5">
-                    <span class="u-fw-600 text-gray u-fw-b">3. Vacation and Birthday Leave Policy</span>
-                    <div class="u-pl-16">
-                        <p>
-                            • Employees must file a Paid Time Off (PTO) request at least one week before the planned
-                            leave date to allow for scheduling adjustments.
-                        </p>
-                        <p>
-                            • PTO request can also be filed months in advance to secure approval ahead of time,
-                            especially for extended leaves.
-                        </p>
-                    </div>
-                </div>
-                <div class="u-mb-5">
-                    <span class="u-fw-600 text-gray u-fw-b">4. Over Break</span>
-                    <div class="u-pl-16">
-                        <p>
-                            • Coverage Must be provided on the same day as the shift.
-                        </p>
-                    </div>
-                </div>
+                {!! $notes?->note !!}
             </div>
         </div>
     </div>
@@ -943,6 +945,21 @@
                 location.assign("{{ route('holiday.delete') }}" + '?holiday_id=' + holidayId);
             }
         });
+    });
+
+
+    //Notes
+    $('#edit-notes-btn').on('click', function() {
+        $('.edit-notes-form').show();
+    });
+
+    $('.edit-notes-form #notes-btn-close').on('click', function() {
+        $('.edit-notes-form').hide();
+    });
+
+    CKEDITOR.config.versionCheck = false;
+    CKEDITOR.replace('note-input', {
+        height: 300
     });
 
 

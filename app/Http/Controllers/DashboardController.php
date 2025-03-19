@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
+use App\Models\AttendanceNote;
 use App\Models\AttendanceSummary;
 use App\Models\Holiday;
 use App\Models\Leave;
@@ -83,6 +84,8 @@ class DashboardController extends Controller
 
         $data['holidays'] = Holiday::where('holiday_date', 'like', $data['year'] . '%')
             ->orderBy('holiday_date', 'asc')->get();
+
+        $data['notes'] = AttendanceNote::first();
 
         return view('dashboard', $data);
     }
@@ -253,5 +256,16 @@ class DashboardController extends Controller
         }
         $holiday->delete();
         return redirect()->back()->with('success-holiday', 'Holiday deleted successfully.');
+    }
+
+    public function editNote(Request $request)
+    {
+        AttendanceNote::whereNotNull('id')->delete();
+        AttendanceNote::create([
+            'user_id' => auth()->user()->id,
+            'note' => $request->note,
+        ]);
+
+        return redirect()->back()->with('success-note', 'Note updated successfully.');
     }
 }

@@ -103,6 +103,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Attendance Tracker
     Route::get('/daily-logs/{user_id}/{month}', [DashboardController::class, 'fetchDailyLog'])->name('tracker.log');
+    Route::post('/dashboard/notes', [DashboardController::class, 'editNote'])->name('notes.edit');
 
     // Holidays 
     Route::post('/holidays/create', [DashboardController::class, 'createHoliday'])->name('holiday.create');
