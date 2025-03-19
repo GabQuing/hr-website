@@ -113,14 +113,14 @@
                                 <input class="u-input" name="pregnancy" id="edit_pregnancy" type="number" min="0"
                                     step="0.01" required>
                             </td>
-                        </tr>
-                        <tr>
                             <td>
                                 <p>Upload Receipt / Image:</p>
                                 <input class="u-input " name="file" id="edit_file" type="file"
                                     accept=".jpg,.jpeg,.png" />
                             </td>
-                            <td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
                                 <p>Notes:</p>
                                 <input class="u-input" name="note" id="edit_note" type="text" />
                             </td>

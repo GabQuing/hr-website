@@ -100,6 +100,16 @@ Route::middleware(['auth'])->group(function () {
     //Clock in, Clock Out, Break Start, Break End
     Route::post('/dashboard/log-action', [DashboardController::class, 'log_action'])->middleware(['auth'])->name('dashboard.log-action');
 
+
+    // Attendance Tracker
+    Route::get('/daily-logs/{user_id}/{month}', [DashboardController::class, 'fetchDailyLog'])->name('tracker.log');
+    Route::post('/dashboard/notes', [DashboardController::class, 'editNote'])->name('notes.edit');
+
+    // Holidays 
+    Route::post('/holidays/create', [DashboardController::class, 'createHoliday'])->name('holiday.create');
+    Route::post('/holidays/update', [DashboardController::class, 'updateHoliday'])->name('holiday.update');
+    Route::get('/holidays/delete', [DashboardController::class, 'deleteHoliday'])->name('holiday.delete');
+
     // Attendance
     Route::get('/my_attendance', [AttendanceController::class, 'index'])->name('attendance');
     Route::post('/my_attendance/show', [AttendanceController::class, 'daysPresent'])->name('generateTable');
@@ -244,6 +254,9 @@ Route::middleware(['auth'])->group(function () {
     //Policy & Procedure
     Route::get('/policy_procedure', [PolicyProcedureController::class, 'index'])->name('policy_procedure');
     Route::post('/policy_procedure/payroll-calendar/add', [PolicyProcedureController::class, 'addPayrollCalendar'])->name('policy_procedure.add_payroll_calendar');
+    Route::post('/policy_procedure/new-policy/add', [PolicyProcedureController::class, 'addNewPolicy'])->name('policy_procedure.new_policy');
+    Route::post('/policy_procedure/update-policy/{id}', [PolicyProcedureController::class, 'updatePolicy'])->name('policy_procedure.update_policy');
+    Route::post('/policy_procedure/delete-policy/{id}', [PolicyProcedureController::class, 'deletePolicy'])->name('policy_procedure.delete_policy');
 
 
     // SideTopContent

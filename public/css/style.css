@@ -987,6 +987,7 @@ input::file-selector-button {
 .edit_ann_btn,
 .remove_ann_btn,
 .announcement_btn,
+.add_holiday_btn,
 .today_clock_out,
 .today_clock_in {
     display: flex;
@@ -1007,13 +1008,15 @@ input::file-selector-button {
     background: #882c03;
     border-radius: 5px;
 }
-.announcement_btn{
+.announcement_btn,
+.add_holiday_btn {
     background: #23628c;
     border-radius: 5px;
 }
 .edit_ann_btn:hover,
 .remove_ann_btn:hover,
 .announcement_btn:hover,
+.add_holiday_btn:hover,
 .break_start_btn:hover,
 .break_end_btn:hover,
 .today_clock_out:hover,

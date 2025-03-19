@@ -3,19 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
+use App\Models\AttendanceNote;
 use App\Models\AttendanceSummary;
+use App\Models\Holiday;
+use App\Models\Leave;
 use App\Models\LogType;
+use App\Models\Overtime;
 use App\Models\User;
 use App\Models\UserLog;
 use App\Models\WorkSchedule;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
 class DashboardController extends Controller
 {
-    //
     public function index()
     {
         $today = Carbon::today()->toDateString(); // Get today's date
@@ -45,15 +49,15 @@ class DashboardController extends Controller
                     AND ul.log_at < '$now' 
                     AND ul.log_date = '$today'
                 )
-            ) as latest_user_logs"), function($join) {
+            ) as latest_user_logs"), function ($join) {
                 $join->on('latest_user_logs.user_id', '=', 'users.id');
             })
             ->leftJoin('log_types', 'log_types.id', '=', 'latest_user_logs.log_type_id') // Join with log_types
             ->whereNull('users.deleted_at')
             ->where('users.approval_status', 'APPROVED')
             ->where('model_has_roles.role_id', 2)
-            ->where('users.id','!=',$user_id)
-            ->where('users.email','!=','dummyaccount@gmail.com')
+            ->where('users.id', '!=', $user_id)
+            ->where('users.email', '!=', 'dummyaccount@gmail.com')
             ->select(
                 'users.*',
                 'latest_user_logs.log_type_id', // Selecting log_type_id
@@ -62,23 +66,30 @@ class DashboardController extends Controller
             )
             ->orderBy('users.name', 'ASC')
             ->get();
-    
-        // dd($data['team_logs']);
-    
+
         $num_rows = $data['team_logs']->count();
         $data['user_logs'] = (new UserLog())
-        ->getByUserId($user_id)
-        ->orderByDesc('log_date')
-        ->take($num_rows)
-        ->get();
+            ->getByUserId($user_id)
+            ->orderByDesc('log_date')
+            ->take($num_rows)
+            ->get();
 
         $data['announcement'] = Announcement::whereNull('deleted_at')
             ->where('start_date', '<=', $date)
             ->where('end_date', '>', $date)
             ->first();
 
+        $data['year'] = date('Y');
+        $data['daysOfWeek'] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
+        $data['holidays'] = Holiday::where('holiday_date', 'like', $data['year'] . '%')
+            ->orderBy('holiday_date', 'asc')->get();
+
+        $data['notes'] = AttendanceNote::first();
+
         return view('dashboard', $data);
     }
+
 
     public function log_action(Request $request)
     {
@@ -121,9 +132,9 @@ class DashboardController extends Controller
     {
         $date = date('Y-m-d H:i:s');
         $user_id = auth()->user()->id;
-    
+
         $file_path = null;
-    
+
         if ($request->hasFile('imageInput')) {
             $image_file = $request->file('imageInput');
             $storage_path = 'img/announcements';
@@ -131,9 +142,9 @@ class DashboardController extends Controller
             $image_file->storeAs($storage_path, $image_file_name, 'public');
             $file_path = url('/img/announcements/' . $image_file_name);
         }
-    
+
         Announcement::whereNull('deleted_at')->update(['deleted_at' => $date]);
-    
+
         Announcement::create([
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
@@ -143,7 +154,7 @@ class DashboardController extends Controller
             'created_by' => $user_id,
             'created_at' => $date,
         ]);
-    
+
         return redirect('/dashboard1')->with('success', 'Announcement created successfully.');
     }
 
@@ -157,5 +168,104 @@ class DashboardController extends Controller
     {
         Announcement::whereNull('deleted_at')->update(['deleted_at' => date('Y-m-d H:i:s')]);
         return redirect('/dashboard1')->with('success', 'Announcement deleted successfully.');
+    }
+
+    public function fetchDailyLog(Request $request, $user_id, $month)
+    {
+        // sleep(1);
+        $logs = AttendanceSummary::where('user_id', $user_id)
+            ->with('workSchedule')
+            ->where('log_date', 'like', "$month%")
+            ->get()
+            ->each(function ($log) {
+                $log->setRelation('workSchedule', $log->workSchedule->where('work_day', $log->day_name)->first());
+            });
+
+        $leaves = Leave::where([
+            'created_by' => $user_id,
+            'status' => 'APPROVED'
+        ])->where('leave_from', 'like', "$month%")
+            ->get();
+
+        $overtimes = Overtime::where([
+            'created_by' => $user_id,
+            'status' => 'APPROVED'
+        ])->where('shift_date', 'like', "$month%")
+            ->get();
+
+        $holidays = Holiday::where('holiday_date', 'like', "$month%")
+            ->get();
+
+        return [
+            'user' => $user_id,
+            'month' => $month,
+            'logs' => $logs,
+            'leaves' => $leaves,
+            'overtimes' => $overtimes,
+            'holidays' => $holidays
+        ];
+    }
+
+    public function createHoliday(Request $request)
+    {
+        $request->validate([
+            'holiday_date' => 'required|date',
+            'holiday_name' => 'required|string',
+        ]);
+
+        $holiday_date = $request->holiday_date;
+        $holiday_name = $request->holiday_name;
+
+        Holiday::create([
+            'holiday_date' => $holiday_date,
+            'holiday_name' => $holiday_name,
+            'user_id' => auth()->user()->id,
+        ]);
+
+        return redirect()->back()->with('success-holiday', 'Holiday created successfully.');
+    }
+
+    public function updateHoliday(Request $request)
+    {
+        $request->validate([
+            'holiday_date' => 'required|date',
+            'holiday_name' => 'required|string',
+            'holiday_id' => 'required|integer',
+        ]);
+
+        $holiday = Holiday::find($request->holiday_id);
+        if (!$holiday) {
+            return redirect()->back()->with('error', 'Holiday not found.');
+        }
+
+        $holiday->holiday_date = $request->holiday_date;
+        $holiday->holiday_name = $request->holiday_name;
+        $holiday->save();
+        return redirect()->back()->with('success-holiday', 'Holiday updated successfully.');
+    }
+
+    public function deleteHoliday(Request $request)
+    {
+        // check if the user is an admin
+        if (!User::find(auth()->user()->id)->isAdmin()) {
+            return redirect()->back()->with('error', 'You are not authorized to delete holidays.');
+        }
+        $holiday = Holiday::find($request->holiday_id);
+        if (!$holiday) {
+            return redirect()->back()->with('error', 'Holiday not found.');
+        }
+        $holiday->delete();
+        return redirect()->back()->with('success-holiday', 'Holiday deleted successfully.');
+    }
+
+    public function editNote(Request $request)
+    {
+        AttendanceNote::whereNotNull('id')->delete();
+        AttendanceNote::create([
+            'user_id' => auth()->user()->id,
+            'note' => $request->note,
+        ]);
+
+        return redirect()->back()->with('success-note', 'Note updated successfully.');
     }
 }

@@ -37,9 +37,21 @@
     --darker: #000;
 }
 
+.u-fs-15{
+    font-size: 15px;
+}
+.u-fs-small{
+    font-size: small;
+}
+.u-fs-medium{
+    font-size: medium;
+}
+
+
 .u-fw-b {
     font-weight: bold;
 }
+
 
 .u-fw-400 {
     font-weight: 400;
@@ -114,6 +126,9 @@
 .u-bg-success {
     background-color: var(--success);
 }
+.u-bg-delete {
+    background-color: var(--delete-btn-color);
+}
 
 .u-bg-warning {
     background-color: var(--warning);
@@ -146,6 +161,9 @@
 .u-p-15 {
     padding: 0.938rem;
 }
+.u-p-20 {
+    padding: 1.5rem;
+}
 .u-ml-15{
     margin-left:0.9375rem;
 }
@@ -164,6 +182,10 @@
 
 .u-pl-16 {
     padding-left: 1rem;
+}
+.u-px-10{
+    padding-left: 0.625rem;
+    padding-right: 0.625rem;
 }
 
 .u-mt-5 {
@@ -184,6 +206,9 @@
 
 .u-mt-16 {
     margin-top: 1rem;
+}
+.u-mt-32 {
+    margin-top: 2rem;
 }
 
 .u-mt-25 {
@@ -227,6 +252,13 @@
 .u-mr-16 {
     margin-right: 1rem;
 }
+.u-gap-1{
+    gap: 0.5rem;
+}
+.u-gap-2{
+    gap: 1rem;
+}
+
 .u-gap-5{
     gap: 5rem;
 }
@@ -247,6 +279,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+}
+.u-flex-start-column {
+    display: flex;
+    justify-content: center;
+    align-items: start;
     flex-direction: column;
 }
 

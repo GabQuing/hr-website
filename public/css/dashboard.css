@@ -1,0 +1,122 @@
+textarea {
+  resize: none;
+}
+
+.modal-box {
+  max-width: 75rem !important;
+}
+
+.message_container {
+  margin-top: 30px;
+  padding: 0px 50px;
+}
+
+
+.text-red {
+  color: red;
+  font-weight: bold
+}
+
+.text-green {
+  color: green;
+  font-weight: bold
+}
+
+.text-sky-blue {
+  color: #02718A;
+}
+
+.text-gray {
+  color: #4D4B4B;
+}
+
+.text-cetner {
+  text-align: center;
+}
+
+.pad-left {
+  padding-left: 1rem !important;
+}
+
+.blue-border {
+  object-fit: contain;
+  width: 80%;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+  margin-bottom: 20px;
+}
+
+.text-message {
+  color: #333333;
+  text-align: justify;
+}
+
+#ann_subject {
+  margin-bottom: 10px;
+  color: black;
+}
+
+.text-message-container {
+  margin-bottom: 20px;
+}
+
+
+.scrollable-container {
+  max-height: 250px;
+  /* Set your desired height */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
+}
+
+/* Custom scrollbar styles */
+.scrollable-container::-webkit-scrollbar {
+  width: 12px;
+  /* Width of the scrollbar */
+}
+
+.scrollable-container::-webkit-scrollbar-track {
+  background: #f3eeee;
+  /* Background of the scrollbar track */
+}
+
+.scrollable-container::-webkit-scrollbar-thumb {
+  background: #02718A;
+  /* Color of the scrollbar thumb */
+  border-radius: 10px;
+  /* Rounded corners for the scrollbar thumb */
+}
+
+.scrollable-container::-webkit-scrollbar-thumb:hover {
+  background: #02718A;
+  /* Color of the scrollbar thumb on hover */
+}
+
+/* Custom scrollbar styles */
+.custom-grid-container::-webkit-scrollbar {
+  width: 2px;
+  /* Width of the scrollbar */
+}
+
+.custom-grid-container::-webkit-scrollbar-track {
+  background: #f3eeee;
+  /* Background of the scrollbar track */
+}
+
+.custom-grid-container::-webkit-scrollbar-thumb {
+  background: #02718A;
+  /* Color of the scrollbar thumb */
+  border-radius: 3px;
+  /* Rounded corners for the scrollbar thumb */
+}
+
+.custom-grid-container::-webkit-scrollbar-thumb:hover {
+  background: #02718A;
+  /* Color of the scrollbar thumb on hover */
+}
+
+.mh-500 {
+  height: 400px !important;
+}
+
+.mh-200 {
+  height: 110px !important;
+}

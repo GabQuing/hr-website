@@ -27,8 +27,35 @@ class AttendanceController extends Controller
         $toDate = $request->input('to_date');
         $userId = $request->input('employeeId');
         $summary_data = self::getSummaryData($userId, $fromDate, $toDate);
+
+        // Generate months dynamically
+        $filteredMonths = [];
+        $start = date_create($fromDate);
+        $toDate = date_create($toDate);
+
+        while ($start <= $toDate) {
+            $month = date_format($start, 'm'); // Get month number
+            $year = date_format($start, 'Y'); // Get year
+            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+            $firstDayOfMonth = date('w', strtotime("$year-$month-01")); // Get first day (0 = Sunday, 6 = Saturday)
+
+            $filteredMonths[] = [
+                'month' => date_format($start, 'M'),
+                'monthNumber' => $month,
+                'year' => $year,
+                'daysInMonth' => $daysInMonth,
+                'firstDayOfMonth' => $firstDayOfMonth,
+            ];
+
+            // Move to the next month
+            date_add($start, date_interval_create_from_date_string("1 month"));
+        }
+
+        $data['daysOfWeek'] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+        $data['year'] = date('Y');
         $data['params'] = $request->all();
         $data['summary_data'] = [$summary_data];
+        $data['filtered_months'] = $filteredMonths;
         return view('my_attendance', $data);
     }
 
