@@ -778,7 +778,6 @@
     const GRACE_PERIOD_IN_MINS = 5;
 
     function populateCalendar(month, data, formattedDate) {
-        console.log(month, data, formattedDate);
         const year = "{{ $year }}";
         const calendar = $(`#calendar-${year}-${month}`);
 
