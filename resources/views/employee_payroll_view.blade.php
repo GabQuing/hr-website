@@ -90,9 +90,9 @@
         <tbody>
             @foreach ($payrolls as $payroll)
             <tr>
-                <td>{{ date("F d, Y l", strtotime($payroll->pay_date)) }}</td>
-                <td>{{ date("F d, Y l", strtotime($payroll->from_date)) }}</td>
-                <td>{{ date("F d, Y l", strtotime($payroll->to_date)) }}</td>
+                <td>{{ $payroll->pay_date ? date("F d, Y l", strtotime($payroll->pay_date)) : ''}}</td>
+                <td>{{ $payroll->from_date ? date("F d, Y l", strtotime($payroll->from_date)) : ''}}</td>
+                <td>{{ $payroll->to_date ? date("F d, Y l", strtotime($payroll->to_date)) : ''}}</td>
                 <td>{{ $payroll->created_by_head }}</td>
                 <td>
                     <div class="d-flex" style="gap:3px">
