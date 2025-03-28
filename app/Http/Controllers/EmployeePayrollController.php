@@ -64,6 +64,7 @@ class EmployeePayrollController extends Controller
         $return_input = $request->all();
         $date_from = $return_input['pr_date_from'];
         $date_to = $return_input['pr_date_to'];
+        $pay_date = $return_input['pr_pay_date'];
         $hasFile = $request->hasFile('pr_pdf');
 
         $employee_payroll = EmployeePayroll::find($id);
@@ -72,6 +73,7 @@ class EmployeePayrollController extends Controller
         $employee_payroll->update([
             'from_date' => $date_from,
             'to_date' => $date_to,
+            'pay_date' => $pay_date,
             'updated_at' => date('Y-m-d H:i:s'),
             'updated_by' => auth()->user()->id
         ]);
