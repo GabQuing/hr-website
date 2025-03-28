@@ -38,10 +38,10 @@ class EmployeePayrollController extends Controller
     {
         $return_input = $request->all();
         $employee_id = $id;
-        // $employee_id = $return_input['pr_employee_id'];
         $date_from = $return_input['pr_date_from'];
         $date_to = $return_input['pr_date_to'];
         $file = $return_input['pr_pdf'];
+        $pay_date = $return_input['pr_pay_date'];
 
         $file_name = "$date_from to $date_to-$employee_id." . $file->getClientOriginalExtension();
         $file->storeAs('payroll', $file_name);
@@ -50,6 +50,7 @@ class EmployeePayrollController extends Controller
             'user_id' => $id,
             'from_date' => $date_from,
             'to_date' => $date_to,
+            'pay_date' => $pay_date,
             'file_name' => $file_name,
             'file_path' => storage_path('app/payroll') . "/$file_name",
             'created_by' => auth()->user()->id,
