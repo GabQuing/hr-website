@@ -245,6 +245,7 @@
 </div>
 
 <div class="grid">
+    @role('employee')
     <div class="container container_today">
         <div class="container_title">
             <p class="header_title_h2">Today's Attendance</p>
@@ -293,7 +294,6 @@
             </div>
         </div>
     </div>
-
     <div class="container container_my_attendance">
         <div class="container_title">
             <p class="header_title_h2">My Break</p>
@@ -343,6 +343,7 @@
             </div>
         </div>
     </div>
+    @endrole
     <div class="container container_today">
         <div class="container_title">
             <p class="header_title_h2">My Activity</p>
@@ -485,7 +486,8 @@
         <div class="notes-container" style="min-width: min(95%, 800px);">
             <div style="display: flex; justify-content: space-between; align-items: center">
                 <div class="notes-title"><span> NOTES:</span></div>
-                @role('admin||hr') <div>
+                @role('admin||hr')
+                <div>
                     <button type="button" id="edit-notes-btn"
                         style="display: flex; color: white; border: none; cursor: pointer; background: #238c7c; padding: 5px; border-radius: 5px;">
                         <span class="material-symbols-outlined">edit</span>
