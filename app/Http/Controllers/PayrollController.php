@@ -19,7 +19,7 @@ class PayrollController extends Controller
             )
             ->where('user_id', $user_id)
             ->whereNull('employee_payrolls.deleted_at')
-            ->get();
+            ->paginate(10);
 
         return view('payroll', $data);
     }

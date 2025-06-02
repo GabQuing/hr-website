@@ -68,6 +68,9 @@
             </tr>
         </tfoot>
     </table>
+    {{ $payrolls->links() }}
+    <p>Showing {{ $payrolls->firstItem() ?? 0 }} to {{ $payrolls->lastItem() ?? 0 }} of {{ $payrolls->total() }} items.
+    </p>
 </div>
 
 
@@ -76,9 +79,17 @@
 @section('script_content')
 
 <script>
+    // $('.myTable').DataTable({
+    //     responsive: true
+    // });
     $('.myTable').DataTable({
         responsive: true,
-        "order": []
+        paging:false,
+        info:false,
+        searching: false,
+        "columnDefs": [
+            { "className": "dt-center", "targets": "_all" }
+        ]
     });
 
     $('.payroll-view').on('click', function(){

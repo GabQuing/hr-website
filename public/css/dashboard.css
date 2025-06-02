@@ -61,7 +61,7 @@ textarea {
 
 
 .scrollable-container {
-  max-height: 250px;
+  max-height: 179px;
   /* Set your desired height */
   overflow-y: auto;
   /* Enable vertical scrolling */
