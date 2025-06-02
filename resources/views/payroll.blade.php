@@ -5,7 +5,7 @@
 @section('content')
 
 <style>
-    .modal-box{
+    .modal-box {
         max-width: 75rem !important;
     }
 </style>
@@ -18,13 +18,15 @@
                 <embed src="" id="pdfShow" width="100%" height="700px"></embed>
             </div>
             <div>
-                <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close" id="modal-btn-close" type="button">Close</button>
-                <button class="ob-btns u-t-white u-fw-b u-btn u-bg-accent u-m-5 u-border-1-default" id="modal-btn-download" type="button">Download</button>
+                <button class="u-t-gray-dark u-fw-b u-btn u-bg-default u-m-10 u-border-1-default btn-close"
+                    id="modal-btn-close" type="button">Close</button>
+                <button class="ob-btns u-t-white u-fw-b u-btn u-bg-accent u-m-5 u-border-1-default"
+                    id="modal-btn-download" type="button">Download</button>
             </div>
         </div>
     </div>
 </div>
-    
+
 <div class="u-mt-10 user_accounts_table2">
     <table class="myTable" class="display" style="width:100%;">
         <thead>
@@ -38,19 +40,22 @@
         </thead>
         <tbody>
             @foreach ($payrolls as $payroll)
-                <tr>
-                    <td>{{ $payroll->from_date }}</td>
-                    <td>{{ $payroll->to_date }}</td>
-                    <td>{{ $payroll->created_by_head }}</td>
-                    <td>{{ $payroll->created_at }}</td>
-                    <td>
-                        <div class="d-flex;">
-                            <button file-path="{{ $payroll->file_path }}" class="material-symbols-outlined u-action-btn u-bg-primary payroll-view" id="payroll-view" data-payroll-name="{{ $payroll->file_name }}" style="vertical-align: bottom; font-size: 20px; font-weight: bold; color: white; text-decoration: none;">
-                                visibility
+            <tr>
+                <td>{{ $payroll->from_date }}</td>
+                <td>{{ $payroll->to_date }}</td>
+                <td>{{ $payroll->created_by_head }}</td>
+                <td>{{ $payroll->created_at }}</td>
+                <td>
+                    <div class="d-flex;">
+                        <button file-path="{{ $payroll->file_path }}"
+                            class="material-symbols-outlined u-action-btn u-bg-primary payroll-view" id="payroll-view"
+                            data-payroll-name="{{ $payroll->file_name }}"
+                            style="vertical-align: bottom; font-size: 20px; font-weight: bold; color: white; text-decoration: none;">
+                            visibility
                             </a>
-                        </div>
-                    </td>
-                </tr>   
+                    </div>
+                </td>
+            </tr>
             @endforeach
         </tbody>
         <tfoot>
@@ -63,6 +68,9 @@
             </tr>
         </tfoot>
     </table>
+    {{ $payrolls->links() }}
+    <p>Showing {{ $payrolls->firstItem() ?? 0 }} to {{ $payrolls->lastItem() ?? 0 }} of {{ $payrolls->total() }} items.
+    </p>
 </div>
 
 
@@ -71,8 +79,17 @@
 @section('script_content')
 
 <script>
+    // $('.myTable').DataTable({
+    //     responsive: true
+    // });
     $('.myTable').DataTable({
-        responsive: true
+        responsive: true,
+        paging:false,
+        info:false,
+        searching: false,
+        "columnDefs": [
+            { "className": "dt-center", "targets": "_all" }
+        ]
     });
 
     $('.payroll-view').on('click', function(){
